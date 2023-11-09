@@ -14,7 +14,7 @@ application = Flask(__name__)
 application.config["SQLALCHEMY_DATABASE_URI"] = environ.get('MYSQLCREDS')
 db.init_app(application)
 
-application.secret_key = 'your_secret_key_here'
+application.secret_key = environ.get('SECKEY')
 
 
 
