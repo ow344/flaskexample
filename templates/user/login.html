@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .register-link {
+            background-color: yellowgreen;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 1px;
+
+    }
+    .my-submit-button {
+            background-color: green;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 1px;
+
+        }
+
+</style>
+<h2>Login</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <table>
+        <tr>
+    <td>{{ form.username.label }}</td>
+    <td>{{ form.username }}
+    {% for error in form.username.errors %}
+        <span style="color: red;">{{ error }}</span>
+    {% endfor %}</td>
+        </tr>
+        <tr>
+    <td>{{ form.password.label }}</td>
+    <td>{{ form.password }}
+    {% for error in form.password.errors %}
+        <span style="color: red;">{{ error }}</span>
+    {% endfor %}</td>
+        </tr>
+     </table>
+     <!-- <div class="centered-div"> -->
+        <p>{{ form.submit(class_="my-submit-button") }}</p>
+    <!-- </div> -->
+
+</form>
+
+{% endblock %}

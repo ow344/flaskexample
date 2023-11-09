@@ -1,0 +1,126 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 52px; /* Adjust this value according to your header height */
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Ensures header is on top */
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+}
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 95%;
+    margin: 0 auto;
+}
+.header-content h1 {
+    font-size: 24px;
+    margin: 0;
+}
+.header-content a {
+    text-decoration: none;
+    color: #fff;
+}
+
+
+.login-button {
+    background-color: #007bff;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+.user-info p {
+    margin: 0;
+    padding-right: 10px;
+}
+
+
+.logout-button {
+    background-color: #dc3545; /* Red color */
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: background-color 0.3s;
+}
+.logout-button:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+
+nav {
+    background-color: #646262; /* Background color for the navigation bar */
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    text-align: center; /* Center the navigation links horizontally */
+}
+nav a {
+    background-color: #8a8787; /* Background color for the navigation bar */
+    text-decoration: none;
+    color: #fff; /* Link text color */
+    display: inline-block;
+    margin: 5px;
+    padding: 5px 10px; /* Adjust the padding as needed */
+    border: 1px solid #fff; /* Add a border to style the buttons */
+    border-radius: 5px; /* Add rounded corners to the buttons */
+    width: 15%;
+}
+nav a:hover {
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+
+.flash-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.flash-messages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.flash-success {
+    background-color: #4CAF50;
+    color: #fff;
+    margin: 3px;
+    padding: 3px;
+    border-radius: 5px;
+    font-size: 18px;
+    text-align: center;
+}
+.flash-error {
+    background-color: #FF5733;
+    color: #fff;
+    margin: 3px;
+    padding: 3px;
+    border-radius: 5px;
+    font-size: 18px;
+    text-align: center;
+}
+
+
+main {
+    margin: 10px;
+}
+

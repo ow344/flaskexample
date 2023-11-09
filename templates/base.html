@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{% block title %}HR Management{% endblock %}</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+</head>
+<body>
+<header><div class="header-content">
+    <div class="left-content"><h1>
+        <a href="/">Alpha - HR Management</a></h1>
+    </div>
+    <div class="right-content">
+        {% if current_user.is_authenticated %}
+        <div class="user-info">
+        <p>Welcome, {{ current_user.username }}</p>
+        <a href="/logout" class="logout-button">Log Out</a>
+        </div>
+        {% else %}
+        <a href="/login" class="login-button">Log In</a>
+        {% endif %}
+    </div>
+</div></header>
+
+{% block content2 %}
+{% endblock %}
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul class="flash-messages">
+{% for category, message in messages %}
+<li class="flash-{{ category }}">{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<main>
+{% block content %}
+{% endblock %}
+</main>
+    
+</body>
+</html>
