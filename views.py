@@ -4,13 +4,20 @@ from forms import LoginForm, RegistrationForm
 from flask import render_template, redirect, url_for, flash, session, request
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
-
+from sqlalchemy import and_
 
 ################################  Main  ################################
 main = Blueprint('main', __name__)
 
 @main.route('/')
 def hello_world():
+    if current_user.is_authenticated:
+        if current_user.is_admin:
+            home = url_for('admin.home')
+        else:
+            home = url_for('user.home')
+        return redirect(home)
+
     return render_template('welcome.html')
 
 @main.route('/login', methods=['GET', 'POST'])
@@ -49,9 +56,6 @@ def userpermissions():
     return render_template('admin/userpermissions/self.html', users=User.query.all())
 
 
-
-
-
 @admin.route('/admin/userpermissions/user/<int:user_id>', methods=['GET', 'POST'])
 def userpermissions_user(user_id):
     user=db.session.get(User,user_id)
@@ -84,8 +88,6 @@ def userpermissions_user(user_id):
 
 
 
-
-
 @admin.route('/admin/userpermissions/register', methods=['GET', 'POST'])
 def userpermissions_register():
     form = RegistrationForm()
@@ -101,6 +103,23 @@ def userpermissions_register():
 
 ################################  User  ################################
 user = Blueprint('user', __name__)
+
+
+@user.before_request
+def run_code_once_per_session():
+    # if 'active_school_id' not in session and current_user.is_authenticated:
+    userschools = UserSchool.query.filter(and_(UserSchool.user_id==current_user.id, UserSchool.primary==True)).first()    
+    session['active_school_id'] = userschools.school.id
+    print(userschools.school.id)
+    print(session['active_school_id'])
+    session['active_school_name'] = userschools.school.name
+
+
+
+
+
+
+
 
 @user.route('/user')
 @login_required
