@@ -2,6 +2,7 @@ from flask import Flask
 from config import Config
 from models import db
 from views import main
+from flask_migrate import Migrate
 from flask_login import LoginManager
 from models import User
 
@@ -10,6 +11,7 @@ application = Flask(__name__)
 application.config.from_object(Config)
 db.init_app(application)
 application.register_blueprint(main)
+migrate = Migrate(application, db)
 
 
 login_manager = LoginManager()
