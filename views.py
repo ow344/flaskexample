@@ -4,6 +4,8 @@ from forms import LoginForm
 from flask import render_template, redirect, url_for, flash, session, request
 from flask_login import login_user, logout_user, login_required, current_user
 
+
+################################  Main  ################################
 main = Blueprint('main', __name__)
 
 @main.route('/')
@@ -30,16 +32,27 @@ def logout():
     logout_user()
     return redirect(url_for('main.hello_world'))
 
+################################  Admin  ################################
 admin = Blueprint('admin', __name__)
 
-@admin.route('/admin/home')
+@admin.route('/admin')
 @login_required
 def home():
-    return render_template('admin/home.html')
+    return render_template('admin/self.html')
 
+@admin.route('/admin/userpermissions')
+@login_required
+def userpermissions():
+    return render_template('admin/userpermissions/self.html', users=User.query.all())
+
+################################  User  ################################
 user = Blueprint('user', __name__)
 
-@user.route('/user/home')
+@user.route('/user')
 @login_required
 def home():
-    return render_template('user/home.html')
+    return render_template('user/self.html')
+
+################################  Next  ################################
+
+
