@@ -2,13 +2,35 @@
 
 {% block content %}
 
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/smalltable.css') }}">
+
+
 <p>{{ user.username }}</p>
 
 {% if user.is_admin %}
 <p>Admin</p>
 {% else %}
 <p>Individual Permissions:</p>
-<p><a href="">Save Permission Changes</a></p>
+<form method="POST">
+<table>
+    <tr>
+        <th>School</th>
+        <th>User's Default</th>
+        <th>View Info</th>
+        <th>View Financial Info</th>
+    </tr>
+{% for school in schools %}
+<tr>
+    <td>{{ school.name }}</td>
+    <td><input type="radio" name="default" value="{{school.id}}" {% if school.id in primary %} checked {% endif %}></td>
+    <td><input type="checkbox" name="basic-{{school.id}}" {% if school.id in basic %} checked {% endif %}></td>
+    <td><input type="checkbox" name="finance-{{school.id}}" {% if school.id in finance %} checked {% endif %}></td>
+</tr>
+{% endfor %}
+</table>
+<p><input type="submit" value="Confirm Permissions"></p>
+</form>
 {% endif %}
 
 

@@ -1,5 +1,5 @@
 from flask import Blueprint
-from models import db, User
+from models import db, User, School, UserSchool
 from forms import LoginForm, RegistrationForm
 from flask import render_template, redirect, url_for, flash, session, request
 from flask_login import login_user, logout_user, login_required, current_user
@@ -48,9 +48,43 @@ def home():
 def userpermissions():
     return render_template('admin/userpermissions/self.html', users=User.query.all())
 
-@admin.route('/admin/userpermissions/user/<int:user_id>')
+
+
+
+
+@admin.route('/admin/userpermissions/user/<int:user_id>', methods=['GET', 'POST'])
 def userpermissions_user(user_id):
-    return render_template('admin/userpermissions/user.html', user=db.session.get(User,user_id))
+    user=db.session.get(User,user_id)
+    schools = School.query.all()
+    if request.method == 'POST':
+        for school in schools:
+            default_value = 0
+            primary_B = str(school.id) == request.form.get("default", default_value)
+            basic_B = request.form.get(f"basic-{school.id}", default_value) == "on"
+            finance_B = request.form.get(f"finance-{school.id}", default_value) == "on"
+            user_school_entry = UserSchool.query.filter_by(user_id=user.id,school_id=school.id).first()
+            if any([basic_B,primary_B,finance_B]):
+                if user_school_entry:
+                    user_school_entry.primary = primary_B
+                    user_school_entry.finance = finance_B
+                else:
+                    user_school_entry = UserSchool(user_id=user.id,school_id=school.id,
+                                                   primary=primary_B,finance=finance_B)
+                    db.session.add(user_school_entry)
+            elif user_school_entry:
+                db.session.delete(user_school_entry)
+        db.session.commit()
+        flash("Permissions confirmed", "success")
+        return redirect(url_for('admin.userpermissions'))
+        
+    primary = [i.school_id for i in UserSchool.query.filter_by(user_id=user.id, primary=True).all()]
+    basic = [i.school_id for i in UserSchool.query.filter_by(user_id=user.id).all()]
+    finance = [i.school_id for i in UserSchool.query.filter_by(user_id=user.id, finance=True).all()]
+    return render_template('admin/userpermissions/user.html', user=user, schools=schools, primary=primary, basic=basic, finance=finance)
+
+
+
+
 
 @admin.route('/admin/userpermissions/register', methods=['GET', 'POST'])
 def userpermissions_register():
