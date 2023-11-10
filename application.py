@@ -1,38 +1,19 @@
-from os import environ, path
-from dotenv import load_dotenv
-basedir = path.abspath(path.dirname(__file__))
-load_dotenv(path.join(basedir, '.env'))
+
+
 from flask import Flask, render_template, redirect, url_for, flash, session, request
-from flask_sqlalchemy import SQLAlchemy
+from models import db, User
 
 
-
-
-
-db = SQLAlchemy()
 application = Flask(__name__)
-application.config["SQLALCHEMY_DATABASE_URI"] = environ.get('MYSQLCREDS')
+
+from config import Config
+
+
+application.config.from_object(Config)
+
+
+
 db.init_app(application)
-
-application.secret_key = environ.get('SECKEY')
-
-
-
-
-from flask_login import UserMixin
-
-
-
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    hashed_password = db.Column(db.String(200), nullable=False)
-    is_admin = db.Column(db.Boolean, default=False)
-    def __repr__(self):
-        return f'{self.username}'
-
-
-
 
 
 
