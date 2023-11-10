@@ -14,3 +14,7 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f'{self.username}'
 
+
+class School(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
