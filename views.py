@@ -1,8 +1,9 @@
 from flask import Blueprint
 from models import db, User
-from forms import LoginForm
+from forms import LoginForm, RegistrationForm
 from flask import render_template, redirect, url_for, flash, session, request
 from flask_login import login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash
 
 
 ################################  Main  ################################
@@ -44,6 +45,20 @@ def home():
 @login_required
 def userpermissions():
     return render_template('admin/userpermissions/self.html', users=User.query.all())
+
+@admin.route('/admin/userpermissions/register', methods=['GET', 'POST'])
+@login_required
+def userpermissions_register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hash = generate_password_hash(form.password.data)
+        newU = User(username=form.username.data, hashed_password=hash, is_admin = form.is_admin.data)
+        db.session.add(newU)
+        db.session.commit()
+        flash("Register successful, new user created", "success")
+        return redirect(url_for('admin.userpermissions'))
+
+    return render_template('admin/userpermissions/register.html', form=form)
 
 ################################  User  ################################
 user = Blueprint('user', __name__)
