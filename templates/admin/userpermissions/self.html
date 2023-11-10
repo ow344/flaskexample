@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/table.css') }}">
+</head>
+
+
 <a href="{{ url_for('admin.userpermissions_register') }}">Register New User</a>
 <table>
     <thead>
@@ -24,5 +29,7 @@
     {% endfor %}
     </tbody>
 </table>
+
+<script src="{{ url_for('static', filename='js/click_user_row.js') }}"></script>
 
 {% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p>{{ user.username }}</p>
+
+{% if user.is_admin %}
+<p>Admin</p>
+{% else %}
+<p>Individual Permissions:</p>
+<p><a href="">Save Permission Changes</a></p>
+{% endif %}
+
+
+<p><a href="">Change Password</a></p>
+<p><a href="">Delete User</a></p>
+
+
+
+
+{% endblock %}

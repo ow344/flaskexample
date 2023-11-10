@@ -35,19 +35,24 @@ def logout():
 
 ################################  Admin  ################################
 admin = Blueprint('admin', __name__)
+@admin.before_request
+@login_required
+def handle_route_permissions():
+    pass
 
 @admin.route('/admin')
-@login_required
 def home():
     return render_template('admin/self.html')
 
 @admin.route('/admin/userpermissions')
-@login_required
 def userpermissions():
     return render_template('admin/userpermissions/self.html', users=User.query.all())
 
+@admin.route('/admin/userpermissions/user/<int:user_id>')
+def userpermissions_user(user_id):
+    return render_template('admin/userpermissions/user.html', user=db.session.get(User,user_id))
+
 @admin.route('/admin/userpermissions/register', methods=['GET', 'POST'])
-@login_required
 def userpermissions_register():
     form = RegistrationForm()
     if form.validate_on_submit():
