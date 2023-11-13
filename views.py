@@ -37,9 +37,10 @@ def login():
 
 @main.route('/logout')
 def logout():
+    if not current_user.is_admin:
+        session.pop('active_school_id')
+        session.pop('active_school_name')
     logout_user()
-    session.pop('active_school_id')
-    session.pop('active_school_name')
     return redirect(url_for('main.hello_world'))
 
 ################################  Admin  ################################
