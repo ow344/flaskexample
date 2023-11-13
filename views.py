@@ -38,6 +38,8 @@ def login():
 @main.route('/logout')
 def logout():
     logout_user()
+    session.pop('active_school_id')
+    session.pop('active_school_name')
     return redirect(url_for('main.hello_world'))
 
 ################################  Admin  ################################
@@ -107,15 +109,12 @@ user = Blueprint('user', __name__)
 
 @user.before_request
 def run_code_once_per_session():
-    # if 'active_school_id' not in session and current_user.is_authenticated:
-    userschools = UserSchool.query.filter(and_(UserSchool.user_id==current_user.id, UserSchool.primary==True)).first()    
-    session['active_school_id'] = userschools.school.id
-    print(userschools.school.id)
-    print(session['active_school_id'])
-    session['active_school_name'] = userschools.school.name
-
-
-
+    if 'active_school_id' not in session and current_user.is_authenticated:
+        userschools = UserSchool.query.filter(and_(UserSchool.user_id==current_user.id, UserSchool.primary==True)).first()    
+        session['active_school_id'] = userschools.school.id
+        print(userschools.school.id)
+        print(session['active_school_id'])
+        session['active_school_name'] = userschools.school.name
 
 
 
@@ -125,6 +124,19 @@ def run_code_once_per_session():
 @login_required
 def home():
     return render_template('user/self.html')
+
+
+@user.route('/user/changeschool', methods=['GET', 'POST'])
+@login_required
+def changeschool():
+    if request.method =='POST':
+        school = db.session.get(School,int(request.form['school']))
+        session['active_school_id'] = school.id
+        session['active_school_name'] = school.name
+        return redirect(url_for('user.home'))
+    available_schools = [i.school for i in UserSchool.query.filter(UserSchool.user_id==current_user.id).all()]
+    return render_template('user/changeschool.html',available_schools=available_schools)
+
 
 ################################  Next  ################################
 
