@@ -23,3 +23,7 @@ class UserSchool(db.Model):
     finance = db.Column(db.Boolean, default=False)
     user = db.relationship('User', backref=db.backref('user_schools'))
     school = db.relationship('School', backref=db.backref('user_schools'))
+
+class Department(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
