@@ -13,6 +13,8 @@ class User(UserMixin, db.Model):
 class School(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
+    def __repr__(self):
+        return f'{self.name}'
 
 class UserSchool(db.Model):
     __tablename__ = 'user_school'
@@ -27,3 +29,32 @@ class UserSchool(db.Model):
 class Department(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
+    def __repr__(self):
+        return f'{self.name}'
+
+
+class Staff(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    firstname = db.Column(db.String(80))
+    lastname = db.Column(db.String(80))
+    dob = db.Column(db.Date)
+    gender = db.Column(db.String(20))
+    nino = db.Column(db.String(12))
+
+    school_id = db.Column(db.Integer, db.ForeignKey('school.id'))
+    school = db.relationship('School', backref='staff')
+    department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
+    department = db.relationship('Department', backref='staff')
+    role = db.Column(db.String(120))
+    salary = db.Column(db.Float())
+    pension = db.Column(db.String(12))
+    ftpt = db.Column(db.String(20))
+    weekhours = db.Column(db.Float())
+    contract = db.Column(db.String(80))
+    holiday = db.Column(db.String(80))
+    notice = db.Column(db.String(20))
+
+    startdate = db.Column(db.Date)
+
+    def __repr__(self):
+        return f'{self.firstname} {self.lastname}'
