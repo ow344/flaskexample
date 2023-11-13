@@ -150,6 +150,32 @@ def stafflist():
 
 
 
-################################  Next  ################################
+################################  Staff  ################################
+staff = Blueprint('staff', __name__)
+
+@staff.before_request
+@login_required
+def handle_route_permissions():
+    pass
+
+def check_permission(staff_id):
+    if not current_user.is_admin:
+        available_school_ids = [i.school_id for i in UserSchool.query.filter(UserSchool.user_id==current_user.id).all()]
+        staff = db.session.get(Staff,staff_id)
+        if not staff.school_id in available_school_ids:
+            flash('No Permission to view this entry', "error")
+            return False
+    return True
+            
 
 
+
+
+
+
+@staff.route('/staff/<int:staff_id>')
+def staffentry(staff_id):
+    if not check_permission(staff_id):
+        return redirect(url_for('main.hello_world'))
+    print(staff_id)
+    return render_template('staff/self.html', staff=db.session.get(Staff,staff_id))
