@@ -1,7 +1,7 @@
 from flask import Blueprint
-from models import db, User, School, UserSchool, Staff
+from models import db, User, School, UserSchool, Staff, Department
 from forms import LoginForm, RegistrationForm
-from flask import render_template, redirect, url_for, flash, session, request
+from flask import render_template, redirect, url_for, flash, session, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
 from sqlalchemy import and_
@@ -107,7 +107,6 @@ def userpermissions_register():
 ################################  User  ################################
 user = Blueprint('user', __name__)
 
-
 @user.before_request
 @login_required
 def run_code_once_per_session():
@@ -118,14 +117,9 @@ def run_code_once_per_session():
         print(session['active_school_id'])
         session['active_school_name'] = userschools.school.name
 
-
-
-
-
 @user.route('/user')
 def home():
     return render_template('user/self.html')
-
 
 @user.route('/user/changeschool', methods=['GET', 'POST'])
 def changeschool():
@@ -137,16 +131,48 @@ def changeschool():
     available_schools = [i.school for i in UserSchool.query.filter(UserSchool.user_id==current_user.id).all()]
     return render_template('user/changeschool.html',available_schools=available_schools)
 
-
-
 @user.route('/user/stafflist', methods=['GET', 'POST'])
 def stafflist():
     staff = Staff.query.filter_by(school_id=session['active_school_id']).all()
     print(staff)
     return render_template('user/stafflist/self.html', staff=staff)
 
+@user.route('/user/requestforms/<string:form>/pending', methods=['GET', 'POST'])
+def requestforms_pending(form):
+    staff = Staff.query.filter_by(school_id=session['active_school_id']).all()
+    return render_template(f'user/requestforms/{form}/pending.html', staff=staff)
+
+@user.route('/user/requestforms/variation/form', methods=['GET', 'POST'])
+def requestforms_variation_form():
+    if request.method=='POST':
+        return redirect(url_for('user.requestforms_variation_form2', staff_id=request.form['employee']))
+    return render_template('user/requestforms/variation/form.html')
 
 
+@user.route('/user/requestforms/variation/form/<int:staff_id>', methods=['GET', 'POST'])
+def requestforms_variation_form2(staff_id):
+    if not check_permission(staff_id):
+        return redirect(url_for('user.requestforms_pending', form='variation'))
+    staff = db.session.get(Staff,staff_id)
+    if request.method == 'POST':
+        flash("Varition to Contract request submitted", "success")
+        return redirect(url_for('user.requestforms_pending', form='variation'))
+    return render_template('user/requestforms/variation/form2.html', staff=staff, departments=Department.query.all())
+
+
+
+
+
+
+
+@user.route('/update_text', methods=['POST'])
+def update_text():
+    text = request.get_json().get('text')
+    school = session['active_school_id']
+    # Process the received text (you can perform any logic here)
+    results = Staff.query.filter(and_(Staff.school_id == school, Staff.firstname.like(f"%{text}%"))).all()
+    staff_list = [{'id': member.id, 'firstname': str(member.firstname + " " + member.lastname)} for member in results]
+    return jsonify(staff_list)
 
 
 

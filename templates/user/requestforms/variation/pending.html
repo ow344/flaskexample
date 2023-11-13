@@ -1,0 +1,30 @@
+{% extends "user/base-user.html" %}
+{% block schoolcontent %}
+
+<a href="{{ url_for('user.requestforms_variation_form') }}">New Request</a>
+
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+
+
+<h3>Pending Requests</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Staff Member</th>
+            <th>Date of Request</th>
+            <th>Status</th>
+            <th>Requester</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in staff %}
+            <tr data-entry-id="{{ item.id }}">
+                <td>{{ item.firstname }} {{ item.lastname }}</td>
+                <td>0000-00-00</td>
+                <td style="background-color: yellow;">Pending</td>
+                <td>{{ current_user.username }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

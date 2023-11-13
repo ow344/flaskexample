@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<div class="container">
+
+
+<h1>Request Variation to Contract</h1>
+<form method="post">
+
+<div class="form-group">
+    <label>Begin typing first name of relevant employee</label>
+    <input type="text" id="textInput" oninput="sendToServer()" class="form-control">
+</div>
+<div class="form-group">
+    <label>Select Employee</label>
+    <select name="employee" id="staffDropdown" class="form-control"></select>
+</div>
+        
+<input type="submit" value="Continue with Selected Employee">
+</form>  
+</div>
+
+
+
+
+<script>
+    function sendToServer() {
+        var inputText = document.getElementById('textInput').value;
+        $.ajax({
+            type: 'POST',
+            url: '/update_text',
+            contentType: 'application/json',
+            data: JSON.stringify({ text: inputText  }),
+            success: function(data) {
+                    var dropdown = $('#staffDropdown');
+                    dropdown.empty();
+                    data.forEach(function(staff) {
+                        dropdown.append($('<option></option>').attr('value', staff.id).text(staff.firstname));
+                    });
+                },
+      
+
+
+
+
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+</script>
+
+
+{% endblock %}

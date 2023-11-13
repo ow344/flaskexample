@@ -1,0 +1,30 @@
+{% extends "user/base-user.html" %}
+{% block schoolcontent %}
+
+<a href="#">New Request</a>
+<h3>Pending Requests</h3>
+<table>
+    <thead>
+        <tr>
+            <!-- <th>ID</th> -->
+            <th>First Name</th>
+            <th>Last Name</th>
+            <!-- <th>School</th> -->
+            <th>Department</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in staff %}
+            <tr data-entry-id="{{ item.id }}">
+                <!-- <td>{{ item.id }}</td> -->
+                <td>{{ item.firstname }}</td>
+                <td>{{ item.lastname }}</td>
+                <!-- <td>{{ item.school.name }}</td> -->
+                <td>{{ item.department }}</td>
+                <td>{{ item.role }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
