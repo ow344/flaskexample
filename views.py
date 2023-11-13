@@ -1,5 +1,5 @@
 from flask import Blueprint
-from models import db, User, School, UserSchool
+from models import db, User, School, UserSchool, Staff
 from forms import LoginForm, RegistrationForm
 from flask import render_template, redirect, url_for, flash, session, request
 from flask_login import login_user, logout_user, login_required, current_user
@@ -109,6 +109,7 @@ user = Blueprint('user', __name__)
 
 
 @user.before_request
+@login_required
 def run_code_once_per_session():
     if 'active_school_id' not in session and current_user.is_authenticated:
         userschools = UserSchool.query.filter(and_(UserSchool.user_id==current_user.id, UserSchool.primary==True)).first()    
@@ -122,13 +123,11 @@ def run_code_once_per_session():
 
 
 @user.route('/user')
-@login_required
 def home():
     return render_template('user/self.html')
 
 
 @user.route('/user/changeschool', methods=['GET', 'POST'])
-@login_required
 def changeschool():
     if request.method =='POST':
         school = db.session.get(School,int(request.form['school']))
@@ -137,6 +136,18 @@ def changeschool():
         return redirect(url_for('user.home'))
     available_schools = [i.school for i in UserSchool.query.filter(UserSchool.user_id==current_user.id).all()]
     return render_template('user/changeschool.html',available_schools=available_schools)
+
+
+
+@user.route('/user/stafflist', methods=['GET', 'POST'])
+def stafflist():
+    staff = Staff.query.filter_by(school_id=session['active_school_id']).all()
+    print(staff)
+    return render_template('user/stafflist/self.html', staff=staff)
+
+
+
+
 
 
 ################################  Next  ################################

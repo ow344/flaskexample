@@ -1,0 +1,38 @@
+{% extends "user/base-user.html" %}
+{% block schoolcontent %}
+
+<!-- <h1>Items</h1> -->
+<!-- <form action="/indi/search" method="get" style="padding-top: 10px;">
+    <input type="text" name="query" placeholder="Search Name..." style="width: 25%;">
+    <button type="submit">Search</button>
+</form> -->
+<table>
+    <thead>
+        <tr>
+            <!-- <th>ID</th> -->
+            <th>First Name</th>
+            <th>Last Name</th>
+            <!-- <th>School</th> -->
+            <th>Department</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in staff %}
+            <tr data-entry-id="{{ item.id }}">
+                <!-- <td>{{ item.id }}</td> -->
+                <td>{{ item.firstname }}</td>
+                <td>{{ item.lastname }}</td>
+                <!-- <td>{{ item.school.name }}</td> -->
+                <td>{{ item.department }}</td>
+                <td>{{ item.role }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}
+
+
+
+
