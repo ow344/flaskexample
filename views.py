@@ -54,6 +54,46 @@ def handle_route_permissions():
 def home():
     return render_template('admin/self.html')
 
+@admin.route('/admin/reviewrequests/variation')
+def reviewrequests_variation():
+    variations = Variation.query.all()
+    return render_template('admin/reviewrequests/variation/self.html',variations=variations)
+
+
+@admin.route('/admin/reviewrequests/variation/entry/<int:variation_id>', methods=['GET','POST'])
+def reviewrequests_variation_entry(variation_id):
+    variation = db.session.get(Variation,variation_id)
+    staff = variation.staff
+    if request.method=='POST':
+        if request.form['decision'] == 'Approve':
+            attributes_to_copy = ['department_id','role','salary','pension','ftpt','weekhours','contract','holiday','notice']
+            for attr in attributes_to_copy:             
+                if not getattr(staff, attr) == getattr(variation, attr):
+                    setattr(staff, attr, getattr(variation, attr))
+            flash('Successfuly Approved', 'success')
+        else:
+            flash('Successfuly Denied', 'success')
+        db.session.delete(variation)
+        db.session.commit()
+        return redirect(url_for('admin.reviewrequests_variation'))
+
+ 
+  
+
+    
+    return render_template('admin/reviewrequests/variation/entry.html',variation=variation, staff=staff)
+
+
+
+
+
+
+
+
+
+
+
+
 @admin.route('/admin/userpermissions')
 def userpermissions():
     return render_template('admin/userpermissions/self.html', users=User.query.all())
@@ -88,7 +128,6 @@ def userpermissions_user(user_id):
     basic = [i.school_id for i in UserSchool.query.filter_by(user_id=user.id).all()]
     finance = [i.school_id for i in UserSchool.query.filter_by(user_id=user.id, finance=True).all()]
     return render_template('admin/userpermissions/user.html', user=user, schools=schools, primary=primary, basic=basic, finance=finance)
-
 
 
 @admin.route('/admin/userpermissions/register', methods=['GET', 'POST'])

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+
+<h2>Variation to Contract Requests</h2>
+<table>
+    <tr>
+        <th>Staff Name</th>
+        <th>School</th>
+        <th>Request Date</th>
+        <th>Requester</th>
+    </tr>
+    {% for variation in variations %}
+    <tr data-entry-id="{{ variation.id }}">
+
+        <td>{{ variation.staff }}</td>
+        <td>{{ variation.staff.school }}</td>
+        <td>{{ variation.request_date }}</td>
+        <td>{{ variation.user }}</td>
+    </tr>    
+    {% endfor %}
+</table>
+
+<script>
+// Add an event listener to table rows
+document.addEventListener('DOMContentLoaded', function() {
+    var tableRows = document.querySelectorAll('table tr');
+    tableRows.forEach(function(row) {
+        row.addEventListener('click', function() {
+            var entryId = this.getAttribute('data-entry-id');
+            if (entryId) {
+                window.location.href = '/admin/reviewrequests/variation/entry/' + entryId;
+            }
+        });
+    });
+});
+</script>
+
+
+{% endblock %}

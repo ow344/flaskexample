@@ -35,10 +35,10 @@ class RegistrationForm(FlaskForm):
 class VariationForm(FlaskForm):
     department_id = SelectField("Department", coerce=int)
     role =  StringField('Role Title')
-    salary = FloatField('Salary', widget=NumberInput())
+    salary = FloatField('Salary', widget=NumberInput(), render_kw={"step": "0.01"})
     pension = SelectField('Pension')
     ftpt = SelectField('Full/Part Time')
-    weekhours = FloatField('Hours per week', widget=NumberInput())
+    weekhours = FloatField('Hours per week', widget=NumberInput(), render_kw={"step": "0.25"})
     contract = SelectField('Contract')
     holiday = StringField('Holiday')
     notice = StringField('Notice')
