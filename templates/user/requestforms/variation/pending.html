@@ -17,12 +17,12 @@
         </tr>
     </thead>
     <tbody>
-        {% for item in staff %}
+        {% for item in variations %}
             <tr data-entry-id="{{ item.id }}">
-                <td>{{ item.firstname }} {{ item.lastname }}</td>
-                <td>0000-00-00</td>
+                <td>{{ item.staff.firstname }} {{ item.staff.lastname }}</td>
+                <td>{{ item.request_date }}</td>
                 <td style="background-color: yellow;">Pending</td>
-                <td>{{ current_user.username }}</td>
+                <td>{{ item.user.username }}</td>
             </tr>
         {% endfor %}
     </tbody>

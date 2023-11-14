@@ -1,5 +1,5 @@
 from flask import Blueprint
-from models import db, User, School, UserSchool, Staff, Department
+from models import db, User, School, UserSchool, Staff, Department, Variation
 from forms import LoginForm, RegistrationForm, VariationForm
 from flask import render_template, redirect, url_for, flash, session, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
@@ -139,8 +139,8 @@ def stafflist():
 
 @user.route('/user/requestforms/<string:form>/pending', methods=['GET', 'POST'])
 def requestforms_pending(form):
-    staff = Staff.query.filter_by(school_id=session['active_school_id']).all()
-    return render_template(f'user/requestforms/{form}/pending.html', staff=staff)
+    variations = Variation.query.join(Staff).filter(Staff.school_id == session['active_school_id']).all()
+    return render_template(f'user/requestforms/{form}/pending.html', variations=variations)
 
 @user.route('/user/requestforms/variation/form', methods=['GET', 'POST'])
 def requestforms_variation_form():
@@ -157,7 +157,15 @@ def requestforms_variation_form2(staff_id):
     staff = db.session.get(Staff,staff_id)
     form = VariationForm(obj=staff)
 
-    if request.method == 'POST':
+    if form.validate_on_submit():
+        new_variation = Variation()
+        form.populate_obj(new_variation)
+        new_variation.staff_id = int(staff_id)
+        new_variation.user_id = current_user.id
+        db.session.add(new_variation)
+        db.session.commit()
+   
+
         flash("Varition to Contract request submitted", "success")
         return redirect(url_for('user.requestforms_pending', form='variation'))
     

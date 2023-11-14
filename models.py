@@ -2,6 +2,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 db = SQLAlchemy()
 
+from datetime import date 
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -58,3 +60,30 @@ class Staff(db.Model):
 
     def __repr__(self):
         return f'{self.firstname} {self.lastname}'
+
+
+class Variation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    request_date = db.Column(db.Date, default=date.today)
+
+    staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'))
+    staff = db.relationship('Staff', backref='variation')
+
+    department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
+    department = db.relationship('Department', backref='variation')
+    role = db.Column(db.String(120))
+    salary = db.Column(db.Float())
+    pension = db.Column(db.String(12))
+    ftpt = db.Column(db.String(20))
+    weekhours = db.Column(db.Float())
+    contract = db.Column(db.String(80))
+    holiday = db.Column(db.String(80))
+    notice = db.Column(db.String(20))
+
+    justification = db.Column(db.Text)
+    budgeted = db.Column(db.Boolean, default=False)
+    effect_date = db.Column(db.Date)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='variation')
+
+
