@@ -2,132 +2,93 @@
 
 {% block content %}
 
-
-<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
 <link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+
 
 <style>
-    table{
+
+table{
         width: 90%;
     }
-    .wider{
-        width:50%
+
+td input{
+        width:90%
     }
+
 </style>
 
 
-<div class="container">
-
-<h1>Request Variation to Contract</h1>
-<h2>{{ staff }}</h2>
-<h3>{{ staff.school.name }}</h3>
+<div class="container" style="padding: 10px;">
+<h1 style="margin-block-start: 0;">Request Variation to Contract</h1>
 <h4>Date of Request: <output id="currentDate"></output> </h4>
+<h3>{{ staff.school }}</h3>
+<h2>{{ staff }}</h2>
+
 
 <form method="post">
+    <td>{{ form.hidden_tag() }}</td>
 <table>
-<tr><th></th>
-<th>Current</th>
-<th>Requested</th></tr>
 <tr>
-    <td>Department</td>
-    <td>{{staff.department}}</td>
-    <td><select name="department">
-    {% for department in departments %}
-        <option value="{{department.id}}" {% if staff.department_id == department.id %} selected {% endif %}>{{department.name}}</option>
-    {% endfor %}
-    </select></td>
-</tr>
-<tr>
-    <td>Role Title</td>
-    <td>{{staff.role}}</td>
-    <td><input class="wider" type="text" placeholder="{{staff.role}}" value="{{staff.role}}"></td>
-</tr>
-<tr>
-    <td>Salary</td>
-    <td>{{staff.salary}}</td>
-    <td><input class="wider" type="number" step="0.01" placeholder="{{staff.salary}}" value="{{staff.salary}}"></td>
-</tr>
-<tr>
-    <td>Pension</td>
-    <td>{{staff.pension}}</td>
-    <td><select name="pension">
-        <option value="PEN0" {% if staff.pension == 'PEN0' %} selected {% endif %}>PEN0</option>
-        <option value="PEN3" {% if staff.pension == 'PEN3' %} selected {% endif %}>PEN3</option>
-        <option value="PEN5" {% if staff.pension == 'PEN5' %} selected {% endif %}>PEN5</option>
-    </select></td>
-</tr>
-<tr>
-    <td>Full/Part Time</td>
-    <td>{{staff.ftpt}}</td>
-    <td><select name="ftpt">
-        <option value="Full Time" {% if staff.ftpt == 'Full Time' %} selected {% endif %}>Full Time</option>
-        <option value="Part Time" {% if staff.ftpt == 'Part Time' %} selected {% endif %}>Part Time</option>
-    </select></td>
-</tr>
-<tr>
-    <td>Hours/Week</td>
-    <td>{{staff.weekhours}}</td>
-    <td><input class="wider" type="number" step="0.25" placeholder="{{staff.weekhours}}" value="{{staff.weekhours}}"></td>
+    <th></th>
+    <th>Current</th>
+    <th>Request</th>
 
+</tr><tr>
+    <td>{{ form.department_id.label }}</td>
+    <td>{{ staff.department.name }}</td>
+    <td>{{ form.department_id }}</td>
+</tr><tr>
+    <td>{{ form.role.label }}</td>
+    <td>{{ staff.role }}</td>
+    <td>{{ form.role }}</td>
+</tr><tr>
+    <td>{{ form.salary.label }}</td>
+    <td>{{ staff.salary }}</td>
+    <td>{{ form.salary }}</td>
+</tr><tr>
+    <td>{{ form.pension.label }}</td>
+    <td>{{ staff.pension }}</td>
+    <td>{{ form.pension }}</td>
+</tr><tr>
+    <td>{{ form.ftpt.label }}</td>
+    <td>{{ staff.ftpt }}</td>
+    <td>{{ form.ftpt }}</td>
+</tr><tr>
+    <td>{{ form.weekhours.label }}</td>
+    <td>{{ staff.weekhours }}</td>
+    <td>{{ form.weekhours }}</td>
+</tr><tr>
+    <td>{{ form.contract.label }}</td>
+    <td>{{ staff.contract }}</td>
+    <td>{{ form.contract }}</td>
+</tr><tr>
+    <td>{{ form.holiday.label }}</td>
+    <td>{{ staff.holiday }}</td>
+    <td>{{ form.holiday }}</td>
+</tr><tr>
+    <td>{{ form.notice.label }}</td>
+    <td>{{ staff.notice }}</td>
+    <td>{{ form.notice }}</td>
 </tr>
-<tr>
-    <td>Contract</td>
-    <td>{{staff.contract}}</td>
-    <td><select name="contract">
-        <option value="Term Time" {% if staff.contract == 'Term Time' %} selected {% endif %}>Term Time</option>
-        <option value="All Year Round" {% if staff.contract == 'All Year Round' %} selected {% endif %}>All Year Round</option>
-    </select></td>
-</tr>
-<tr>
-    <td>Holiday</td>
-    <td>{{staff.holiday}}</td>
-    <td><input class="wider" type="text" placeholder="{{staff.holiday}}" value="{{staff.holiday}}"></td>
-
-</tr>
-<tr>
-    <td>Notice</td>
-    <td>{{staff.notice}}</td>
-    <td><input class="wider" type="text" placeholder="{{staff.notice}}" value="{{staff.notice}}"></td>
-</tr>
-
-
-
 </table>
-
-<h3>Further Details</h3>
-
-
-
+<p>If Variation is outside the realm of the attrributes above, please contact Alpha Central Support <a href="mailto:example@example.com?subject=Variation%20Request&body=Dear%20Human Resource Team,%0A%0A">here</a></p>
 
 <div class="form-group">
-    <label for="textarea_input" class="form-control-label">Justification</label>
-    <textarea id="multiLineText" name="textarea_input" rows="2" cols="50" placeholder="Type here..." class="form-control"></textarea>
+    {{ form.justification.label(class="form-control-label") }}
+    {{ form.justification(class="form-control") }}
 </div>
 
-
-<div class="form-group">
-    <label for="budget" class="form-control-label">Budgetted?</label>
-    <input type="checkbox" name="budget" class="form-control">
-</div>
-
-<div class="form-group">
-    <label for="date" class="form-control-label">Date to go into effect</label>
-    <input type="date" name="date" class="form-control">
-</div>
-
-
-
-<div class="form-group">
-    Requester
-<div class="form-control form-fixed">{{current_user.username}}</div>
-</div>
-
-
-
-
-<p><input type="submit" value="Submit Request"></p>
+    {{ form.budgeted.label }}
+    {{ form.budgeted }}
+    <br>
+    {{ form.effect_date.label }}
+    {{ form.effect_date }}
+    <br>
+    {{ form.submit }}
 </form>
 </div>
+
 
 <script>
     var today = new Date();

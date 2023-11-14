@@ -1,6 +1,6 @@
 from flask import Blueprint
 from models import db, User, School, UserSchool, Staff, Department
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationForm, VariationForm
 from flask import render_template, redirect, url_for, flash, session, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
@@ -153,15 +153,27 @@ def requestforms_variation_form():
 def requestforms_variation_form2(staff_id):
     if not check_permission(staff_id):
         return redirect(url_for('user.requestforms_pending', form='variation'))
+    
+    staff = db.session.get(Staff,staff_id)
+    form = VariationForm(obj=staff)
+
+    if request.method == 'POST':
+        flash("Varition to Contract request submitted", "success")
+        return redirect(url_for('user.requestforms_pending', form='variation'))
+    
+    return render_template('user/requestforms/variation/form2.html', staff=staff, form=form)
+
+
+
+@user.route('/user/requestforms/variation/altform/<int:staff_id>', methods=['GET', 'POST'])
+def requestforms_variation_altform2(staff_id):
+    if not check_permission(staff_id):
+        return redirect(url_for('user.requestforms_pending', form='variation'))
     staff = db.session.get(Staff,staff_id)
     if request.method == 'POST':
         flash("Varition to Contract request submitted", "success")
         return redirect(url_for('user.requestforms_pending', form='variation'))
-    return render_template('user/requestforms/variation/form2.html', staff=staff, departments=Department.query.all())
-
-
-
-
+    return render_template('user/requestforms/variation/altform2.html', staff=staff, departments=Department.query.all())
 
 
 
