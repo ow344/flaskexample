@@ -58,7 +58,6 @@ def reviewrequests_variation():
     variations = Variation.query.all()
     return render_template('admin/reviewrequests/variation/self.html',variations=variations)
 
-
 @admin.route('/admin/reviewrequests/variation/entry/<int:variation_id>', methods=['GET','POST'])
 def reviewrequests_variation_entry(variation_id):
     variation = db.session.get(Variation,variation_id)
@@ -75,28 +74,12 @@ def reviewrequests_variation_entry(variation_id):
         db.session.delete(variation)
         db.session.commit()
         return redirect(url_for('admin.reviewrequests_variation'))
-
  
-  
-
-    
     return render_template('admin/reviewrequests/variation/entry.html',variation=variation, staff=staff)
-
-
-
-
-
-
-
-
-
-
-
 
 @admin.route('/admin/userpermissions')
 def userpermissions():
     return render_template('admin/userpermissions/self.html', users=User.query.all())
-
 
 @admin.route('/admin/userpermissions/user/<int:user_id>', methods=['GET', 'POST'])
 def userpermissions_user(user_id):
@@ -127,7 +110,6 @@ def userpermissions_user(user_id):
     basic = [i.school_id for i in UserSchool.query.filter_by(user_id=user.id).all()]
     finance = [i.school_id for i in UserSchool.query.filter_by(user_id=user.id, finance=True).all()]
     return render_template('admin/userpermissions/user.html', user=user, schools=schools, primary=primary, basic=basic, finance=finance)
-
 
 @admin.route('/admin/userpermissions/register', methods=['GET', 'POST'])
 def userpermissions_register():
@@ -175,17 +157,24 @@ def stafflist():
     print(staff)
     return render_template('user/stafflist/self.html', staff=staff)
 
-@user.route('/user/requestforms/<string:form>/pending', methods=['GET', 'POST'])
-def requestforms_pending(form):
+@user.route('/user/stafflist/staff/<int:staff_id>')
+def stafflist_staff(staff_id):
+    if not check_permission(staff_id):
+        return redirect(url_for('user.stafflist'))
+    
+    staff = db.session.get(Staff,staff_id)
+    return render_template('user/stafflist/staff/self.html', staff=staff)
+
+@user.route('/user/requestforms/variation/pending', methods=['GET', 'POST'])
+def requestforms_variation_pending():
     variations = Variation.query.join(Staff).filter(Staff.school_id == session['active_school_id']).all()
-    return render_template(f'user/requestforms/{form}/pending.html', variations=variations)
+    return render_template(f'user/requestforms/variation/pending.html', variations=variations)
 
 @user.route('/user/requestforms/variation/form', methods=['GET', 'POST'])
 def requestforms_variation_form():
     if request.method=='POST':
         return redirect(url_for('user.requestforms_variation_form2', staff_id=request.form['employee']))
     return render_template('user/requestforms/variation/form.html')
-
 
 @user.route('/user/requestforms/variation/form/<int:staff_id>', methods=['GET', 'POST'])
 def requestforms_variation_form2(staff_id):
@@ -209,46 +198,15 @@ def requestforms_variation_form2(staff_id):
     
     return render_template('user/requestforms/variation/form2.html', staff=staff, form=form)
 
-
-
-@user.route('/user/requestforms/variation/altform/<int:staff_id>', methods=['GET', 'POST'])
-def requestforms_variation_altform2(staff_id):
-    if not check_permission(staff_id):
-        return redirect(url_for('user.requestforms_pending', form='variation'))
-    staff = db.session.get(Staff,staff_id)
-    if request.method == 'POST':
-        flash("Varition to Contract request submitted", "success")
-        return redirect(url_for('user.requestforms_pending', form='variation'))
-    return render_template('user/requestforms/variation/altform2.html', staff=staff, departments=Department.query.all())
-
-
-
 @user.route('/update_text', methods=['POST'])
 def update_text():
     text = request.get_json().get('text')
     school = session['active_school_id']
-    # Process the received text (you can perform any logic here)
     results = Staff.query.filter(and_(Staff.school_id == school, Staff.firstname.like(f"%{text}%"))).all()
     staff_list = [{'id': member.id, 'firstname': str(member.firstname + " " + member.lastname)} for member in results]
     return jsonify(staff_list)
 
-
-
-
-
-
-@user.route('/user/stafflist/staff/<int:staff_id>')
-def staffentry(staff_id):
-    if not check_permission(staff_id):
-        return redirect(url_for('user.stafflist'))
-    
-    staff = db.session.get(Staff,staff_id)
-    return render_template('user/stafflist/staff/self.html', staff=staff)
-
-
-
 ################################  Functions  ################################
-
 
 def check_permission(staff_id):
     staff = db.session.get(Staff,staff_id)
