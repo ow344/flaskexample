@@ -1,6 +1,6 @@
 from flask import Blueprint
 from models import db, User, School, UserSchool, Staff, Department, Variation
-from forms import LoginForm, RegistrationForm, VariationForm
+from forms import LoginForm, RegistrationForm, VariationForm, StaffForm
 from flask import render_template, redirect, url_for, flash, session, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
@@ -115,14 +115,33 @@ def userpermissions_user(user_id):
 def userpermissions_register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        hash = generate_password_hash(form.password.data)
-        newU = User(username=form.username.data, hashed_password=hash, is_admin = form.is_admin.data)
+        newU = User()
+        form.populate_obj(newU)
+        newU.hashed_password = generate_password_hash(form.password.data)
         db.session.add(newU)
         db.session.commit()
         flash("Register successful, new user created", "success")
         return redirect(url_for('admin.userpermissions'))
 
     return render_template('admin/userpermissions/register.html', form=form)
+
+@admin.route('/admin/stafflist', methods=['GET', 'POST'])
+def stafflist():
+    staff = Staff.query.all()
+    return render_template('admin/stafflist/self.html', staff=staff)
+
+@admin.route('/admin/stafflist/staff/<int:staff_id>')
+def stafflist_staff(staff_id):
+    staff = db.session.get(Staff,staff_id)
+    return render_template('admin/stafflist/staff/self.html', staff=staff)
+
+@admin.route('/admin/stafflist/staff/edit/<int:staff_id>')
+def stafflist_staff_edit(staff_id):
+    staff = db.session.get(Staff,staff_id)
+    form = StaffForm(obj=staff)
+    return render_template('admin/stafflist/staff/edit.html', staff=staff, form=form)
+
+
 
 ################################  User  ################################
 user = Blueprint('user', __name__)
@@ -154,7 +173,6 @@ def changeschool():
 @user.route('/user/stafflist', methods=['GET', 'POST'])
 def stafflist():
     staff = Staff.query.filter_by(school_id=session['active_school_id']).all()
-    print(staff)
     return render_template('user/stafflist/self.html', staff=staff)
 
 @user.route('/user/stafflist/staff/<int:staff_id>')

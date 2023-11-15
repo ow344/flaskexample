@@ -3,7 +3,7 @@
 
 <h2>Hello {{current_user.username}}</h2>
 <p><a href="#">Group Overview</a></p>
-<p><a href="#">Find Someone</a></p>
+<p><a href="{{ url_for('admin.stafflist') }}">Find Someone</a></p>
 <p>Review Requests</p>
 <ul>
     <li><a href="#">Request to Recruits</a></li>

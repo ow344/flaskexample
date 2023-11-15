@@ -57,3 +57,32 @@ class VariationForm(FlaskForm):
         self.pension.choices = ['PEN0','PEN3','PEN5','PEN7']
         self.ftpt.choices = ['Full Time','Part Time']
         self.contract.choices = ['Term Time','Term Time + 4 Weeks','Term Time + 6 Weeks','All Year Round']
+
+class StaffForm(FlaskForm):
+    firstname = StringField('First Name')
+    lastname = StringField('Last Name')
+    dob = DateField('Date of birth')
+    gender = StringField('Gender')
+    nino = StringField('National Insurance Number')
+    school_id = SelectField("School", coerce=int)
+
+    startdate = DateField('Start Date')
+
+    department_id = SelectField("Department", coerce=int)
+    role =  StringField('Role Title')
+    salary = FloatField('Salary', widget=NumberInput(), render_kw={"step": "0.01"})
+    pension = SelectField('Pension')
+    ftpt = SelectField('Full/Part Time')
+    weekhours = FloatField('Hours per week', widget=NumberInput(), render_kw={"step": "0.25"})
+    contract = SelectField('Contract')
+    holiday = StringField('Holiday')
+    notice = StringField('Notice')
+    submit = SubmitField('Submit')
+
+    def __init__(self, *args, **kwargs):
+        super(StaffForm, self).__init__(*args, **kwargs)
+        departments = Department.query.all()
+        self.department_id.choices = [(department.id, department.name) for department in departments]
+        self.pension.choices = ['PEN0','PEN3','PEN5','PEN7']
+        self.ftpt.choices = ['Full Time','Part Time']
+        self.contract.choices = ['Term Time','Term Time + 4 Weeks','Term Time + 6 Weeks','All Year Round']

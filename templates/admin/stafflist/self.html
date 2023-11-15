@@ -1,0 +1,53 @@
+{% extends "user/base-user.html" %}
+{% block schoolcontent %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+
+<!-- <h1>Items</h1> -->
+<!-- <form action="/indi/search" method="get" style="padding-top: 10px;">
+    <input type="text" name="query" placeholder="Search Name..." style="width: 25%;">
+    <button type="submit">Search</button>
+</form> -->
+<table>
+    <thead>
+        <tr>
+            <!-- <th>ID</th> -->
+            <th>First Name</th>
+            <th>Last Name</th>
+            <!-- <th>School</th> -->
+            <th>Department</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in staff %}
+            <tr data-entry-id="{{ item.id }}">
+                <!-- <td>{{ item.id }}</td> -->
+                <td>{{ item.firstname }}</td>
+                <td>{{ item.lastname }}</td>
+                <!-- <td>{{ item.school.name }}</td> -->
+                <td>{{ item.department }}</td>
+                <td>{{ item.role }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var tableRows = document.querySelectorAll('table tr');
+    tableRows.forEach(function(row) {
+        row.addEventListener('click', function() {
+            var entryId = this.getAttribute('data-entry-id');
+            if (entryId) {
+                window.location.href = '/admin/stafflist/staff/' + entryId;
+            }
+        });
+    });
+});
+
+</script>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    /* Style for tabs */
+.tab {
+    overflow: hidden;
+    background-color: #f1f1f1;
+    border: 2px solid #ccc;
+    border-bottom: 0px solid #ccc;
+
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: 0.3s;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style for tab content */
+.tabcontent {
+    display: none;
+    padding: 15px;
+    padding-top: 10px;
+    border: 2px solid #ccc;
+}
+
+.tabcontent h3 {
+    margin-top: 0;
+}
+
+</style>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+
+
+
+<h2>{{staff.firstname}} {{staff.lastname}}</h2>
+<div class="tab-container">
+    <div class="tab">
+        <button id="defaultOpen" class="tablinks" onclick="openTab(event, 'tab1')">Basic</button>
+        <button class="tablinks" onclick="openTab(event, 'tab2')">Personal</button>
+        <!-- <button class="tablinks" onclick="openTab(event, 'tab3')">Checks</button> -->
+        <button class="tablinks" onclick="openTab(event, 'tab4')">Contract</button>
+        <button class="tablinks" onclick="openTab(event, 'tab5')">Financial</button>
+        <!-- Add more buttons for additional tabs -->
+    </div>
+
+    <div id="tab1" class="tabcontent">
+        <!-- Content for Tab 1 -->
+        <table>
+            <tr><td>First Name</td><td>{{ staff.firstname }}</td></tr>
+            <tr><td>Last Name</td><td>{{ staff.lastname }}</td></tr>
+            <tr><td>School</td><td>{{ staff.school.name }}</td></tr>
+            <tr><td>Department</td><td>{{ staff.department }}</td></tr>
+            <tr><td>Role</td><td>{{ staff.role }}</td></tr>
+        </table>
+    </div>
+
+    <div id="tab2" class="tabcontent" style="display: none;">
+        <!-- Content for Tab 2 (Initially hidden with 'display: none') -->
+        <table>
+            <tr><td>Date of Birth</td><td>{{ staff.dob }}</td></tr>
+            <tr><td>Gender</td><td>{{ staff.gender }}</td></tr>
+            <tr><td>Marital Status</td><td> - </td></tr>
+            <tr><td>Postcode</td><td> - </td></tr>
+            <tr><td>Home Address</td><td> - </td></tr>
+            <tr><td>Personal Email</td><td> - </td></tr>
+         
+        </table>
+    </div>
+<!-- 
+    <div id="tab3" class="tabcontent" style="display: none;">
+        <table>
+            <tr><th>Type</th><th>Completed</th><th>Completed by</th><th>Date Completed</th></tr>
+            <tr><td>Identity</td><td>&#10004;</td><td> - </td><td> - </td></tr>
+            <tr><td>Qualifications</td><td>&#10006;</td><td> - </td><td> - </td></tr>
+            <tr><td>Prohibition from Management</td><td> - </td><td> - </td><td> - </td></tr>
+            <tr><td>Prohibition from Teaching</td><td> - </td><td> - </td><td> - </td></tr>
+            <tr><td>DBS Check</td><td> - </td><td> - </td><td> - </td></tr>
+            <tr><td>DBS Barred List</td><td> - </td><td> - </td><td> - </td></tr>
+            <tr><td>Childcare Disqualification</td><td> - </td><td> - </td><td> - </td></tr>
+            <tr><td>EEA/ Overseas</td><td> - </td><td> - </td><td> - </td></tr>
+            <tr><td>Right to Work in UK</td><td> - </td><td> - </td><td> - </td></tr>
+            <tr><td>References</td><td> - </td><td> - </td><td> - </td></tr>
+            <tr><td>Employment History</td><td> - </td><td> - </td><td> - </td></tr>
+            <tr><td>Medical</td><td> - </td><td> - </td><td> - </td></tr>
+        </table>
+    </div> -->
+    <div id="tab4" class="tabcontent" style="display: none;">
+        <!-- Content for Tab 2 (Initially hidden with 'display: none') -->
+        <table>
+            <tr><td>Start Date</td><td>{{ staff.startdate }}</td></tr>
+            <tr><td>Full/Part Time</td><td>{{ staff.ftpt }}</td></tr>
+            <tr><td>Hours per Week</td><td>{{ staff.weekhours }}</td></tr>
+            <tr><td>Year Round or Term Time</td><td>{{ staff.contract }}</td></tr>
+            <tr><td>Holiday Entitlement</td><td>{{ staff.holiday }}</td></tr>
+            <tr><td>Notice Period</td><td>{{ staff.notice }}</td></tr>
+        </table>
+    </div>
+    <div id="tab5" class="tabcontent" style="display: none;">
+        <!-- Content for Tab 2 (Initially hidden with 'display: none') -->
+        <table>
+            <tr><td>Salary</td><td>{{ staff.salary }}</td></tr>
+            <tr><td>National Insurance Number</td><td>{{ staff.nino }}</td></tr>
+            <tr><td>National Insurance Category</Inp></td><td> - </td></tr>
+            <tr><td>Tax Code</Inp></td><td> - </td></tr>
+            <tr><td>Pension Scheme</td><td>{{ staff.pension }}</td></tr>
+            <tr><td>Contribution Rates (EE/ER)</td><td>{{ staff.pension }}</td></tr>
+        </table>
+    </div>
+
+
+    <!-- Add more divs for additional tab contents -->
+</div>
+
+
+
+
+
+
+
+<script>
+    function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// To show a default tab on page load
+document.getElementById("defaultOpen").click();
+
+</script>
+
+<a href="{{ url_for('admin.stafflist_staff_edit', staff_id=staff.id) }}">Edit</a>
+
+{% endblock %}
