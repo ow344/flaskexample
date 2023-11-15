@@ -10,15 +10,14 @@ from sqlalchemy import and_
 main = Blueprint('main', __name__)
 
 @main.route('/')
-def hello_world():
+def index():
     if current_user.is_authenticated:
         if current_user.is_admin:
             home = url_for('admin.home')
         else:
             home = url_for('user.home')
         return redirect(home)
-
-    return render_template('welcome.html')
+    return redirect(url_for('main.login'))
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
@@ -41,7 +40,7 @@ def logout():
         session.pop('active_school_id')
         session.pop('active_school_name')
     logout_user()
-    return redirect(url_for('main.hello_world'))
+    return redirect(url_for('main.index'))
 
 ################################  Admin  ################################
 admin = Blueprint('admin', __name__)
@@ -261,6 +260,6 @@ def check_permission(staff_id):
 @staff.route('/staff/<int:staff_id>')
 def staffentry(staff_id):
     if not check_permission(staff_id):
-        return redirect(url_for('main.hello_world'))
+        return redirect(url_for('main.index'))
     print(staff_id)
     return render_template('staff/self.html', staff=db.session.get(Staff,staff_id))
