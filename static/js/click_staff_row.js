@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         row.addEventListener('click', function() {
             var entryId = this.getAttribute('data-entry-id');
             if (entryId) {
-                window.location.href = '/staff/' + entryId;
+                window.location.href = '/user/stafflist/staff/' + entryId;
             }
         });
     });
