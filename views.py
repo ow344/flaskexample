@@ -243,7 +243,7 @@ def staffentry(staff_id):
         return redirect(url_for('user.stafflist'))
     
     staff = db.session.get(Staff,staff_id)
-    return render_template('staff/self.html', staff=staff)
+    return render_template('user/stafflist/staff/self.html', staff=staff)
 
 
 
