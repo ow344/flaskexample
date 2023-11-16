@@ -45,7 +45,6 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
 
-{{ form.hidden_tag() }}
 
 <h2>{{staff.firstname}} {{staff.lastname}}</h2>
 <div class="tab-container">
@@ -57,14 +56,15 @@
         <button class="tablinks" onclick="openTab(event, 'tab5')">Financial</button>
         <!-- Add more buttons for additional tabs -->
     </div>
-
+    <form method="post">
+        {{ form.hidden_tag() }}
     <div id="tab1" class="tabcontent">
         <!-- Content for Tab 1 -->
         <table>
             <tr><td>First Name</td><td>{{ form.firstname }}</td></tr>
             <tr><td>Last Name</td><td>{{ form.lastname }}</td></tr>
-            <tr><td>School</td><td>{{ staff.school.name }}</td></tr>
-            <tr><td>Department</td><td>{{ staff.department }}</td></tr>
+            <tr><td>School</td><td>{{ form.school_id }}</td></tr>
+            <tr><td>Department</td><td>{{ form.department_id }}</td></tr>
             <tr><td>Role</td><td>{{ form.role }}</td></tr>
         </table>
     </div>
@@ -127,6 +127,10 @@
 </div>
 
 
+{{ form.submit }}
+</form>
+
+
 
 
 
@@ -154,7 +158,5 @@
 document.getElementById("defaultOpen").click();
 
 </script>
-
-{{ form.submit }}
 
 {% endblock %}

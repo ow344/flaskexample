@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, PasswordField, BooleanField, SelectField, SubmitField, TextAreaField, FileField, DateField, EmailField, RadioField, FloatField
 from wtforms.validators import InputRequired, Email, EqualTo, Length, ValidationError, DataRequired, Optional
 from werkzeug.security import check_password_hash
-from models import User ,Department
+from models import User, Department, School
 from wtforms.widgets import NumberInput
 
 
@@ -82,7 +82,9 @@ class StaffForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(StaffForm, self).__init__(*args, **kwargs)
         departments = Department.query.all()
+        schools = School.query.all()
         self.department_id.choices = [(department.id, department.name) for department in departments]
+        self.school_id.choices = [(school.id, school.name) for school in schools]
         self.pension.choices = ['PEN0','PEN3','PEN5','PEN7']
         self.ftpt.choices = ['Full Time','Part Time']
         self.contract.choices = ['Term Time','Term Time + 4 Weeks','Term Time + 6 Weeks','All Year Round']

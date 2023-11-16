@@ -135,10 +135,16 @@ def stafflist_staff(staff_id):
     staff = db.session.get(Staff,staff_id)
     return render_template('admin/stafflist/staff/self.html', staff=staff)
 
-@admin.route('/admin/stafflist/staff/edit/<int:staff_id>')
+@admin.route('/admin/stafflist/staff/edit/<int:staff_id>', methods=['GET', 'POST'])
 def stafflist_staff_edit(staff_id):
     staff = db.session.get(Staff,staff_id)
     form = StaffForm(obj=staff)
+
+    if form.validate_on_submit():
+        form.populate_obj(staff)
+        db.session.commit()
+        return redirect(url_for('admin.stafflist_staff',staff_id=staff.id))
+
     return render_template('admin/stafflist/staff/edit.html', staff=staff, form=form)
 
 
