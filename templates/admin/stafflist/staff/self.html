@@ -74,10 +74,10 @@
         <table>
             <tr><td>Date of Birth</td><td>{{ staff.dob }}</td></tr>
             <tr><td>Gender</td><td>{{ staff.gender }}</td></tr>
-            <tr><td>Marital Status</td><td> - </td></tr>
-            <tr><td>Postcode</td><td> - </td></tr>
-            <tr><td>Home Address</td><td> - </td></tr>
-            <tr><td>Personal Email</td><td> - </td></tr>
+            <tr><td>Marital Status</td><td>{{ staff.marital }}</td></tr>
+            <tr><td>Postcode</td><td>{{ staff.postcode }}</td></tr>
+            <tr><td>Home Address</td><td>{{ staff.home_address }}</td></tr>
+            <tr><td>Personal Email</td><td>{{ staff.email }}</td></tr>
          
         </table>
     </div>
@@ -115,7 +115,7 @@
         <table>
             <tr><td>Salary</td><td>{{ staff.salary }}</td></tr>
             <tr><td>National Insurance Number</td><td>{{ staff.nino }}</td></tr>
-            <tr><td>National Insurance Category</Inp></td><td> - </td></tr>
+            <tr><td>National Insurance Category</Inp></td><td>{{ staff.nic }}</td></tr>
             <tr><td>Tax Code</Inp></td><td> - </td></tr>
             <tr><td>Pension Scheme</td><td>{{ staff.pension }}</td></tr>
             <tr><td>Contribution Rates (EE/ER)</td><td>{{ staff.pension }}</td></tr>

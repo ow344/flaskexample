@@ -65,6 +65,11 @@ class StaffForm(FlaskForm):
     gender = StringField('Gender')
     nino = StringField('National Insurance Number')
     school_id = SelectField("School", coerce=int)
+    nic = SelectField('nic')
+    marital = StringField('marital')
+    home_address = StringField('home_address')
+    postcode = StringField('postcode')
+    email = EmailField('email')
 
     startdate = DateField('Start Date')
 
@@ -86,5 +91,6 @@ class StaffForm(FlaskForm):
         self.department_id.choices = [(department.id, department.name) for department in departments]
         self.school_id.choices = [(school.id, school.name) for school in schools]
         self.pension.choices = ['PEN0','PEN3','PEN5','PEN7']
+        self.nic.choices = ['A','B','C','H','J','M','V','Z','X']
         self.ftpt.choices = ['Full Time','Part Time']
         self.contract.choices = ['Term Time','Term Time + 4 Weeks','Term Time + 6 Weeks','All Year Round']

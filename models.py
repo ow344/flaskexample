@@ -58,6 +58,14 @@ class Staff(db.Model):
 
     startdate = db.Column(db.Date)
 
+    nic = db.Column(db.String(12))
+    marital = db.Column(db.String(20))
+    home_address = db.Column(db.String(120))
+    postcode = db.Column(db.String(20))
+    email = db.Column(db.String(80))
+
+
+
     def __repr__(self):
         return f'{self.firstname} {self.lastname}'
 
