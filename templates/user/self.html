@@ -1,12 +1,15 @@
 {% extends "user/base-user.html" %}
+
+{% block navi %}
+<li><a href="#">User home</a></li>
+{% endblock %}
+
+
 {% block schoolcontent %}
-
-
 
 <p><a href="{{ url_for('user.requestforms_r2r_pending') }}">Request to Recruit</a></p>
 <p><a href="/user/requestforms/onboard/pending">Onboarding Form</a></p>
 <p><a href="{{ url_for('user.requestforms_variation_pending') }}">Variation to Contract</a></p>
 <p><a href="{{ url_for('user.stafflist') }}">Staff List</a></p>
-
 
 {% endblock %}

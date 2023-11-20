@@ -9,23 +9,21 @@
 <table>
     <thead>
         <tr>
-            <!-- <th>ID</th> -->
-            <th>First Name</th>
-            <th>Last Name</th>
-            <!-- <th>School</th> -->
             <th>Department</th>
             <th>Role</th>
+            <th>Request Date</th>
+            <th>Status</th>
+
         </tr>
     </thead>
     <tbody>
-        {% for item in staff %}
+        {% for item in r2rs %}
             <tr data-entry-id="{{ item.id }}">
-                <!-- <td>{{ item.id }}</td> -->
-                <td>{{ item.firstname }}</td>
-                <td>{{ item.lastname }}</td>
-                <!-- <td>{{ item.school.name }}</td> -->
+     
                 <td>{{ item.department }}</td>
                 <td>{{ item.role }}</td>
+                <td>{{ item.request_date }}</td>
+                <td style="background-color: yellow;">Pending</td>
             </tr>
         {% endfor %}
     </tbody>

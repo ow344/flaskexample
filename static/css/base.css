@@ -33,8 +33,12 @@ header {
 
 .login-button {
     background-color: #007bff;
+    color: #fff;
     padding: 8px 16px;
     border-radius: 4px;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: background-color 0.3s;
 }
 .login-button:hover {
     background-color: #0056b3;
@@ -66,27 +70,57 @@ header {
 
 
 nav {
-    background-color: #646262; /* Background color for the navigation bar */
     width: 100%;
-    padding: 0;
     margin: 0;
-    text-align: center; /* Center the navigation links horizontally */
+    background-color: #585858;
+    color: #fff;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: left;
+    border-bottom: 1px solid #333;
 }
-nav a {
-    background-color: #8a8787; /* Background color for the navigation bar */
-    text-decoration: none;
-    color: #fff; /* Link text color */
+/* nav a {
     display: inline-block;
     margin: 5px;
-    padding: 5px 10px; /* Adjust the padding as needed */
-    border: 1px solid #fff; /* Add a border to style the buttons */
-    border-radius: 5px; /* Add rounded corners to the buttons */
+    padding: 5px 10px; 
+    border: 1px solid #fff; 
+    border-radius: 5px; 
     width: 15%;
+} */
+
+
+
+
+.breadcrumbs {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
 }
-nav a:hover {
-    background-color: #ccc;
+
+.breadcrumbs li {
+    display: inline-block;
+    margin-left: 15px;
+
+}
+
+.breadcrumbs a {
+    text-decoration: underline;
+    color: #fff;
+    display: block;
     cursor: pointer;
+    margin-left: 15px;
+    margin-right: 15px;
+
+
 }
+
+
+
+
+
+
+
 
 
 .flash-container {

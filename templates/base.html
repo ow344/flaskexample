@@ -10,20 +10,26 @@
         <a href="/">Alpha - HR Management</a></h1>
     </div>
     <div class="right-content">
+    <div class="user-info">
         {% if current_user.is_authenticated %}
-        <div class="user-info">
         <p>Welcome, {{ current_user.username }}</p>
         <a href="/logout" class="logout-button">Log Out</a>
-        </div>
         {% else %}
         <a href="/login" class="login-button">Log In</a>
         {% endif %}
+    </div>
     </div>
 </div></header>
 
 {% block content2 %}
 {% endblock %}
 
+<nav>
+    <ul class="breadcrumbs">
+        {% block navi %}
+        {% endblock %}
+    </ul>
+</nav>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}

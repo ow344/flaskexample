@@ -189,7 +189,8 @@ def stafflist_staff(staff_id):
 
 @user.route('/user/requestforms/r2r/pending', methods=['GET', 'POST'])
 def requestforms_r2r_pending():
-    return render_template('user/requestforms/r2r/pending.html')
+    r2rs= R2R.query.all()
+    return render_template('user/requestforms/r2r/pending.html',r2rs=r2rs)
 
 @user.route('/user/requestforms/r2r/form', methods=['GET', 'POST'])
 def requestforms_r2r_form():
@@ -197,8 +198,9 @@ def requestforms_r2r_form():
     if form.validate_on_submit():
         new_request = R2R()
         form.populate_obj(new_request)
-        # db.session.add(new_request)
-        # db.session.commit()
+        db.session.add(new_request)
+        db.session.commit()
+        return redirect(url_for('user.requestforms_r2r_pending'))
     return render_template('user/requestforms/r2r/form.html', form=form)
 
 @user.route('/user/requestforms/variation/pending', methods=['GET', 'POST'])
