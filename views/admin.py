@@ -1,10 +1,9 @@
 from flask import Blueprint
-from models import db, User, School, UserSchool, Staff, Department, Variation, R2R
-from forms import LoginForm, RegistrationForm, VariationForm, StaffForm, R2RForm
-from flask import render_template, redirect, url_for, flash, session, request, jsonify
-from flask_login import login_user, logout_user, login_required, current_user
+from models import db, User, School, UserSchool, Staff, Variation
+from forms import RegistrationForm, PersonForm, RoleForm
+from flask import render_template, redirect, url_for, flash, request
+from flask_login import login_required
 from werkzeug.security import generate_password_hash
-from sqlalchemy import and_
 
 ################################  Admin  ################################
 admin = Blueprint('admin', __name__)
@@ -102,13 +101,15 @@ def stafflist_staff(staff_id):
 @admin.route('/admin/stafflist/staff/edit/<int:staff_id>', methods=['GET', 'POST'])
 def stafflist_staff_edit(staff_id):
     staff = db.session.get(Staff,staff_id)
-    form = StaffForm(obj=staff)
+    pform = PersonForm(obj=staff)
+    rform = RoleForm(obj=staff)
 
-    if form.validate_on_submit():
-        form.populate_obj(staff)
+    if pform.validate_on_submit() and rform.validate_on_submit():
+        pform.populate_obj(staff)
+        rform.populate_obj(staff)
         db.session.commit()
         return redirect(url_for('admin.stafflist_staff',staff_id=staff.id))
 
-    return render_template('admin/stafflist/staff/edit.html', staff=staff, form=form)
+    return render_template('admin/stafflist/staff/edit.html', staff=staff, pform=pform, rform=rform)
 
 

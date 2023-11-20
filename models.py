@@ -93,7 +93,7 @@ class Variation(db.Model):
     justification = db.Column(db.Text)
     budgeted = db.Column(db.Boolean, default=False)
     effect_date = db.Column(db.Date)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
     user = db.relationship('User', backref='variation')
 
 

@@ -24,54 +24,56 @@
 <h1>Request to Recruit</h1>
 
 <form method="post">
-    <td>{{ form.hidden_tag() }}</td>
+    {{ rform.hidden_tag() }}
+    {{ rqform.hidden_tag() }}
 <table>
 <tr>
     <th></th>
     <th>Request</th>
 
 </tr><tr>
-    <td>{{ form.department_id.label }}</td>
-    <td>{{ form.department_id }}</td>
+    <td>{{ rform.department_id.label }}</td>
+    <td>{{ rform.department_id }}</td>
 </tr><tr>
-    <td>{{ form.role.label }}</td>
-    <td>{{ form.role }}</td>
+    <td>{{ rform.role.label }}</td>
+    <td>{{ rform.role }}</td>
 </tr><tr>
-    <td>{{ form.salary.label }}</td>
-    <td>{{ form.salary }}</td>
+    <td>{{ rform.salary.label }}</td>
+    <td>{{ rform.salary }}</td>
 </tr><tr>
-    <td>{{ form.pension.label }}</td>
-    <td>{{ form.pension }}</td>
+    <td>{{ rform.pension.label }}</td>
+    <td>{{ rform.pension }}</td>
 </tr><tr>
-    <td>{{ form.ftpt.label }}</td>
-    <td>{{ form.ftpt }}</td>
+    <td>{{ rform.ftpt.label }}</td>
+    <td>{{ rform.ftpt }}</td>
 </tr><tr>
-    <td>{{ form.weekhours.label }}</td>
-    <td>{{ form.weekhours }}</td>
+    <td>{{ rform.weekhours.label }}</td>
+    <td>{{ rform.weekhours }}</td>
 </tr><tr>
-    <td>{{ form.contract.label }}</td>
-    <td>{{ form.contract }}</td>
+    <td>{{ rform.contract.label }}</td>
+    <td>{{ rform.contract }}</td>
 </tr><tr>
-    <td>{{ form.holiday.label }}</td>
-    <td>{{ form.holiday }}</td>
+    <td>{{ rform.holiday.label }}</td>
+    <td>{{ rform.holiday }}</td>
 </tr><tr>
-    <td>{{ form.notice.label }}</td>
-    <td>{{ form.notice }}</td>
+    <td>{{ rform.notice.label }}</td>
+    <td>{{ rform.notice }}</td>
 </tr>
 </table>
 
 <div class="form-group">
-    {{ form.justification.label(class="form-control-label") }}
-    {{ form.justification(class="form-control") }}
+    {{ rqform.justification.label(class="form-control-label") }}
+    {{ rqform.justification(class="form-control") }}
 </div>
 
-    {{ form.budgeted.label }}
-    {{ form.budgeted }}
+    {{ rqform.budgeted.label }}
+    {{ rqform.budgeted }}
     <br>
-    {{ form.effect_date.label }}
-    {{ form.effect_date }}
+    {{ rqform.effect_date.label }}
+    {{ rqform.effect_date }}
     <br>
-    {{ form.submit }}
+    <input type="submit" value="Submit">
+
 
 
 </form>  

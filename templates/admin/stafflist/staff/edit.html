@@ -57,27 +57,28 @@
         <!-- Add more buttons for additional tabs -->
     </div>
     <form method="post">
-        {{ form.hidden_tag() }}
+        {{ pform.hidden_tag() }}
+        {{ rform.hidden_tag() }}
     <div id="tab1" class="tabcontent">
         <!-- Content for Tab 1 -->
         <table>
-            <tr><td>First Name</td><td>{{ form.firstname }}</td></tr>
-            <tr><td>Last Name</td><td>{{ form.lastname }}</td></tr>
-            <tr><td>School</td><td>{{ form.school_id }}</td></tr>
-            <tr><td>Department</td><td>{{ form.department_id }}</td></tr>
-            <tr><td>Role</td><td>{{ form.role }}</td></tr>
+            <tr><td>First Name</td><td>{{ pform.firstname }}</td></tr>
+            <tr><td>Last Name</td><td>{{ pform.lastname }}</td></tr>
+            <tr><td>School</td><td>{{ rform.school_id }}</td></tr>
+            <tr><td>Department</td><td>{{ rform.department_id }}</td></tr>
+            <tr><td>Role</td><td>{{ rform.role }}</td></tr>
         </table>
     </div>
 
     <div id="tab2" class="tabcontent" style="display: none;">
         <!-- Content for Tab 2 (Initially hidden with 'display: none') -->
         <table>
-            <tr><td>Date of Birth</td><td>{{ form.dob }}</td></tr>
-            <tr><td>Gender</td><td>{{ form.gender }}</td></tr>
-            <tr><td>Marital Status</td><td>{{ form.marital }}</td></tr>
-            <tr><td>Postcode</td><td>{{ form.postcode }}</td></tr>
-            <tr><td>Home Address</td><td>{{ form.home_address }}</td></tr>
-            <tr><td>Personal Email</td><td>{{ form.email }}</td></tr>
+            <tr><td>Date of Birth</td><td>{{ pform.dob }}</td></tr>
+            <tr><td>Gender</td><td>{{ pform.gender }}</td></tr>
+            <tr><td>Marital Status</td><td>{{ pform.marital }}</td></tr>
+            <tr><td>Postcode</td><td>{{ pform.postcode }}</td></tr>
+            <tr><td>Home Address</td><td>{{ pform.home_address }}</td></tr>
+            <tr><td>Personal Email</td><td>{{ pform.email }}</td></tr>
          
         </table>
     </div>
@@ -102,23 +103,23 @@
     <div id="tab4" class="tabcontent" style="display: none;">
         <!-- Content for Tab 2 (Initially hidden with 'display: none') -->
         <table>
-            <tr><td>Start Date</td><td>{{ form.startdate }}</td></tr>
-            <tr><td>Full/Part Time</td><td>{{ form.ftpt }}</td></tr>
-            <tr><td>Hours per Week</td><td>{{ form.weekhours }}</td></tr>
-            <tr><td>Year Round or Term Time</td><td>{{ form.contract }}</td></tr>
-            <tr><td>Holiday Entitlement</td><td>{{ form.holiday }}</td></tr>
-            <tr><td>Notice Period</td><td>{{ form.notice }}</td></tr>
+            <tr><td>Start Date</td><td>{{ pform.startdate }}</td></tr>
+            <tr><td>Full/Part Time</td><td>{{ rform.ftpt }}</td></tr>
+            <tr><td>Hours per Week</td><td>{{ rform.weekhours }}</td></tr>
+            <tr><td>Year Round or Term Time</td><td>{{ rform.contract }}</td></tr>
+            <tr><td>Holiday Entitlement</td><td>{{ rform.holiday }}</td></tr>
+            <tr><td>Notice Period</td><td>{{ rform.notice }}</td></tr>
         </table>
     </div>
     <div id="tab5" class="tabcontent" style="display: none;">
         <!-- Content for Tab 2 (Initially hidden with 'display: none') -->
         <table>
-            <tr><td>Salary</td><td>{{ form.salary }}</td></tr>
-            <tr><td>National Insurance Number</td><td>{{ form.nino }}</td></tr>
-            <tr><td>National Insurance Category</Inp></td><td>{{ form.nic }}</td></tr>
+            <tr><td>Salary</td><td>{{ rform.salary }}</td></tr>
+            <tr><td>National Insurance Number</td><td>{{ pform.nino }}</td></tr>
+            <tr><td>National Insurance Category</Inp></td><td>{{ pform.nic }}</td></tr>
             <tr><td>Tax Code</Inp></td><td> - </td></tr>
-            <tr><td>Pension Scheme</td><td>{{ form.pension }}</td></tr>
-            <tr><td>Contribution Rates (EE/ER)</td><td>{{ form.pension }}</td></tr>
+            <tr><td>Pension Scheme</td><td>{{ rform.pension }}</td></tr>
+            <tr><td>Contribution Rates (EE/ER)</td><td>{{ rform.pension }}</td></tr>
         </table>
     </div>
 
@@ -126,8 +127,7 @@
     <!-- Add more divs for additional tab contents -->
 </div>
 
-
-{{ form.submit }}
+<input type="submit" value="Submit">
 </form>
 
 

@@ -1,10 +1,8 @@
 from flask import Blueprint
-from models import db, User, School, UserSchool, Staff, Department, Variation, R2R
-from forms import LoginForm, RegistrationForm, VariationForm, StaffForm, R2RForm
-from flask import render_template, redirect, url_for, flash, session, request, jsonify
-from flask_login import login_user, logout_user, login_required, current_user
-from werkzeug.security import generate_password_hash
-from sqlalchemy import and_
+from models import User
+from forms import LoginForm
+from flask import render_template, redirect, url_for, flash, session, request
+from flask_login import login_user, logout_user, current_user
 
 ################################  Main  ################################
 main = Blueprint('main', __name__)

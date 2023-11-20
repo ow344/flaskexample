@@ -1,9 +1,8 @@
 from flask import Blueprint
-from models import db, User, School, UserSchool, Staff, Department, Variation, R2R
-from forms import LoginForm, RegistrationForm, VariationForm, StaffForm, R2RForm
+from models import db, School, UserSchool, Staff, Variation, R2R
+from forms import RequestForm, RoleForm
 from flask import render_template, redirect, url_for, flash, session, request, jsonify
-from flask_login import login_user, logout_user, login_required, current_user
-from werkzeug.security import generate_password_hash
+from flask_login import login_required, current_user
 from sqlalchemy import and_
 
 
@@ -52,14 +51,19 @@ def requestforms_r2r_pending():
 
 @user.route('/user/requestforms/r2r/form', methods=['GET', 'POST'])
 def requestforms_r2r_form():
-    form = R2RForm()
-    if form.validate_on_submit():
-        new_request = R2R()
-        form.populate_obj(new_request)
+    new_request = R2R()
+    rform = RoleForm(obj=new_request)
+    rqform = RequestForm(obj=new_request)
+    if request.method=='POST':
+        print(rform.data)
+    if rform.validate_on_submit() and rqform.validate_on_submit():
+        print("Hi")
+        rform.populate_obj(new_request)
+        rqform.populate_obj(new_request)
         db.session.add(new_request)
         db.session.commit()
         return redirect(url_for('user.requestforms_r2r_pending'))
-    return render_template('user/requestforms/r2r/form.html', form=form)
+    return render_template('user/requestforms/r2r/form.html', rform=rform, rqform=rqform)
 
 @user.route('/user/requestforms/variation/pending', methods=['GET', 'POST'])
 def requestforms_variation_pending():
@@ -75,24 +79,26 @@ def requestforms_variation_form():
 @user.route('/user/requestforms/variation/form/<int:staff_id>', methods=['GET', 'POST'])
 def requestforms_variation_form2(staff_id):
     if not check_permission(staff_id):
-        return redirect(url_for('user.requestforms_pending', form='variation'))
+        return redirect(url_for('user.requestforms_variation_pending'))
     
     staff = db.session.get(Staff,staff_id)
-    form = VariationForm(obj=staff)
+    rform= RoleForm(obj=staff)
+    rqform = RequestForm(obj=staff)
 
-    if form.validate_on_submit():
+
+    if rform.validate_on_submit() and rqform.validate_on_submit():
         new_variation = Variation()
-        form.populate_obj(new_variation)
+        rform.populate_obj(new_variation)
+        rqform.populate_obj(new_variation)
         new_variation.staff_id = int(staff_id)
-        new_variation.user_id = current_user.id
         db.session.add(new_variation)
         db.session.commit()
    
 
         flash("Varition to Contract request submitted", "success")
-        return redirect(url_for('user.requestforms_pending', form='variation'))
+        return redirect(url_for('user.requestforms_variation_pending'))
     
-    return render_template('user/requestforms/variation/form2.html', staff=staff, form=form)
+    return render_template('user/requestforms/variation/form2.html', staff=staff, rform=rform, rqform=rqform)
 
 @user.route('/update_text', methods=['POST'])
 def update_text():

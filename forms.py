@@ -32,9 +32,17 @@ class RegistrationForm(FlaskForm):
         
 
 
-class VariationForm(FlaskForm):
+class RequestForm(FlaskForm):
+    justification = TextAreaField('Justification')
+    budgeted = BooleanField('Budgeted?')
+    effect_date = DateField('Date to go into effect')
+
+
+
+class RoleForm(FlaskForm):
     department_id = SelectField("Department", coerce=int)
     role =  StringField('Role Title')
+
     salary = FloatField('Salary', widget=NumberInput(), render_kw={"step": "0.01"})
     pension = SelectField('Pension')
     ftpt = SelectField('Full/Part Time')
@@ -42,29 +50,22 @@ class VariationForm(FlaskForm):
     contract = SelectField('Contract')
     holiday = StringField('Holiday')
     notice = StringField('Notice')
-    justification = TextAreaField('Justification')
-    budgeted = BooleanField('Budgeted?')
-    effect_date = DateField('Date to go into effect')
-
-
-
-    submit = SubmitField('Submit')
 
     def __init__(self, *args, **kwargs):
-        super(VariationForm, self).__init__(*args, **kwargs)
+        super(RoleForm, self).__init__(*args, **kwargs)
         departments = Department.query.all()
         self.department_id.choices = [(department.id, department.name) for department in departments]
         self.pension.choices = ['PEN0','PEN3','PEN5','PEN7']
         self.ftpt.choices = ['Full Time','Part Time']
         self.contract.choices = ['Term Time','Term Time + 4 Weeks','Term Time + 6 Weeks','All Year Round']
 
-class StaffForm(FlaskForm):
+
+class PersonForm(FlaskForm):
     firstname = StringField('First Name')
     lastname = StringField('Last Name')
     dob = DateField('Date of birth')
     gender = StringField('Gender')
     nino = StringField('National Insurance Number')
-    school_id = SelectField("School", coerce=int)
     nic = SelectField('nic')
     marital = StringField('marital')
     home_address = StringField('home_address')
@@ -73,49 +74,6 @@ class StaffForm(FlaskForm):
 
     startdate = DateField('Start Date')
 
-    department_id = SelectField("Department", coerce=int)
-    role =  StringField('Role Title')
-    salary = FloatField('Salary', widget=NumberInput(), render_kw={"step": "0.01"})
-    pension = SelectField('Pension')
-    ftpt = SelectField('Full/Part Time')
-    weekhours = FloatField('Hours per week', widget=NumberInput(), render_kw={"step": "0.25"})
-    contract = SelectField('Contract')
-    holiday = StringField('Holiday')
-    notice = StringField('Notice')
-    submit = SubmitField('Submit')
-
     def __init__(self, *args, **kwargs):
-        super(StaffForm, self).__init__(*args, **kwargs)
-        departments = Department.query.all()
-        schools = School.query.all()
-        self.department_id.choices = [(department.id, department.name) for department in departments]
-        self.school_id.choices = [(school.id, school.name) for school in schools]
-        self.pension.choices = ['PEN0','PEN3','PEN5','PEN7']
+        super(PersonForm, self).__init__(*args, **kwargs)
         self.nic.choices = ['A','B','C','H','J','M','V','Z','X']
-        self.ftpt.choices = ['Full Time','Part Time']
-        self.contract.choices = ['Term Time','Term Time + 4 Weeks','Term Time + 6 Weeks','All Year Round']
-
-
-class R2RForm(FlaskForm):
-    department_id = SelectField("Department", coerce=int)
-    role =  StringField('Role Title')
-    salary = FloatField('Salary', widget=NumberInput(), render_kw={"step": "0.01"})
-    pension = SelectField('Pension')
-    ftpt = SelectField('Full/Part Time')
-    weekhours = FloatField('Hours per week', widget=NumberInput(), render_kw={"step": "0.25"})
-    contract = SelectField('Contract')
-    holiday = StringField('Holiday', render_kw={"placeholder": "School holidays"})
-    notice = StringField('Notice', render_kw={"placeholder": "One term"})
-    justification = TextAreaField('Justification')
-    budgeted = BooleanField('Budgeted?')
-    effect_date = DateField('Date to go into effect')
-
-    submit = SubmitField('Submit')
-
-    def __init__(self, *args, **kwargs):
-        super(R2RForm, self).__init__(*args, **kwargs)
-        departments = Department.query.all()
-        self.department_id.choices = [(department.id, department.name) for department in departments]
-        self.pension.choices = ['PEN0','PEN3','PEN5','PEN7']
-        self.ftpt.choices = ['Full Time','Part Time']
-        self.contract.choices = ['Term Time','Term Time + 4 Weeks','Term Time + 6 Weeks','All Year Round']
