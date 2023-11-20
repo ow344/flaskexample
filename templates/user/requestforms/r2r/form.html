@@ -1,5 +1,16 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "user/base-user.html" %}
+
+
+{% block navi %}
+<li><a href="#">User home</a></li>
+<li>></li>
+<li><a href="#">Request to Recruit</a></li>
+<li>></li>
+<li><a href="#">R2R Form</a></li>
+{% endblock %}
+
+
+{% block schoolcontent %}
 
 <link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
 <link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">

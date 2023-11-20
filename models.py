@@ -2,7 +2,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 db = SQLAlchemy()
 
-from datetime import date 
+from datetime import date
+from flask_login import current_user
+from flask import session
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -101,6 +103,9 @@ class R2R(db.Model):
     request_date = db.Column(db.Date, default=date.today)
     approved = db.Column(db.Boolean, default=False)
 
+    school_id = db.Column(db.Integer, db.ForeignKey('school.id'), default=lambda: session.get("active_school_id", None))
+    school = db.relationship('School', backref='r2r')
+
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
     department = db.relationship('Department', backref='r2r')
     role = db.Column(db.String(120))
@@ -114,6 +119,6 @@ class R2R(db.Model):
     justification = db.Column(db.Text)
     budgeted = db.Column(db.Boolean, default=False)
     effect_date = db.Column(db.Date)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
     user = db.relationship('User', backref='r2r')
 

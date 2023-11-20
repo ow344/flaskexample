@@ -1,4 +1,15 @@
 {% extends "user/base-user.html" %}
+
+{% block navi %}
+<li><a href="#">User home</a></li>
+<li>></li>
+<li><a href="#">Request to Recruit</a></li>
+{% endblock %}
+
+
+
+
+
 {% block schoolcontent %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
 
