@@ -1,6 +1,6 @@
 from flask import Blueprint
-from models import db, User, School, UserSchool, Staff, Department, Variation
-from forms import LoginForm, RegistrationForm, VariationForm, StaffForm
+from models import db, User, School, UserSchool, Staff, Department, Variation, R2R
+from forms import LoginForm, RegistrationForm, VariationForm, StaffForm, R2RForm
 from flask import render_template, redirect, url_for, flash, session, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
@@ -158,8 +158,6 @@ def run_code_once_per_session():
     if 'active_school_id' not in session and current_user.is_authenticated:
         userschools = UserSchool.query.filter(and_(UserSchool.user_id==current_user.id, UserSchool.primary==True)).first()    
         session['active_school_id'] = userschools.school.id
-        print(userschools.school.id)
-        print(session['active_school_id'])
         session['active_school_name'] = userschools.school.name
 
 @user.route('/user')
@@ -188,6 +186,20 @@ def stafflist_staff(staff_id):
     
     staff = db.session.get(Staff,staff_id)
     return render_template('user/stafflist/staff/self.html', staff=staff)
+
+@user.route('/user/requestforms/r2r/pending', methods=['GET', 'POST'])
+def requestforms_r2r_pending():
+    return render_template('user/requestforms/r2r/pending.html')
+
+@user.route('/user/requestforms/r2r/form', methods=['GET', 'POST'])
+def requestforms_r2r_form():
+    form = R2RForm()
+    if form.validate_on_submit():
+        new_request = R2R()
+        form.populate_obj(new_request)
+        # db.session.add(new_request)
+        # db.session.commit()
+    return render_template('user/requestforms/r2r/form.html', form=form)
 
 @user.route('/user/requestforms/variation/pending', methods=['GET', 'POST'])
 def requestforms_variation_pending():

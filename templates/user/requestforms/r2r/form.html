@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<div class="container">
+
+
+<h1>Request to Recruit</h1>
+
+<form method="post">
+    <td>{{ form.hidden_tag() }}</td>
+<table>
+<tr>
+    <th></th>
+    <th>Request</th>
+
+</tr><tr>
+    <td>{{ form.department_id.label }}</td>
+    <td>{{ form.department_id }}</td>
+</tr><tr>
+    <td>{{ form.role.label }}</td>
+    <td>{{ form.role }}</td>
+</tr><tr>
+    <td>{{ form.salary.label }}</td>
+    <td>{{ form.salary }}</td>
+</tr><tr>
+    <td>{{ form.pension.label }}</td>
+    <td>{{ form.pension }}</td>
+</tr><tr>
+    <td>{{ form.ftpt.label }}</td>
+    <td>{{ form.ftpt }}</td>
+</tr><tr>
+    <td>{{ form.weekhours.label }}</td>
+    <td>{{ form.weekhours }}</td>
+</tr><tr>
+    <td>{{ form.contract.label }}</td>
+    <td>{{ form.contract }}</td>
+</tr><tr>
+    <td>{{ form.holiday.label }}</td>
+    <td>{{ form.holiday }}</td>
+</tr><tr>
+    <td>{{ form.notice.label }}</td>
+    <td>{{ form.notice }}</td>
+</tr>
+</table>
+
+<div class="form-group">
+    {{ form.justification.label(class="form-control-label") }}
+    {{ form.justification(class="form-control") }}
+</div>
+
+    {{ form.budgeted.label }}
+    {{ form.budgeted }}
+    <br>
+    {{ form.effect_date.label }}
+    {{ form.effect_date }}
+    <br>
+    {{ form.submit }}
+
+
+</form>  
+</div>
+
+
+{% endblock %}

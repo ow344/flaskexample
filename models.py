@@ -95,3 +95,25 @@ class Variation(db.Model):
     user = db.relationship('User', backref='variation')
 
 
+
+class R2R(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    request_date = db.Column(db.Date, default=date.today)
+    approved = db.Column(db.Boolean, default=False)
+
+    department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
+    department = db.relationship('Department', backref='r2r')
+    role = db.Column(db.String(120))
+    salary = db.Column(db.Float())
+    pension = db.Column(db.String(12))
+    ftpt = db.Column(db.String(20))
+    weekhours = db.Column(db.Float())
+    contract = db.Column(db.String(80))
+    holiday = db.Column(db.String(80))
+    notice = db.Column(db.String(20))
+    justification = db.Column(db.Text)
+    budgeted = db.Column(db.Boolean, default=False)
+    effect_date = db.Column(db.Date)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='r2r')
+
