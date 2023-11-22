@@ -29,7 +29,7 @@
     <h1>Admin User</h1>
     {% else %}
     <h1>{{ session['active_school_name'] }}</h1>
-    <a class="change-button"  href="{{ url_for('user.changeschool') }}">Change</a>
+    <a class="settings-button"  href="{{ url_for('main.settings') }}">Settings</a>
     {% endif %}
 </div>
 </div>

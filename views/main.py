@@ -18,9 +18,14 @@ def index():
     return redirect(url_for('main.login'))
 
 
+@main.route('/settings')
+def settings():
+    return render_template('main/settings.html')
+
+
 @main.route('/test1')
 def test():
-    return render_template('test.html')
+    return render_template('main/test.html')
 
 
 @main.route('/login', methods=['GET', 'POST'])
@@ -36,7 +41,7 @@ def login():
         else:
             home = url_for('user.home')
         return redirect(form.next_page.data or home)
-    return render_template('login.html', form=form)
+    return render_template('main/login.html', form=form)
 
 @main.route('/logout')
 def logout():

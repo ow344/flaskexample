@@ -181,7 +181,7 @@ font-size: 20px;
 margin: 0;
 }
 
-.change-button {
+.settings-button {
 font-size: 15px;
 background-color: #007bff;
 padding: 3px 16px;
@@ -190,6 +190,6 @@ text-decoration: none;
 color: #fff;
 }
 
-.change-button:hover {
+.settings-button:hover {
 background-color: #0056b3;
 }
