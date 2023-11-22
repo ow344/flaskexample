@@ -21,8 +21,21 @@
     </div>
 </div></header>
 
-{% block content2 %}
-{% endblock %}
+
+{% if current_user.is_authenticated %}
+<div class="wide">
+<div class="wide-content">
+    {% if current_user.is_admin %}
+    <h1>Admin User</h1>
+    {% else %}
+    <h1>{{ session['active_school_name'] }}</h1>
+    <a class="change-button"  href="{{ url_for('user.changeschool') }}">Change</a>
+    {% endif %}
+</div>
+</div>
+{% endif %}
+
+
 
 <nav>
     <ul class="breadcrumbs">

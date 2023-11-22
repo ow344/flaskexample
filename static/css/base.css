@@ -158,3 +158,38 @@ main {
     margin: 10px;
 }
 
+
+
+
+.wide {
+    color: white;
+    background-color: #4b4b4b;
+
+}
+.wide-content {
+
+    padding: 7px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 95%;
+    margin: 0 auto;
+}
+
+.wide h1 {
+font-size: 20px;
+margin: 0;
+}
+
+.change-button {
+font-size: 15px;
+background-color: #007bff;
+padding: 3px 16px;
+border-radius: 4px;
+text-decoration: none;
+color: #fff;
+}
+
+.change-button:hover {
+background-color: #0056b3;
+}
