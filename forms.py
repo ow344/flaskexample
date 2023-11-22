@@ -80,3 +80,6 @@ class PersonForm(FlaskForm):
 
 class ApporovalForm(FlaskForm):
     decision = RadioField('Decision', choices=[('1', 'Approve'), ('0', 'Deny')])
+
+class CommentForm(FlaskForm):
+    content = TextAreaField('Comment')

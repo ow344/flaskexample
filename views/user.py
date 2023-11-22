@@ -1,6 +1,6 @@
 from flask import Blueprint
-from models import db, School, UserSchool, Staff, Variation, R2R
-from forms import RequestForm, RoleForm
+from models import db, School, UserSchool, Staff, Variation, R2R, R2RMessage
+from forms import RequestForm, RoleForm, CommentForm
 from flask import render_template, redirect, url_for, flash, session, request, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy import and_
@@ -13,6 +13,9 @@ user = Blueprint('user', __name__)
 @login_required
 def run_code_once_per_session():
     if 'active_school_id' not in session and current_user.is_authenticated:
+        if current_user.is_admin:
+            flash("Log in as non-admin to access", "error")
+            return redirect(url_for("admin.home"))
         userschools = UserSchool.query.filter(and_(UserSchool.user_id==current_user.id, UserSchool.primary==True)).first()    
         session['active_school_id'] = userschools.school.id
         session['active_school_name'] = userschools.school.name
@@ -64,6 +67,42 @@ def requestforms_r2r_form():
         db.session.commit()
         return redirect(url_for('user.requestforms_r2r_pending'))
     return render_template('user/requestforms/r2r/form.html', rform=rform, rqform=rqform)
+
+@user.route('/user/requestforms/r2r/edit/<int:r2r_id>', methods=['GET', 'POST'])
+def requestforms_r2r_edit(r2r_id):
+    r2r = db.session.get(R2R,r2r_id)
+    if r2r.approved:
+        flash("Already Approved, not editable", "error")
+        return redirect(url_for('user.requestforms_r2r_pending'))
+    
+    rform = RoleForm(obj=r2r)
+    rqform = RequestForm(obj=r2r)
+    if rform.validate_on_submit() and rqform.validate_on_submit():
+        rform.populate_obj(r2r)
+        rqform.populate_obj(r2r)
+        # db.session.add(r2r)
+        db.session.commit()
+        return redirect(url_for('user.requestforms_r2r_pending'))
+    
+    cform = CommentForm()
+    comments = R2RMessage.query.filter_by(r2r_id=r2r.id).order_by(R2RMessage.id.desc()).all()
+
+    return render_template('user/requestforms/r2r/edit.html', rform=rform, rqform=rqform, cform=cform,comments=comments)
+
+@user.route('/sendcomment/<int:r2r_id>', methods=['POST'])
+def sendcomment(r2r_id):
+    r2r = db.session.get(R2R,r2r_id)
+    cform = CommentForm()
+    if cform.validate_on_submit():
+        print(cform.content.data)
+        r2rm = R2RMessage()
+        cform.populate_obj(r2rm)
+        r2rm.r2r_id=r2r_id
+        db.session.add(r2rm)
+        db.session.commit()
+
+
+    return redirect(url_for('user.requestforms_r2r_edit',r2r_id=r2r.id))
 
 @user.route('/user/requestforms/variation/pending', methods=['GET', 'POST'])
 def requestforms_variation_pending():

@@ -122,3 +122,14 @@ class R2R(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
     user = db.relationship('User', backref='r2r')
 
+
+class R2RMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    r2r_id = db.Column(db.Integer, db.ForeignKey('r2_r.id'))
+    r2r = db.relationship('R2R', backref='r2rmessage')
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
+    user = db.relationship('User', backref='r2rmessage')
+
+    content = db.Column(db.Text)

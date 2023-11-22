@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+
+{% block navi %}
+<li><a href="#">User home</a></li>
+<li>></li>
+<li><a href="#">Request to Recruit</a></li>
+<li>></li>
+<li><a href="#">R2R Form</a></li>
+{% endblock %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<div class="container">
+
+
+<h1>Request to Recruit</h1>
+
+<form method="post">
+    {{ rform.hidden_tag() }}
+    {{ rqform.hidden_tag() }}
+<table>
+<tr>
+    <th></th>
+    <th>Request</th>
+
+</tr><tr>
+    <td>{{ rform.department_id.label }}</td>
+    <td>{{ rform.department_id }}</td>
+</tr><tr>
+    <td>{{ rform.role.label }}</td>
+    <td>{{ rform.role }}</td>
+</tr><tr>
+    <td>{{ rform.salary.label }}</td>
+    <td>{{ rform.salary }}</td>
+</tr><tr>
+    <td>{{ rform.pension.label }}</td>
+    <td>{{ rform.pension }}</td>
+</tr><tr>
+    <td>{{ rform.ftpt.label }}</td>
+    <td>{{ rform.ftpt }}</td>
+</tr><tr>
+    <td>{{ rform.weekhours.label }}</td>
+    <td>{{ rform.weekhours }}</td>
+</tr><tr>
+    <td>{{ rform.contract.label }}</td>
+    <td>{{ rform.contract }}</td>
+</tr><tr>
+    <td>{{ rform.holiday.label }}</td>
+    <td>{{ rform.holiday }}</td>
+</tr><tr>
+    <td>{{ rform.notice.label }}</td>
+    <td>{{ rform.notice }}</td>
+</tr>
+</table>
+
+<div class="form-group">
+    {{ rqform.justification.label(class="form-control-label") }}
+    {{ rqform.justification(class="form-control") }}
+</div>
+
+    {{ rqform.budgeted.label }}
+    {{ rqform.budgeted }}
+    <br>
+    {{ rqform.effect_date.label }}
+    {{ rqform.effect_date }}
+    <br>
+    <input type="submit" value="Submit">
+
+
+
+</form>  
+</div>
+
+<h3>Comments</h3>
+<form action="{{url_for('user.sendcomment',r2r_id=10)}}" method="POST">
+    {{ cform.hidden_tag() }}
+    <input type="submit" value="Post Comment">
+    {{ cform.content(class="form-control") }}
+  
+
+</form>
+
+{% for comment in comments %}
+<div class="form-group">
+    <div class="form-control-label">{{ comment.user }}</div>
+    <div class="form-control">{{ comment.content }}</div>
+</div>
+{% endfor %}
+
+
+{% endblock %}
