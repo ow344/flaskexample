@@ -16,7 +16,7 @@
 
 <a href="{{url_for('user.requestforms_r2r_form')}}">New Request</a>
 
-<h3>Pending Requests</h3>
+<h3>Existing Requests</h3>
 <table>
     <thead>
         <tr>
@@ -34,7 +34,11 @@
                 <td>{{ item.department }}</td>
                 <td>{{ item.role }}</td>
                 <td>{{ item.request_date }}</td>
+                {% if item.approved %}
+                <td style="background-color: lightgreen;">Approved</td>
+                {% else %}
                 <td style="background-color: yellow;">Pending</td>
+                {% endif %}
             </tr>
         {% endfor %}
     </tbody>

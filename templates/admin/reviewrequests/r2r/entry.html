@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+
+{% block navi %}
+<li><a href="#">Admin home</a></li>
+<li>></li>
+<li><a href="#">Request to Recruit</a></li>
+<li>></li>
+<li><a href="#">R2R Form</a></li>
+{% endblock %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<div class="container">
+
+
+<h1>Request to Recruit</h1>
+
+
+<table>
+<tr>
+    <th></th>
+    <th>Request</th>
+
+</tr><tr>
+    <td>School</td>
+    <td>{{ r2r.school }}</td>
+</tr><tr>
+    <td>Department</td>
+    <td>{{ r2r.department }}</td>
+</tr><tr>
+    <td>Role</td>
+    <td>{{ r2r.role }}</td>
+</tr><tr>
+    <td>Salary</td>
+    <td>{{ r2r.salary }}</td>
+</tr><tr>
+    <td>Pension</td>
+    <td>{{ r2r.pension }}</td>
+</tr><tr>
+    <td>FTPT</td>
+    <td>{{ r2r.ftpt }}</td>
+</tr><tr>
+    <td>Weekhours</td>
+    <td>{{ r2r.weekhours }}</td>
+</tr><tr>
+    <td>Contract</td>
+    <td>{{ r2r.contract }}</td>
+</tr><tr>
+    <td>Holiday</td>
+    <td>{{ r2r.holiday }}</td>
+</tr><tr>
+    <td>Notice</td>
+    <td>{{ r2r.notice }}</td>
+</tr>
+</table>
+
+<div class="form-group">
+    <div class="form-control-label">Justification</div>
+    <div class="form-control">{{ r2r.justification }}</div>
+</div>
+
+    Budgeted
+    {{ r2r.budgeted }}
+    <br>
+    Effect Date
+    {{ r2r.effect_date }}
+    <br>
+
+
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.decision.label }}
+        {% for choice in form.decision %}
+            <div>
+                {{ choice.label }}
+                {{ choice() }}
+            </div>
+        {% endfor %}
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+
+</div>
+
+
+
+
+{% endblock %}

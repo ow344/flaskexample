@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+
+<h2>Request to Recruits</h2>
+<table>
+    <tr>
+        <th>Role</th>
+        <th>School</th>
+        <th>Request Date</th>
+        <th>Requester</th>
+        <th>Approved?</th>
+    </tr>
+    {% for r2r in r2rs %}
+    <tr data-entry-id="{{ r2r.id }}">
+
+        <td>{{ r2r.role }}</td>
+        <td>{{ r2r.school }}</td>
+        <td>{{ r2r.request_date }}</td>
+        <td>{{ r2r.user }}</td>
+        <td>{{ r2r.approved }}</td>
+    </tr>    
+    {% endfor %}
+</table>
+
+<script>
+// Add an event listener to table rows
+document.addEventListener('DOMContentLoaded', function() {
+    var tableRows = document.querySelectorAll('table tr');
+    tableRows.forEach(function(row) {
+        row.addEventListener('click', function() {
+            var entryId = this.getAttribute('data-entry-id');
+            if (entryId) {
+                window.location.href = '/admin/reviewrequests/r2r/entry/' + entryId;
+            }
+        });
+    });
+});
+</script>
+
+
+{% endblock %}

@@ -116,9 +116,19 @@ td input{
 </div>
 
 <form method="post">
-    <p><input type="radio" name="decision" value="Approve">Approve</p>
-    <p><input type="radio" name="decision" value="Deny">Deny</p>
-    <input type="submit" value="Confirm Choice">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.decision.label }}
+        {% for choice in form.decision %}
+            <div>
+                {{ choice.label }}
+                {{ choice() }}
+            </div>
+        {% endfor %}
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
 </form>
 
 

@@ -1,6 +1,6 @@
 from flask import Blueprint
-from models import db, User, School, UserSchool, Staff, Variation
-from forms import RegistrationForm, PersonForm, RoleForm
+from models import db, User, School, UserSchool, Staff, Variation, R2R
+from forms import RegistrationForm, PersonForm, RoleForm, ApporovalForm
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required
 from werkzeug.security import generate_password_hash
@@ -16,6 +16,36 @@ def handle_route_permissions():
 def home():
     return render_template('admin/self.html')
 
+@admin.route('/admin/reviewrequests/r2r')
+def reviewrequests_r2r():
+    # r2rs= R2R.query.filter(R2R.approved == False).all()
+    r2rs= R2R.query.all()
+    return render_template('admin/reviewrequests/r2r/self.html',r2rs=r2rs)
+
+@admin.route('/admin/reviewrequests/r2r/entry/<int:r2r_id>', methods=['GET','POST'])
+def reviewrequests_r2r_entry(r2r_id):
+    form = ApporovalForm()
+    r2r = db.session.get(R2R,r2r_id)
+    
+    if form.validate_on_submit():
+        if form.decision.data == '1':
+            print("Success")
+            r2r.approved = True
+    #         attributes_to_copy = ['department_id','role','salary','pension','ftpt','weekhours','contract','holiday','notice']
+    #         for attr in attributes_to_copy:             
+    #             if not getattr(staff, attr) == getattr(variation, attr):
+    #                 setattr(staff, attr, getattr(variation, attr))
+            flash('Successfuly Approved', 'success')
+        else:
+            r2r.approved = False
+            flash('Successfuly Denied', 'success')
+    #     db.session.delete(variation)
+        db.session.commit()
+        return redirect(url_for('admin.reviewrequests_r2r'))
+ 
+    return render_template('admin/reviewrequests/r2r/entry.html',r2r=r2r, form=form)
+
+
 @admin.route('/admin/reviewrequests/variation')
 def reviewrequests_variation():
     variations = Variation.query.all()
@@ -23,10 +53,11 @@ def reviewrequests_variation():
 
 @admin.route('/admin/reviewrequests/variation/entry/<int:variation_id>', methods=['GET','POST'])
 def reviewrequests_variation_entry(variation_id):
+    form = ApporovalForm()
     variation = db.session.get(Variation,variation_id)
     staff = variation.staff
-    if request.method=='POST':
-        if request.form['decision'] == 'Approve':
+    if form.validate_on_submit():
+        if form.decision.data == '1':
             attributes_to_copy = ['department_id','role','salary','pension','ftpt','weekhours','contract','holiday','notice']
             for attr in attributes_to_copy:             
                 if not getattr(staff, attr) == getattr(variation, attr):
@@ -38,7 +69,7 @@ def reviewrequests_variation_entry(variation_id):
         db.session.commit()
         return redirect(url_for('admin.reviewrequests_variation'))
  
-    return render_template('admin/reviewrequests/variation/entry.html',variation=variation, staff=staff)
+    return render_template('admin/reviewrequests/variation/entry.html',variation=variation, staff=staff, form=form)
 
 @admin.route('/admin/userpermissions')
 def userpermissions():

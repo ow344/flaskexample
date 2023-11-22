@@ -77,3 +77,6 @@ class PersonForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(PersonForm, self).__init__(*args, **kwargs)
         self.nic.choices = ['A','B','C','H','J','M','V','Z','X']
+
+class ApporovalForm(FlaskForm):
+    decision = RadioField('Decision', choices=[('1', 'Approve'), ('0', 'Deny')])
