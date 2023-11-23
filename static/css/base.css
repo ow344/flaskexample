@@ -1,7 +1,7 @@
 body {
     margin: 0px;
     padding: 0px;
-    padding-top: 52px; /* Adjust this value according to your header height */
+    padding-top: 55px; /* Adjust this value according to your header height */
 }
 
 header {
@@ -12,7 +12,7 @@ header {
     z-index: 1000; /* Ensures header is on top */
     background-color: #333;
     color: #fff;
-    padding: 10px 0;
+    padding: 8px 0;
 }
 .header-content {
     display: flex;

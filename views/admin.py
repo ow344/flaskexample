@@ -1,6 +1,6 @@
 from flask import Blueprint
-from models import db, User, School, UserSchool, Staff, Variation, R2R
-from forms import RegistrationForm, PersonForm, RoleForm, ApporovalForm
+from models import db, User, School, UserSchool, Staff, Variation, R2R, R2RMessage
+from forms import RegistrationForm, PersonForm, RoleForm, ApporovalForm, CommentForm
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required
 from werkzeug.security import generate_password_hash
@@ -43,7 +43,35 @@ def reviewrequests_r2r_entry(r2r_id):
         db.session.commit()
         return redirect(url_for('admin.reviewrequests_r2r'))
  
-    return render_template('admin/reviewrequests/r2r/entry.html',r2r=r2r, form=form)
+    cform = CommentForm()
+    comments = R2RMessage.query.filter_by(r2r_id=r2r.id).order_by(R2RMessage.id.desc()).all()
+
+    return render_template('admin/reviewrequests/r2r/entry.html',r2r=r2r, form=form, cform=cform,comments=comments)
+
+    
+
+
+@admin.route('/sendcomment/<int:r2r_id>', methods=['POST'])
+def sendcomment(r2r_id):
+    r2r = db.session.get(R2R,r2r_id)
+    cform = CommentForm()
+    if cform.validate_on_submit():
+        print(cform.content.data)
+        r2rm = R2RMessage()
+        cform.populate_obj(r2rm)
+        r2rm.r2r_id=r2r_id
+        db.session.add(r2rm)
+        db.session.commit()
+
+
+    return redirect(url_for('admin.reviewrequests_r2r_entry',r2r_id=r2r.id))
+
+
+
+
+
+
+
 
 
 @admin.route('/admin/reviewrequests/variation')
