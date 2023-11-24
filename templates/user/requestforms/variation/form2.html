@@ -1,4 +1,14 @@
 {% extends "base.html" %}
+{% block navi %}
+<li><a href="/">Home</a></li>
+<li>></li>
+<li><a href="{{ url_for('user.requestforms_variation_pending') }}">Variation to Contract</a></li>
+<li>></li>
+<li><a href="{{ url_for('user.requestforms_variation_form') }}">New Request</a></li>
+<li>></li>
+<li><a href="{{ url_for('user.requestforms_variation_form2',staff_id=staff.id) }}">{{staff}}</a></li>
+
+{% endblock %}
 
 {% block content %}
 

@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+{% block navi %}
+<li><a href="/">Home</a></li>
+<li>></li>
+<li><a href="{{ url_for('user.stafflist') }}">Staff List</a></li>
+<li>></li>
+<li>{{staff.firstname}} {{staff.lastname}}</li>
+{% endblock %}
 {% block content %}
 
 <style>

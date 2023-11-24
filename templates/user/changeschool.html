@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+{% block navi %}
+<li><a href="/">Home</a></li>
+<li>></li>
+<li><a href="{{ url_for('main.settings') }}">Settings</a></li>
+<li>></li>
+<li>Change Schools</li>
+{% endblock %}
 {% block content %}
 
 <form method="POST">
