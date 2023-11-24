@@ -1,9 +1,10 @@
 from flask import Blueprint
 from models import db, School, UserSchool, Staff, Variation, R2R, R2RMessage
-from forms import RequestForm, RoleForm, CommentForm
+from forms import RequestForm, RoleForm, CommentForm, PersonForm
 from flask import render_template, redirect, url_for, flash, session, request, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy import and_
+# import requests
 
 
 ################################  User  ################################
@@ -103,6 +104,35 @@ def sendcomment(r2r_id):
 
     return redirect(url_for('user.requestforms_r2r_edit',r2r_id=r2r.id))
 
+
+@user.route('/user/requestforms/onboard/pending', methods=['GET', 'POST'])
+def requestforms_onboard_pending():
+    r2rs= R2R.query.filter(R2R.school_id == session['active_school_id']).all()
+    return render_template('user/requestforms/onboard/pending.html',r2rs=r2rs)
+
+@user.route('/user/requestforms/onboard/form', methods=['GET', 'POST'])
+def requestforms_onboard_form():
+    approved_r2rs= R2R.query.filter(and_(R2R.school_id == session['active_school_id'], R2R.approved==True)).all()
+    return render_template('user/requestforms/onboard/form.html', approved_r2rs=approved_r2rs)
+
+@user.route('/user/requestforms/onboard/form2/<int:r2r_id>', methods=['GET', 'POST'])
+def requestforms_onboard_form2(r2r_id):
+    r2r = db.session.get(R2R,r2r_id)
+    if r2r.approved == False:
+        flash("R2R not approved", "error")
+        return redirect(url_for('user.requestforms_onboard_pending'))
+    
+    staff = Staff()
+    pform = PersonForm(obj=staff)
+    if pform.validate_on_submit():
+        pform.populate_obj(staff)
+        db.session.add(staff)
+        db.session.commit()
+        return redirect(url_for('user.requestforms_onboard_pending'))
+    
+    return render_template('user/requestforms/onboard/form2.html', pform=pform, r2r=r2r)
+
+
 @user.route('/user/requestforms/variation/pending', methods=['GET', 'POST'])
 def requestforms_variation_pending():
     variations = Variation.query.join(Staff).filter(Staff.school_id == session['active_school_id']).all()
@@ -157,3 +187,58 @@ def check_permission(staff_id):
             
 
 
+
+# def send_issue_to_jira(summary, description):
+#     jira_url = 'https://your-jira-instance.com/rest/api/2/issue'
+#     headers = {
+#         'Content-Type': 'application/json',
+#         'Authorization': 'Bearer your-jira-access-token'
+#     }
+#     data = {
+#         'fields': {
+#             'project': {
+#                 'key': 'YOUR_PROJECT_KEY'
+#             },
+#             'summary': summary,
+#             'description': description,
+#             'issuetype': {
+#                 'name': 'Task'
+#             }
+#         }
+#     }
+#     response = requests.post(jira_url, json=data, headers=headers)
+#     if response.status_code == 201:
+#         issue_key = response.json().get('key')
+#         return issue_key
+#     else:
+#         return None
+
+# @user.route('/user/requestforms/variation/form/<int:staff_id>', methods=['GET', 'POST'])
+# def requestforms_variation_form2(staff_id):
+#     if not check_permission(staff_id):
+#         return redirect(url_for('user.requestforms_variation_pending'))
+    
+#     staff = db.session.get(Staff,staff_id)
+#     rform= RoleForm(obj=staff)
+#     rqform = RequestForm(obj=staff)
+
+#     if rform.validate_on_submit() and rqform.validate_on_submit():
+#         new_variation = Variation()
+#         rform.populate_obj(new_variation)
+#         rqform.populate_obj(new_variation)
+#         new_variation.staff_id = int(staff_id)
+#         db.session.add(new_variation)
+#         db.session.commit()
+
+#         # Send issue to Jira
+#         summary = f"New Variation Request for Staff ID {staff_id}"
+#         description = f"Variation request details: {new_variation}"
+#         issue_key = send_issue_to_jira(summary, description)
+
+#         if issue_key:
+#             flash("Variation to Contract request submitted", "success")
+#             return redirect(url_for('user.requestforms_variation_pending'))
+#         else:
+#             flash("Failed to create Jira issue", "error")
+    
+#     return render_template('user/requestforms/variation/form2.html', staff=staff, rform=rform, rqform=rqform)

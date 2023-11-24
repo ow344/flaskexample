@@ -1,28 +1,48 @@
 {% extends "base.html" %}
-{% block content %}
 
-<a href="#">New Request</a>
-<h3>Pending Requests</h3>
+{% block navi %}
+<li><a href="/">Home</a></li>
+<li>></li>
+<li><a href="{{ url_for('user.requestforms_onboard_pending') }}">Onboarding Request</a></li>
+{% endblock %}
+
+
+
+
+
+{% block content %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+
+
+<a href="{{url_for('user.requestforms_onboard_form')}}" class="btn btn-primary">New Request</a>
+
+<h3>Existing Requests</h3>
 <table>
     <thead>
         <tr>
-            <!-- <th>ID</th> -->
-            <th>First Name</th>
-            <th>Last Name</th>
-            <!-- <th>School</th> -->
+            <th>Name</th>
             <th>Department</th>
             <th>Role</th>
+            <th>Request Date</th>
+            <th>Status</th>
+            <th>Edit</th>
+
         </tr>
     </thead>
     <tbody>
-        {% for item in staff %}
+        {% for item in r2rs %}
             <tr data-entry-id="{{ item.id }}">
-                <!-- <td>{{ item.id }}</td> -->
-                <td>{{ item.firstname }}</td>
-                <td>{{ item.lastname }}</td>
-                <!-- <td>{{ item.school.name }}</td> -->
+     
+                <td>Name</td>
                 <td>{{ item.department }}</td>
                 <td>{{ item.role }}</td>
+                <td>{{ item.request_date }}</td>
+                {% if item.approved %}
+                <td style="background-color: lightgreen;">Approved</td>
+                {% else %}
+                <td style="background-color: yellow;">Pending</td>
+                {% endif %}
+                <td><a href="{{url_for('user.requestforms_r2r_edit',r2r_id=item.id)}}">Edit</a></td>
             </tr>
         {% endfor %}
     </tbody>
