@@ -107,7 +107,7 @@
     <div style="padding: 5px;">
     
     <h3>Comments</h3>
-    <form action="{{url_for('user.sendcomment',r2r_id=10)}}" method="POST">
+    <form action="{{url_for('admin.sendcomment',r2r_id=r2r.id)}}" method="POST">
         {{ cform.hidden_tag() }}
         <input type="submit" value="Post Comment">
         {{ cform.content(class="form-control") }}

@@ -87,9 +87,9 @@ def requestforms_r2r_edit(r2r_id):
     cform = CommentForm()
     comments = R2RMessage.query.filter_by(r2r_id=r2r.id).order_by(R2RMessage.id.desc()).all()
 
-    return render_template('user/requestforms/r2r/edit.html', rform=rform, rqform=rqform, cform=cform,comments=comments)
+    return render_template('user/requestforms/r2r/edit.html', rform=rform, rqform=rqform, cform=cform,comments=comments,r2r=r2r)
 
-@user.route('/sendcomment/<int:r2r_id>', methods=['POST'])
+@user.route('/sendcomment1/<int:r2r_id>', methods=['POST'])
 def sendcomment(r2r_id):
     r2r = db.session.get(R2R,r2r_id)
     cform = CommentForm()

@@ -14,7 +14,7 @@ class LoginForm(FlaskForm):
     def validate_username(self, field):
         user = User.query.filter_by(username=field.data).first()
         if user is None:
-            raise ValidationError('Username not found. Please register or enter a valid username.')
+            raise ValidationError('Username not found.')
     def validate_password(self, field):
         user = User.query.filter_by(username=self.username.data).first()
         if user and not check_password_hash(user.hashed_password, field.data) :

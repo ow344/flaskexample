@@ -1,73 +1,61 @@
 {% extends "base.html" %}
 {% block content %}
+
 <style>
-.my-submit-button {
-background-color: green;
-color: white;
-padding: 15px 30px;
-border: none;
-cursor: pointer;
-border-radius: 5px;
-margin: 1px;
-
-}
-
-.container {
-text-align: center;
-background-color: #ffffff;
-padding: 20px;
-border-radius: 10px;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.container h1 {
-color: #333333;
-}
-.container p {
-color: #666666;
-margin-bottom: 20px;
-}
-.container a {
-display: inline-block;
-padding: 10px 20px;
-background-color: #3498db;
-color: #ffffff;
-text-decoration: none;
-border-radius: 5px;
-}
-.container a:hover {
-background-color: #2980b9;
-}
+    .container {
+        background-color: #f2f2f2;
+        color: #333;
+        padding: 5px 5px;
+        border: 2px solid black;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .container h2 {
+        text-align: center;
+    }
+    
+    .container table {
+        margin: 0 auto;
+        width: 25%;
+        border: 1px solid black;
+    }
+    
+    .container div {
+        text-align: center;
+        margin: 5px;
+    }
 </style>
 
-<link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
-
-
 <div class="container">
-<h1>Welcome to Alpha Schools HR Management</h1>
-<p>Please log in to continue.</p>
-<form method="POST">
-    {{ form.hidden_tag() }}
-
-    <div class="form-group">
-    {{ form.username.label(class="form-control-label") }}
-    {{ form.username(class="form-control") }}
-    </div>
-
-    {% for error in form.username.errors %}
-    <span style="color: red;">{{ error }}</span>
-    {% endfor %}
-        
-    <div class="form-group">
-    {{ form.password.label(class="form-control-label") }}
-    {{ form.password(class="form-control") }}
-    </div>
-
-    {% for error in form.password.errors %}
-    <span style="color: red;">{{ error }}</span>
-    {% endfor %}
-    <p>{{ form.submit(class_="my-submit-button") }}</p>
-</form>
+    <h2>Welcome to Alpha Schools HR Management</h2>
+    <p>Please login to continue</p>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <table class="table">
+            <tr>
+                <td>{{form.username.label}}</td>
+                <td>{{form.username}}</td>
+            </tr>
+            <tr>
+                <td>{{form.password.label}}</td>
+                <td>{{form.password}}</td>
+            </tr>
+        </table>
+        <div>{{ form.submit(class="btn btn-primary") }}</div>
+    </form>
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            {% for field, errors in form.errors.items() %}
+                    {% for error in errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
-
-
 {% endblock %}
+
+
+

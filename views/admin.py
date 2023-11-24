@@ -62,7 +62,7 @@ def sendcomment(r2r_id):
         r2rm.r2r_id=r2r_id
         db.session.add(r2rm)
         db.session.commit()
-
+        flash("Comment sent", "success")
 
     return redirect(url_for('admin.reviewrequests_r2r_entry',r2r_id=r2r.id))
 
