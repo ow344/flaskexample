@@ -101,7 +101,6 @@ def sendcomment(r2r_id):
         db.session.add(r2rm)
         db.session.commit()
 
-
     return redirect(url_for('user.requestforms_r2r_edit',r2r_id=r2r.id))
 
 @user.route('/user/requestforms/variation/pending', methods=['GET', 'POST'])

@@ -2,11 +2,11 @@
 
 
 {% block navi %}
-<li><a href="#">Admin home</a></li>
+<li><a href="/">Admin home</a></li>
 <li>></li>
-<li><a href="#">Request to Recruit</a></li>
+<li><a href="{{ url_for('admin.reviewrequests_r2r') }}">Request to Recruits</a></li>
 <li>></li>
-<li><a href="#">R2R Form</a></li>
+<li><a href="{{ url_for('admin.reviewrequests_r2r_entry',r2r_id=r2r.id) }}">{{ r2r.role }}</a></li>
 {% endblock %}
 
 
@@ -93,14 +93,7 @@
         <button type="submit">Submit</button>
     </div>
 </form>
-
-
-
-
 </div>
-
-
-
 
 
 <div class="col-md-3">
@@ -112,7 +105,6 @@
         <input type="submit" value="Post Comment">
         {{ cform.content(class="form-control") }}
       
-    
     </form>
     
     {% for comment in comments %}

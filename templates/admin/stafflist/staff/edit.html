@@ -1,4 +1,15 @@
 {% extends "base.html" %}
+
+{% block navi %}
+<li><a href="/">Admin home</a></li>
+<li>></li>
+<li><a href="{{ url_for('admin.stafflist') }}">Staff List</a></li>
+<li>></li>
+<li> <a href="{{ url_for('admin.stafflist_staff',staff_id=staff.id ) }}">{{ staff.firstname }} {{ staff.lastname }}</a></li>
+<li>></li>
+<li> <a href="{{ url_for('admin.stafflist_staff_edit',staff_id=staff.id ) }}">Edit</a></li>
+{% endblock %}
+
 {% block content %}
 
 <style>

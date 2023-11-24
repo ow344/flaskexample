@@ -23,7 +23,7 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), Length(min=4, max=20)])
     password = StringField('Temporary Password', validators=[InputRequired(), Length(min=5)])
-    is_admin = BooleanField('Admin (can see all schools + financials)')
+    is_admin = BooleanField('Admin?')
     submit = SubmitField('Register')
     def validate_username(self, field):
         user = User.query.filter_by(username=field.data).first()

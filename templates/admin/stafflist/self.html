@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+
+{% block navi %}
+<li><a href="/">Admin home</a></li>
+<li>></li>
+<li><a href="{{ url_for('admin.stafflist') }}">Staff List</a></li>
+{% endblock %}
+
 {% block content %}
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
