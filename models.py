@@ -133,3 +133,28 @@ class R2RMessage(db.Model):
     user = db.relationship('User', backref='r2rmessage')
 
     content = db.Column(db.Text)
+
+
+class Onboard(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    firstname = db.Column(db.String(80))
+    lastname = db.Column(db.String(80))
+    dob = db.Column(db.Date)
+    gender = db.Column(db.String(20))
+    nino = db.Column(db.String(12))
+    nic = db.Column(db.String(12))
+    marital = db.Column(db.String(20))
+    home_address = db.Column(db.String(120))
+    postcode = db.Column(db.String(20))
+    email = db.Column(db.String(80))
+    
+    startdate = db.Column(db.Date)
+    approved = db.Column(db.Boolean, default=False)
+
+    # Remodel to link to R2R
+    r2r_id = db.Column(db.Integer, db.ForeignKey('r2_r.id'))
+    r2r = db.relationship('R2R', backref='onboard')
+   
+  
+    def __repr__(self):
+        return f'{self.firstname} {self.lastname}'
