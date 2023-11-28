@@ -79,7 +79,8 @@ class PersonForm(FlaskForm):
         self.nic.choices = ['A','B','C','H','J','M','V','Z','X']
 
 class ApporovalForm(FlaskForm):
-    decision = RadioField('Decision', choices=[('1', 'Approve'), ('0', 'Deny')])
+    decision = SelectField('Decision', choices=['Pending','Approved','Denied'])
+
 
 class CommentForm(FlaskForm):
     content = TextAreaField('Comment')

@@ -149,7 +149,7 @@ class Onboard(db.Model):
     email = db.Column(db.String(80))
     
     startdate = db.Column(db.Date)
-    approved = db.Column(db.Boolean, default=False)
+    status = db.Column(db.String(20), default='Pending')
 
     # Remodel to link to R2R
     r2r_id = db.Column(db.Integer, db.ForeignKey('r2_r.id'))

@@ -3,7 +3,7 @@ This module contains the Flask views for the admin section of the application.
 It includes routes for handling various administrative tasks such as reviewing requests, managing user permissions, and editing staff information.
 """
 from flask import Blueprint
-from models import db, User, School, UserSchool, Staff, Variation, R2R, R2RMessage
+from models import db, User, School, UserSchool, Staff, Variation, R2R, R2RMessage, Onboard
 from forms import RegistrationForm, PersonForm, RoleForm, ApporovalForm, CommentForm
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required
@@ -38,15 +38,15 @@ def reviewrequests_r2r_entry(r2r_id):
     """
     form = ApporovalForm()
     r2r = db.session.get(R2R,r2r_id)
+
+    if r2r.status == 'Linked':
+        flash(f'Cannot change request with status {r2r.status}', 'error')
+        return redirect(url_for('admin.reviewrequests_r2r'))
     
     if form.validate_on_submit():
-        if form.decision.data == '1':
-            print("Success")
-            r2r.approved = True
-            flash('Successfuly Approved', 'success')
-        else:
-            r2r.approved = False
-            flash('Successfuly Denied', 'success')
+        r2r.status = form.decision.data
+        flash(f'Status set to {form.decision.data}', 'success')
+
         db.session.commit()
         return redirect(url_for('admin.reviewrequests_r2r'))
  
@@ -72,6 +72,28 @@ def sendcomment(r2r_id):
         flash("Comment sent", "success")
 
     return redirect(url_for('admin.reviewrequests_r2r_entry',r2r_id=r2r.id))
+
+@admin.route('/admin/reviewrequests/onboard')
+def reviewrequests_onboard():
+    """
+    Renders the page for reviewing onboard requests.
+    """
+    onboards = Onboard.query.all()
+    return render_template('admin/reviewrequests/onboard/self.html',onboards=onboards)
+
+@admin.route('/admin/reviewrequests/onboard/entry/<int:onboard_id>', methods=['GET','POST'])
+def reviewrequests_onboard_entry(onboard_id):
+    
+    form = ApporovalForm()
+    onboard = db.session.get(Onboard,onboard_id)
+    if form.validate_on_submit():
+        onboard.status = form.decision.data
+        flash(f'Status set to {form.decision.data}', 'success')
+        db.session.commit()
+        return redirect(url_for('admin.reviewrequests_onboard'))
+ 
+ 
+    return render_template('admin/reviewrequests/onboard/entry.html',onboard=onboard, form=form)
 
 @admin.route('/admin/reviewrequests/variation')
 def reviewrequests_variation():

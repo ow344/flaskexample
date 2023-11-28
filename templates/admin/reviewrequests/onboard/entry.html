@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+
+{% block navi %}
+<li><a href="/">Home</a></li>
+<li>></li>
+<li><a href="{{ url_for('admin.reviewrequests_onboard') }}">Request to Onboard</a></li>
+<li>></li>
+<li><a href="{{ url_for('admin.reviewrequests_onboard_entry',onboard_id=onboard.id) }}">{{ onboard.r2r.role }}</a></li>
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="row">
+<div class="col-md-6">
+    <table class="table" style="border: 1px solid black;">
+        <tr>
+            <th></th>
+            <th>Role to Onboard</th>
+        </tr>
+        <tr>
+                <td>School</td>
+                <td>{{ onboard.r2r.school }}</td>
+            </tr>
+            <tr>
+                <td>Department</td>
+                <td>{{ onboard.r2r.department }}</td>
+            </tr>
+            <tr>
+                <td>Role</td>
+                <td>{{ onboard.r2r.role }}</td>
+            </tr>
+            <tr>
+                <td>Salary</td>
+                <td>{{ onboard.r2r.salary }}</td>
+            </tr>
+            <tr>
+                <td>Pension</td>
+                <td>{{ onboard.r2r.pension }}</td>
+            </tr>
+            <tr>
+                <td>FTPT</td>
+                <td>{{ onboard.r2r.ftpt }}</td>
+            </tr>
+            <tr>
+                <td>Weekhours</td>
+                <td>{{ onboard.r2r.weekhours }}</td>
+            </tr>
+            <tr>
+                <td>Contract</td>
+                <td>{{ onboard.r2r.contract }}</td>
+            </tr>
+            <tr>
+                <td>Holiday</td>
+                <td>{{ onboard.r2r.holiday }}</td>
+            </tr>
+            <tr>
+                <td>Notice</td>
+                <td>{{ onboard.r2r.notice }}</td>
+            </tr>
+    </table>
+    
+<form method="post">
+{{ form.hidden_tag() }}
+{{ form.decision.label }}
+{{ form.decision }}
+<button type="submit">Submit</button>
+</form>
+</div>
+
+<div class="col-md-6">
+        <table class="table" style="border: 1px solid black;">
+            <tr>
+                <th></th>
+                <th>Person to Onbaord</th>
+            </tr>
+            <tr>
+                <td>First Name</td>
+                <td>{{ onboard.firstname }}</td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td>{{ onboard.lastname }}</td>
+            </tr>
+            <tr>
+                <td>Date of Birth</td>
+                <td>{{ onboard.dob }}</td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td>{{ onboard.gender }}</td>
+            </tr>
+            <tr>
+                <td>National Insurance Number</td>
+                <td>{{ onboard.nino }}</td>
+            </tr>
+            <tr>
+                <td>National Insurance Category</td>
+                <td>{{ onboard.nic }}</td>
+            </tr>
+            <tr>
+                <td>Marital Status</td>
+                <td>{{ onboard.marital }}</td>
+            </tr>
+            <tr>
+                <td>Home Address</td>
+                <td>{{ onboard.home_address }}</td>
+            </tr>
+            <tr>
+                <td>Postcode</td>
+                <td>{{ onboard.postcode }}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{ onboard.email }}</td>
+            </tr>
+            <tr>
+                <td>Start Date</td>
+                <td>{{ onboard.startdate }}</td>
+            </tr>
+        </table>
+</div>
+
+
+{% endblock %}

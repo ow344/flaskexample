@@ -10,29 +10,34 @@
 {% block navi %}
 <li><a href="/">Home</a></li>
 <li>></li>
-<li><a href="{{ url_for('admin.reviewrequests_r2r') }}">Request to Recruits</a></li>
+<li><a href="{{ url_for('admin.reviewrequests_onboard') }}">Request to Onboard</a></li>
 {% endblock %}
 
 {% block content %}
-<h2>Request to Recruits</h2>
+<h3>Existing Requests</h3>
 <table>
-    <tr>
-        <th>Role</th>
-        <th>School</th>
-        <th>Request Date</th>
-        <th>Requester</th>
-        <th>Status</th>
-    </tr>
-    {% for r2r in r2rs %}
-    <tr data-entry-id="{{ r2r.id }}">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Role</th>
+            <th>Requested Start Date</th>
+            <th>Status</th>
 
-        <td>{{ r2r.role }}</td>
-        <td>{{ r2r.school }}</td>
-        <td>{{ r2r.request_date }}</td>
-        <td>{{ r2r.user }}</td>
-        <td>{{ r2r.status }}</td>
-    </tr>    
-    {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in onboards %}
+            <tr data-entry-id="{{ item.id }}">
+     
+                <td>{{ item }}</td>
+                <td>{{ item.r2r.department }}</td>
+                <td>{{ item.r2r.role }}</td>
+                <td>{{ item.startdate }}</td>
+                <td>{{ item.status }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% endblock %}
 
@@ -46,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
         row.addEventListener('click', function() {
             var entryId = this.getAttribute('data-entry-id');
             if (entryId) {
-                window.location.href = '/admin/reviewrequests/r2r/entry/' + entryId;
+                window.location.href = '/admin/reviewrequests/onboard/entry/' + entryId;
             }
         });
     });

@@ -82,12 +82,7 @@
     {{ form.hidden_tag() }}
     <div>
         {{ form.decision.label }}
-        {% for choice in form.decision %}
-            <div>
-                {{ choice.label }}
-                {{ choice() }}
-            </div>
-        {% endfor %}
+        {{ form.decision }}
     </div>
     <div>
         <button type="submit">Submit</button>

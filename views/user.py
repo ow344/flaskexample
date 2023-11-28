@@ -109,9 +109,7 @@ def sendcomment(r2r_id):
 @user.route('/user/requestforms/onboard/pending', methods=['GET', 'POST'])
 def requestforms_onboard_pending():
     onboards = Onboard.query.join(R2R).filter(and_(
-        R2R.school_id == session['active_school_id'],
-        Onboard.approved == False
-    )).all()
+        R2R.school_id == session['active_school_id'])).all()
 
     return render_template('user/requestforms/onboard/pending.html', onboards=onboards)
 
@@ -143,8 +141,8 @@ def requestforms_onboard_form2(r2r_id):
 @user.route('/user/requestforms/onboard/edit/<int:onboard_id>', methods=['GET', 'POST'])
 def requestforms_onboard_edit(onboard_id):
     onboard = db.session.get(Onboard,onboard_id)
-    if onboard.approved == True:
-        flash("Already Approved, not editable", "error")
+    if onboard.status != 'Pending':
+        flash("Decision already made, not editable", "error")
         return redirect(url_for('user.requestforms_onboard_pending'))
     if onboard.r2r.school_id != session['active_school_id']:
         flash("No Permission to view this entry", "error")
