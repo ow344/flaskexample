@@ -25,7 +25,7 @@
             <th>Role</th>
             <th>Requested Start Date</th>
             <th>Status</th>
-            <!-- <th>Edit</th> -->
+            <th>Edit</th>
 
         </tr>
     </thead>
@@ -42,7 +42,7 @@
                 {% else %}
                 <td style="background-color: yellow;">Pending</td>
                 {% endif %}
-                <!-- <td><a href="{{url_for('user.requestforms_r2r_edit',r2r_id=item.id)}}">Edit</a></td> -->
+                <td><a href="{{ url_for('user.requestforms_onboard_edit',onboard_id=item.id) }}">Edit</a></td>
             </tr>
         {% endfor %}
     </tbody>

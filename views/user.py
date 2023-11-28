@@ -139,6 +139,25 @@ def requestforms_onboard_form2(r2r_id):
     
     return render_template('user/requestforms/onboard/form2.html', pform=pform, r2r=r2r)
 
+@user.route('/user/requestforms/onboard/edit/<int:onboard_id>', methods=['GET', 'POST'])
+def requestforms_onboard_edit(onboard_id):
+    onboard = db.session.get(Onboard,onboard_id)
+    if onboard.approved == True:
+        flash("Already Approved, not editable", "error")
+        return redirect(url_for('user.requestforms_onboard_pending'))
+    if onboard.r2r.school_id != session['active_school_id']:
+        flash("No Permission to view this entry", "error")
+        return redirect(url_for('user.requestforms_onboard_pending'))
+    pform = PersonForm(obj=onboard)
+    if pform.validate_on_submit():
+        pform.populate_obj(onboard)
+        db.session.commit()
+        return redirect(url_for('user.requestforms_onboard_pending'))
+    return render_template('user/requestforms/onboard/edit.html', pform=pform, onboard=onboard, r2r=onboard.r2r)
+
+
+
+
 ##################### Variation #####################
 @user.route('/user/requestforms/variation/pending', methods=['GET', 'POST'])
 def requestforms_variation_pending():
