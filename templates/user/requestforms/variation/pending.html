@@ -32,8 +32,8 @@
         {% for item in variations %}
             <tr data-entry-id="{{ item.id }}">
                 <td>{{ item.staff.firstname }} {{ item.staff.lastname }}</td>
-                <td>{{ item.request_date }}</td>
-                <td>{{ item.status }}</td>
+                <td>{{ item.request.request_date }}</td>
+                <td>{{ item.request.status }}</td>
             </tr>
         {% endfor %}
     </tbody>

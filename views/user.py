@@ -1,5 +1,5 @@
 from flask import Blueprint
-from models import db, School, UserSchool, Staff, Variation, R2R, R2RMessage, Onboard
+from models import db, School, UserSchool, Staff, Variation, R2R, R2RMessage, Onboard, Request
 from forms import RequestForm, RoleForm, CommentForm, PersonForm
 from flask import render_template, redirect, url_for, flash, session, request, jsonify
 from flask_login import login_required, current_user
@@ -56,16 +56,14 @@ def requestforms_r2r_pending():
 
 @user.route('/user/requestforms/r2r/form', methods=['GET', 'POST'])
 def requestforms_r2r_form():
-    new_request = R2R()
-    rform = RoleForm(obj=new_request)
-    rqform = RequestForm(obj=new_request)
-    if request.method=='POST':
-        print(rform.data)
+    r2r = R2R()
+    rform = RoleForm(obj=r2r)
+    rqform = RequestForm(obj=r2r)
     if rform.validate_on_submit() and rqform.validate_on_submit():
-        print("Hi")
-        rform.populate_obj(new_request)
-        rqform.populate_obj(new_request)
-        db.session.add(new_request)
+        rform.populate_obj(r2r)
+        rqform.populate_obj(r2r)
+        r2r.request = Request()
+        db.session.add(r2r)
         db.session.commit()
         return redirect(url_for('user.requestforms_r2r_pending'))
     return render_template('user/requestforms/r2r/form.html', rform=rform, rqform=rqform)
@@ -73,7 +71,7 @@ def requestforms_r2r_form():
 @user.route('/user/requestforms/r2r/edit/<int:r2r_id>', methods=['GET', 'POST'])
 def requestforms_r2r_edit(r2r_id):
     r2r = db.session.get(R2R,r2r_id)
-    if r2r.status != 'Pending':
+    if r2r.request.status != 'Pending':
         flash("Decision already made, not editable", "error")
         return redirect(url_for('user.requestforms_r2r_pending'))
     
@@ -115,13 +113,23 @@ def requestforms_onboard_pending():
 
 @user.route('/user/requestforms/onboard/form', methods=['GET', 'POST'])
 def requestforms_onboard_form():
-    approved_r2rs= R2R.query.filter(and_(R2R.school_id == session['active_school_id'], R2R.status=='Approved')).all()
-    return render_template('user/requestforms/onboard/form.html', approved_r2rs=approved_r2rs)
+    approved_r2rs = R2R.query.join(Request).filter(R2R.school_id == session['active_school_id'], Request.status == 'Approved').all()
+    pform = PersonForm()
+    if pform.validate_on_submit():
+        onboard = Onboard()
+        pform.populate_obj(onboard)
+        onboard.r2r_id = pform.r2r_id.data
+        onboard.startdate = pform.startdate.data
+        onboard.request = Request()
+        db.session.add(onboard)
+        db.session.commit()
+        return redirect(url_for('user.requestforms_onboard_pending'))
+    return render_template('user/requestforms/onboard/form.html', approved_r2rs=approved_r2rs, pform=pform)
 
 @user.route('/user/requestforms/onboard/form2/<int:r2r_id>', methods=['GET', 'POST'])
 def requestforms_onboard_form2(r2r_id):
     r2r = db.session.get(R2R,r2r_id)
-    if r2r.status != 'Approved':
+    if r2r.request.status != 'Approved':
         flash("R2R not approved", "error")
         return redirect(url_for('user.requestforms_onboard_pending'))
     
@@ -131,8 +139,9 @@ def requestforms_onboard_form2(r2r_id):
         pform.populate_obj(onboard)
         onboard.r2r_id = r2r_id
         onboard.startdate = request.form['startdate']
+        onboard.request = Request()
         db.session.add(onboard)
-        r2r.status = 'Linked'
+        r2r.request.status = 'Linked'
         db.session.commit()
         return redirect(url_for('user.requestforms_onboard_pending'))
     
@@ -141,7 +150,7 @@ def requestforms_onboard_form2(r2r_id):
 @user.route('/user/requestforms/onboard/edit/<int:onboard_id>', methods=['GET', 'POST'])
 def requestforms_onboard_edit(onboard_id):
     onboard = db.session.get(Onboard,onboard_id)
-    if onboard.status != 'Pending':
+    if onboard.request.status != 'Pending':
         flash("Decision already made, not editable", "error")
         return redirect(url_for('user.requestforms_onboard_pending'))
     if onboard.r2r.school_id != session['active_school_id']:
@@ -184,6 +193,7 @@ def requestforms_variation_form2(staff_id):
         rform.populate_obj(new_variation)
         rqform.populate_obj(new_variation)
         new_variation.staff_id = int(staff_id)
+        new_variation.request = Request()
         db.session.add(new_variation)
         db.session.commit()
    

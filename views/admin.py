@@ -25,11 +25,11 @@ def reviewrequests_r2r():
 def reviewrequests_r2r_entry(r2r_id):
     form = ApporovalForm()
     r2r = db.session.get(R2R,r2r_id)
-    if r2r.status == 'Linked':
-        flash(f'Cannot change request with status {r2r.status}', 'error')
+    if r2r.request.status == 'Linked':
+        flash(f'Cannot change request with status {r2r.request.status}', 'error')
         return redirect(url_for('admin.reviewrequests_r2r'))
     if form.validate_on_submit():
-        r2r.status = form.decision.data
+        r2r.request.status = form.decision.data
         flash(f'Status set to {form.decision.data}', 'success')
         db.session.commit()
         return redirect(url_for('admin.reviewrequests_r2r'))
@@ -60,13 +60,13 @@ def reviewrequests_onboard():
 def reviewrequests_onboard_entry(onboard_id):
     form = ApporovalForm()
     onboard = db.session.get(Onboard,onboard_id)
-    if onboard.status != 'Pending':
-        flash(f'Cannot change request with status {onboard.status}', 'error')
+    if onboard.request.status != 'Pending':
+        flash(f'Cannot change request with status {onboard.request.status}', 'error')
         return redirect(url_for('admin.reviewrequests_onboard'))
     if form.validate_on_submit():
-        onboard.status = form.decision.data
+        onboard.request.status = form.decision.data
         flash(f'Status set to {form.decision.data}', 'success')
-        if onboard.status == "Approved":
+        if onboard.request.status == "Approved":
             staff = Staff()           
             for attr in ['firstname','lastname','dob','gender','nino','nic','marital','home_address','postcode','email','startdate']: 
                 setattr(staff, attr, getattr(onboard, attr))
@@ -87,16 +87,16 @@ def reviewrequests_variation_entry(variation_id):
     form = ApporovalForm()
     variation = db.session.get(Variation,variation_id)
     staff = variation.staff
-    if variation.status != 'Pending':
-        flash(f'Cannot change request with status {variation.status}', 'error')
+    if variation.request.status != 'Pending':
+        flash(f'Cannot change request with status {variation.request.status}', 'error')
         return redirect(url_for('admin.reviewrequests_variation'))
     if form.validate_on_submit():
-        variation.status = form.decision.data
-        if variation.status == 'Approved':
+        variation.request.status = form.decision.data
+        if variation.request.status == 'Approved':
             attributes_to_copy = ['department_id','role','salary','pension','ftpt','weekhours','contract','holiday','notice']
             for attr in attributes_to_copy:             
                 setattr(staff, attr, getattr(variation, attr))
-        flash(f'Successfuly transitioned to {variation.status}', 'success')
+        flash(f'Successfuly transitioned to {variation.request.status}', 'success')
         db.session.commit()
         return redirect(url_for('admin.reviewrequests_variation'))
     return render_template('admin/reviewrequests/variation/entry.html',variation=variation, staff=staff, form=form)

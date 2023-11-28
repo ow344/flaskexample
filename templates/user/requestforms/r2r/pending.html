@@ -34,8 +34,8 @@
      
                 <td>{{ item.department }}</td>
                 <td>{{ item.role }}</td>
-                <td>{{ item.request_date }}</td>
-                <td>{{item.status}}</td>
+                <td>{{ item.request.request_date }}</td>
+                <td>{{item.request.status}}</td>
                 <td><a href="{{url_for('user.requestforms_r2r_edit',r2r_id=item.id)}}">Edit</a></td>
             </tr>
         {% endfor %}

@@ -74,12 +74,8 @@ class Staff(db.Model):
 
 class Variation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    request_date = db.Column(db.Date, default=date.today)
-    status = db.Column(db.String(20), default='Pending')
-
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'))
     staff = db.relationship('Staff', backref='variation')
-
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
     department = db.relationship('Department', backref='variation')
     role = db.Column(db.String(120))
@@ -94,19 +90,16 @@ class Variation(db.Model):
     justification = db.Column(db.Text)
     budgeted = db.Column(db.Boolean, default=False)
     effect_date = db.Column(db.Date)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
-    user = db.relationship('User', backref='variation')
 
+    request_id = db.Column(db.Integer, db.ForeignKey('request.id'))
+    request = db.relationship('Request', backref='variation')
+    
 
 
 class R2R(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    request_date = db.Column(db.Date, default=date.today)
-    status = db.Column(db.String(20), default='Pending')
-
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'), default=lambda: session.get("active_school_id", None))
     school = db.relationship('School', backref='r2r')
-
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
     department = db.relationship('Department', backref='r2r')
     role = db.Column(db.String(120))
@@ -117,11 +110,14 @@ class R2R(db.Model):
     contract = db.Column(db.String(80))
     holiday = db.Column(db.String(80))
     notice = db.Column(db.String(20))
+
     justification = db.Column(db.Text)
     budgeted = db.Column(db.Boolean, default=False)
     effect_date = db.Column(db.Date)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
-    user = db.relationship('User', backref='r2r')
+
+    request_id = db.Column(db.Integer, db.ForeignKey('request.id'))
+    request = db.relationship('Request', backref='r2r')
+
 
 
 class R2RMessage(db.Model):
@@ -150,12 +146,22 @@ class Onboard(db.Model):
     email = db.Column(db.String(80))
     
     startdate = db.Column(db.Date)
-    status = db.Column(db.String(20), default='Pending')
 
     # Remodel to link to R2R
     r2r_id = db.Column(db.Integer, db.ForeignKey('r2_r.id'))
     r2r = db.relationship('R2R', backref='onboard')
    
+    request_id = db.Column(db.Integer, db.ForeignKey('request.id'))
+    request = db.relationship('Request', backref='onboard')
+
   
     def __repr__(self):
         return f'{self.firstname} {self.lastname}'
+    
+
+class Request(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    status = db.Column(db.String(20), default='Pending')
+    request_date = db.Column(db.Date, default=date.today)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
+    user = db.relationship('User', backref='request')
