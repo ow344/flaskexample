@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
+{% block statics %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{{ url_for('static', filename='js/sortable_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/status.js') }}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+{% endblock %}
+
+
 {% block navi %}
 <li><a href="/">Home</a></li>
 <li>></li>
@@ -9,7 +17,6 @@
 
 <a href="{{ url_for('user.requestforms_variation_form') }}" class="btn btn-primary">New Request</a>
 
-<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
 
 
 <h3>Pending Requests</h3>
@@ -27,7 +34,7 @@
             <tr data-entry-id="{{ item.id }}">
                 <td>{{ item.staff.firstname }} {{ item.staff.lastname }}</td>
                 <td>{{ item.request_date }}</td>
-                <td style="background-color: yellow;">Pending</td>
+                <td>Pending</td>
                 <td>{{ item.user.username }}</td>
             </tr>
         {% endfor %}

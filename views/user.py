@@ -73,8 +73,8 @@ def requestforms_r2r_form():
 @user.route('/user/requestforms/r2r/edit/<int:r2r_id>', methods=['GET', 'POST'])
 def requestforms_r2r_edit(r2r_id):
     r2r = db.session.get(R2R,r2r_id)
-    if r2r.approved:
-        flash("Already Approved, not editable", "error")
+    if r2r.status != 'Pending':
+        flash("Decision already made, not editable", "error")
         return redirect(url_for('user.requestforms_r2r_pending'))
     
     rform = RoleForm(obj=r2r)
@@ -117,13 +117,13 @@ def requestforms_onboard_pending():
 
 @user.route('/user/requestforms/onboard/form', methods=['GET', 'POST'])
 def requestforms_onboard_form():
-    approved_r2rs= R2R.query.filter(and_(R2R.school_id == session['active_school_id'], R2R.approved==True, R2R.onboard==None)).all()
+    approved_r2rs= R2R.query.filter(and_(R2R.school_id == session['active_school_id'], R2R.status=='Approved')).all()
     return render_template('user/requestforms/onboard/form.html', approved_r2rs=approved_r2rs)
 
 @user.route('/user/requestforms/onboard/form2/<int:r2r_id>', methods=['GET', 'POST'])
 def requestforms_onboard_form2(r2r_id):
     r2r = db.session.get(R2R,r2r_id)
-    if r2r.approved == False:
+    if r2r.status != 'Approved':
         flash("R2R not approved", "error")
         return redirect(url_for('user.requestforms_onboard_pending'))
     
@@ -134,6 +134,7 @@ def requestforms_onboard_form2(r2r_id):
         onboard.r2r_id = r2r_id
         onboard.startdate = request.form['startdate']
         db.session.add(onboard)
+        r2r.status = 'Linked'
         db.session.commit()
         return redirect(url_for('user.requestforms_onboard_pending'))
     

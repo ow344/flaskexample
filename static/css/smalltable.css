@@ -9,6 +9,7 @@ th {
     color: #fff;
     font-weight: bold;
     padding: 5px;
+    cursor: pointer;
 }
 tr {
     background-color: #f5f5f5;
@@ -20,4 +21,20 @@ tr:nth-child(even) {
 td {
     padding: 4px;
     border: 1px solid #ccc;
+}
+
+.pending-value {
+    background-color: #FFFF99; /* Yellow for 'Pending' values */
+}
+
+.approved-value {
+    background-color: #99FF99; /* Green for 'Approved' values */
+}
+
+.denied-value {
+    background-color: #FF9999; /* Red for 'Denied' values */
+}
+
+.linked-value {
+    background-color: #99CCFF; /* Blue for 'Linked' values */
 }

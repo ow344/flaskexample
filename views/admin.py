@@ -1,3 +1,7 @@
+"""
+This module contains the Flask views for the admin section of the application.
+It includes routes for handling various administrative tasks such as reviewing requests, managing user permissions, and editing staff information.
+"""
 from flask import Blueprint
 from models import db, User, School, UserSchool, Staff, Variation, R2R, R2RMessage
 from forms import RegistrationForm, PersonForm, RoleForm, ApporovalForm, CommentForm
@@ -14,16 +18,24 @@ def handle_route_permissions():
 
 @admin.route('/admin')
 def home():
+    """
+    Renders the admin home page.
+    """
     return render_template('admin/self.html')
 
 @admin.route('/admin/reviewrequests/r2r')
 def reviewrequests_r2r():
-    # r2rs= R2R.query.filter(R2R.approved == False).all()
+    """
+    Renders the page for reviewing R2R (Request to Review) requests.
+    """
     r2rs= R2R.query.all()
     return render_template('admin/reviewrequests/r2r/self.html',r2rs=r2rs)
 
 @admin.route('/admin/reviewrequests/r2r/entry/<int:r2r_id>', methods=['GET','POST'])
 def reviewrequests_r2r_entry(r2r_id):
+    """
+    Renders the page for reviewing a specific R2R request and allows for approving or denying the request.
+    """
     form = ApporovalForm()
     r2r = db.session.get(R2R,r2r_id)
     
@@ -31,15 +43,10 @@ def reviewrequests_r2r_entry(r2r_id):
         if form.decision.data == '1':
             print("Success")
             r2r.approved = True
-    #         attributes_to_copy = ['department_id','role','salary','pension','ftpt','weekhours','contract','holiday','notice']
-    #         for attr in attributes_to_copy:             
-    #             if not getattr(staff, attr) == getattr(variation, attr):
-    #                 setattr(staff, attr, getattr(variation, attr))
             flash('Successfuly Approved', 'success')
         else:
             r2r.approved = False
             flash('Successfuly Denied', 'success')
-    #     db.session.delete(variation)
         db.session.commit()
         return redirect(url_for('admin.reviewrequests_r2r'))
  
@@ -48,11 +55,11 @@ def reviewrequests_r2r_entry(r2r_id):
 
     return render_template('admin/reviewrequests/r2r/entry.html',r2r=r2r, form=form, cform=cform,comments=comments)
 
-    
-
-
 @admin.route('/sendcomment/<int:r2r_id>', methods=['POST'])
 def sendcomment(r2r_id):
+    """
+    Handles the submission of a comment for a specific R2R request.
+    """
     r2r = db.session.get(R2R,r2r_id)
     cform = CommentForm()
     if cform.validate_on_submit():
@@ -66,21 +73,19 @@ def sendcomment(r2r_id):
 
     return redirect(url_for('admin.reviewrequests_r2r_entry',r2r_id=r2r.id))
 
-
-
-
-
-
-
-
-
 @admin.route('/admin/reviewrequests/variation')
 def reviewrequests_variation():
+    """
+    Renders the page for reviewing variation requests.
+    """
     variations = Variation.query.all()
     return render_template('admin/reviewrequests/variation/self.html',variations=variations)
 
 @admin.route('/admin/reviewrequests/variation/entry/<int:variation_id>', methods=['GET','POST'])
 def reviewrequests_variation_entry(variation_id):
+    """
+    Renders the page for reviewing a specific variation request and allows for approving or denying the request.
+    """
     form = ApporovalForm()
     variation = db.session.get(Variation,variation_id)
     staff = variation.staff
@@ -101,10 +106,16 @@ def reviewrequests_variation_entry(variation_id):
 
 @admin.route('/admin/userpermissions')
 def userpermissions():
+    """
+    Renders the page for managing user permissions.
+    """
     return render_template('admin/userpermissions/self.html', users=User.query.all())
 
 @admin.route('/admin/userpermissions/user/<int:user_id>', methods=['GET', 'POST'])
 def userpermissions_user(user_id):
+    """
+    Renders the page for managing permissions for a specific user and allows for modifying the permissions.
+    """
     user=db.session.get(User,user_id)
     schools = School.query.all()
     if request.method == 'POST':
@@ -135,6 +146,9 @@ def userpermissions_user(user_id):
 
 @admin.route('/admin/userpermissions/register', methods=['GET', 'POST'])
 def userpermissions_register():
+    """
+    Renders the page for registering a new user with permissions.
+    """
     form = RegistrationForm()
     if form.validate_on_submit():
         newU = User()
@@ -149,16 +163,25 @@ def userpermissions_register():
 
 @admin.route('/admin/stafflist', methods=['GET', 'POST'])
 def stafflist():
+    """
+    Renders the page for listing staff members.
+    """
     staff = Staff.query.all()
     return render_template('admin/stafflist/self.html', staff=staff)
 
 @admin.route('/admin/stafflist/staff/<int:staff_id>')
 def stafflist_staff(staff_id):
+    """
+    Renders the page for displaying information about a specific staff member.
+    """
     staff = db.session.get(Staff,staff_id)
     return render_template('admin/stafflist/staff/self.html', staff=staff)
 
 @admin.route('/admin/stafflist/staff/edit/<int:staff_id>', methods=['GET', 'POST'])
 def stafflist_staff_edit(staff_id):
+    """
+    Renders the page for editing information about a specific staff member and allows for saving the changes.
+    """
     staff = db.session.get(Staff,staff_id)
     pform = PersonForm(obj=staff)
     rform = RoleForm(obj=staff)

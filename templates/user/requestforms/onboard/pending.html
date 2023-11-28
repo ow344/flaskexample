@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 
+{% block statics %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{{ url_for('static', filename='js/sortable_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/status.js') }}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+{% endblock %}
+
 {% block navi %}
 <li><a href="/">Home</a></li>
 <li>></li>
 <li><a href="{{ url_for('user.requestforms_onboard_pending') }}">Onboarding Request</a></li>
 {% endblock %}
 
-
-
-
-
 {% block content %}
-<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
-
-
 <a href="{{url_for('user.requestforms_onboard_form')}}" class="btn btn-primary">New Request</a>
 
 <h3>Existing Requests</h3>
@@ -37,11 +37,7 @@
                 <td>{{ item.r2r.department }}</td>
                 <td>{{ item.r2r.role }}</td>
                 <td>{{ item.startdate }}</td>
-                {% if item.approved %}
-                <td style="background-color: lightgreen;">Approved</td>
-                {% else %}
-                <td style="background-color: yellow;">Pending</td>
-                {% endif %}
+                <td>Pending</td>
                 <td><a href="{{ url_for('user.requestforms_onboard_edit',onboard_id=item.id) }}">Edit</a></td>
             </tr>
         {% endfor %}

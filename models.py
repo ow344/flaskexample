@@ -101,7 +101,7 @@ class Variation(db.Model):
 class R2R(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     request_date = db.Column(db.Date, default=date.today)
-    approved = db.Column(db.Boolean, default=False)
+    status = db.Column(db.String(20), default='Pending')
 
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'), default=lambda: session.get("active_school_id", None))
     school = db.relationship('School', backref='r2r')
