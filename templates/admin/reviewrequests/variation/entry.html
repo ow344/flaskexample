@@ -123,19 +123,10 @@ td input{
 </div>
 
 <form method="post">
-    {{ form.hidden_tag() }}
-    <div>
-        {{ form.decision.label }}
-        {% for choice in form.decision %}
-            <div>
-                {{ choice.label }}
-                {{ choice() }}
-            </div>
-        {% endfor %}
-    </div>
-    <div>
-        <button type="submit">Submit</button>
-    </div>
+{{ form.hidden_tag() }}
+{{ form.decision.label }}
+{{ form.decision }}
+<button type="submit">Submit</button>
 </form>
 
 

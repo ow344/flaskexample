@@ -188,7 +188,7 @@ def requestforms_variation_form2(staff_id):
         db.session.commit()
    
 
-        flash("Varition to Contract request submitted", "success")
+        flash("Variation to Contract request submitted", "success")
         return redirect(url_for('user.requestforms_variation_pending'))
     
     return render_template('user/requestforms/variation/form2.html', staff=staff, rform=rform, rqform=rqform)

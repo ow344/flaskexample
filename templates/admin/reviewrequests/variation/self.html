@@ -1,15 +1,19 @@
 {% extends "base.html" %}
 
+{% block statics %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{{ url_for('static', filename='js/sortable_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/status.js') }}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+{% endblock %}
+
 {% block navi %}
 <li><a href="/">Home</a></li>
 <li>></li>
 <li><a href="{{ url_for('admin.reviewrequests_variation') }}">Variation to Contracts</a></li>
 {% endblock %}
 
-
 {% block content %}
-
-<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
 
 <h2>Variation to Contract Requests</h2>
 <table>
@@ -18,6 +22,7 @@
         <th>School</th>
         <th>Request Date</th>
         <th>Requester</th>
+        <th>Status</th>
     </tr>
     {% for variation in variations %}
     <tr data-entry-id="{{ variation.id }}">
@@ -26,24 +31,35 @@
         <td>{{ variation.staff.school }}</td>
         <td>{{ variation.request_date }}</td>
         <td>{{ variation.user }}</td>
+        <td>{{ variation.status }}</td>
+
     </tr>    
     {% endfor %}
 </table>
+{% endblock %}
 
+{% block scripts %}
 <script>
-// Add an event listener to table rows
-document.addEventListener('DOMContentLoaded', function() {
-    var tableRows = document.querySelectorAll('table tr');
-    tableRows.forEach(function(row) {
-        row.addEventListener('click', function() {
-            var entryId = this.getAttribute('data-entry-id');
-            if (entryId) {
-                window.location.href = '/admin/reviewrequests/variation/entry/' + entryId;
-            }
+    // Add an event listener to table rows
+    document.addEventListener('DOMContentLoaded', function() {
+        var tableRows = document.querySelectorAll('table tr');
+        tableRows.forEach(function(row) {
+            row.addEventListener('click', function() {
+                var entryId = this.getAttribute('data-entry-id');
+                if (entryId) {
+                    window.location.href = '/admin/reviewrequests/variation/entry/' + entryId;
+                }
+            });
         });
     });
-});
-</script>
+    </script>
+{% endblock %}
 
-
+{% block styles %}
+<style>
+tr:hover {
+    background-color: #ccc;
+    cursor: pointer;
+}
+</style>
 {% endblock %}

@@ -26,7 +26,6 @@
             <th>Staff Member</th>
             <th>Date of Request</th>
             <th>Status</th>
-            <th>Requester</th>
         </tr>
     </thead>
     <tbody>
@@ -34,8 +33,7 @@
             <tr data-entry-id="{{ item.id }}">
                 <td>{{ item.staff.firstname }} {{ item.staff.lastname }}</td>
                 <td>{{ item.request_date }}</td>
-                <td>Pending</td>
-                <td>{{ item.user.username }}</td>
+                <td>{{ item.status }}</td>
             </tr>
         {% endfor %}
     </tbody>

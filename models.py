@@ -75,6 +75,7 @@ class Staff(db.Model):
 class Variation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     request_date = db.Column(db.Date, default=date.today)
+    status = db.Column(db.String(20), default='Pending')
 
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'))
     staff = db.relationship('Staff', backref='variation')
