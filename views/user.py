@@ -165,9 +165,6 @@ def requestforms_onboard_edit(onboard_id):
         return redirect(url_for('user.requestforms_onboard_pending'))
     return render_template('user/requestforms/onboard/edit.html', pform=pform, onboard=onboard, r2r=onboard.r2r)
 
-
-
-
 ##################### Variation #####################
 @user.route('/user/requestforms/variation/pending', methods=['GET', 'POST'])
 def requestforms_variation_pending():
