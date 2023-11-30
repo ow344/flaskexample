@@ -49,7 +49,7 @@ class Staff(db.Model):
     school = db.relationship('School', backref='staff')
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
     department = db.relationship('Department', backref='staff')
-    role = db.Column(db.String(120))
+    job = db.Column(db.String(120))
     salary = db.Column(db.Float())
     pension = db.Column(db.String(12))
     ftpt = db.Column(db.String(20))
@@ -65,6 +65,9 @@ class Staff(db.Model):
     home_address = db.Column(db.String(120))
     postcode = db.Column(db.String(20))
     email = db.Column(db.String(80))
+
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    role = db.relationship('Role', backref='staff')
 
 
 
