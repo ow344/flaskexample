@@ -1,5 +1,5 @@
 from flask import Blueprint
-from models import db, School, UserSchool, Staff, Variation, R2R, R2RMessage, Onboard, Request
+from models import db, School, UserSchool, Staff, Variation, R2R, R2RMessage, Onboard, Request, Role
 from forms import RequestForm, RoleForm, CommentForm, PersonForm
 from flask import render_template, redirect, url_for, flash, session, request, jsonify
 from flask_login import login_required, current_user
@@ -51,16 +51,17 @@ def stafflist_staff(staff_id):
 ##################### R2R #####################
 @user.route('/user/requestforms/r2r/pending', methods=['GET', 'POST'])
 def requestforms_r2r_pending():
-    r2rs= R2R.query.filter(R2R.school_id == session['active_school_id']).all()
-    return render_template('user/requestforms/r2r/pending.html',r2rs=r2rs)
+    r2rs = R2R.query.join(Role).filter(Role.school_id == session['active_school_id']).all()
+    return render_template('user/requestforms/r2r/pending.html', r2rs=r2rs)
 
 @user.route('/user/requestforms/r2r/form', methods=['GET', 'POST'])
 def requestforms_r2r_form():
     r2r = R2R()
-    rform = RoleForm(obj=r2r)
+    rform = RoleForm(obj=r2r.role)
     rqform = RequestForm(obj=r2r)
     if rform.validate_on_submit() and rqform.validate_on_submit():
-        rform.populate_obj(r2r)
+        r2r.role = Role()
+        rform.populate_obj(r2r.role)
         rqform.populate_obj(r2r)
         r2r.request = Request()
         db.session.add(r2r)
@@ -75,10 +76,10 @@ def requestforms_r2r_edit(r2r_id):
         flash("Decision already made, not editable", "error")
         return redirect(url_for('user.requestforms_r2r_pending'))
     
-    rform = RoleForm(obj=r2r)
+    rform = RoleForm(obj=r2r.role)
     rqform = RequestForm(obj=r2r)
     if rform.validate_on_submit() and rqform.validate_on_submit():
-        rform.populate_obj(r2r)
+        rform.populate_obj(r2r.role)
         rqform.populate_obj(r2r)
         # db.session.add(r2r)
         db.session.commit()
@@ -106,14 +107,15 @@ def sendcomment(r2r_id):
 ##################### Onboard #####################
 @user.route('/user/requestforms/onboard/pending', methods=['GET', 'POST'])
 def requestforms_onboard_pending():
-    onboards = Onboard.query.join(R2R).filter(and_(
-        R2R.school_id == session['active_school_id'])).all()
+    onboards = Onboard.query.join(R2R).join(Role).filter(and_(
+        Role.school_id == session['active_school_id']
+    )).all()
 
     return render_template('user/requestforms/onboard/pending.html', onboards=onboards)
 
 @user.route('/user/requestforms/onboard/form', methods=['GET', 'POST'])
 def requestforms_onboard_form():
-    approved_r2rs = R2R.query.join(Request).filter(R2R.school_id == session['active_school_id'], Request.status == 'Approved').all()
+    approved_r2rs = R2R.query.join(Role).join(Request).filter(Role.school_id == session['active_school_id'], Request.status == 'Approved').all()
     pform = PersonForm()
     if pform.validate_on_submit():
         onboard = Onboard()
@@ -153,7 +155,7 @@ def requestforms_onboard_edit(onboard_id):
     if onboard.request.status != 'Pending':
         flash("Decision already made, not editable", "error")
         return redirect(url_for('user.requestforms_onboard_pending'))
-    if onboard.r2r.school_id != session['active_school_id']:
+    if onboard.r2r.role.school_id != session['active_school_id']:
         flash("No Permission to view this entry", "error")
         return redirect(url_for('user.requestforms_onboard_pending'))
     pform = PersonForm(obj=onboard)

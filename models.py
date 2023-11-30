@@ -74,18 +74,9 @@ class Staff(db.Model):
 
 class Variation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'))
-    staff = db.relationship('Staff', backref='variation')
-    department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
-    department = db.relationship('Department', backref='variation')
-    role = db.Column(db.String(120))
-    salary = db.Column(db.Float())
-    pension = db.Column(db.String(12))
-    ftpt = db.Column(db.String(20))
-    weekhours = db.Column(db.Float())
-    contract = db.Column(db.String(80))
-    holiday = db.Column(db.String(80))
-    notice = db.Column(db.String(20))
+    
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    role = db.relationship('Role', backref='variation')
 
     justification = db.Column(db.Text)
     budgeted = db.Column(db.Boolean, default=False)
@@ -98,18 +89,9 @@ class Variation(db.Model):
 
 class R2R(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    school_id = db.Column(db.Integer, db.ForeignKey('school.id'), default=lambda: session.get("active_school_id", None))
-    school = db.relationship('School', backref='r2r')
-    department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
-    department = db.relationship('Department', backref='r2r')
-    role = db.Column(db.String(120))
-    salary = db.Column(db.Float())
-    pension = db.Column(db.String(12))
-    ftpt = db.Column(db.String(20))
-    weekhours = db.Column(db.Float())
-    contract = db.Column(db.String(80))
-    holiday = db.Column(db.String(80))
-    notice = db.Column(db.String(20))
+    
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    role = db.relationship('Role', backref='r2r')
 
     justification = db.Column(db.Text)
     budgeted = db.Column(db.Boolean, default=False)
@@ -165,3 +147,22 @@ class Request(db.Model):
     request_date = db.Column(db.Date, default=date.today)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
     user = db.relationship('User', backref='request')
+
+### Add Role to Request models ###
+
+class Role(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    school_id = db.Column(db.Integer, db.ForeignKey('school.id'), default=lambda: session.get("active_school_id", None))
+    school = db.relationship('School', backref='role')
+    department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
+    department = db.relationship('Department', backref='role')
+    role = db.Column(db.String(120))
+    salary = db.Column(db.Float())
+    pension = db.Column(db.String(12))
+    ftpt = db.Column(db.String(20))
+    weekhours = db.Column(db.Float())
+    contract = db.Column(db.String(80))
+    holiday = db.Column(db.String(80))
+    notice = db.Column(db.String(20))
+    def __repr__(self):
+        return f'{self.role}'

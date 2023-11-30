@@ -34,8 +34,8 @@
             <tr data-entry-id="{{ item.id }}">
      
                 <td>{{ item }}</td>
-                <td>{{ item.r2r.department }}</td>
-                <td>{{ item.r2r.role }}</td>
+                <td>{{ item.r2r.role.department }}</td>
+                <td>{{ item.r2r.role.role }}</td>
                 <td>{{ item.startdate }}</td>
                 <td>{{ item.request.status }}</td>
                 <td><a href="{{ url_for('user.requestforms_onboard_edit',onboard_id=item.id) }}">Edit</a></td>

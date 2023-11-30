@@ -32,8 +32,8 @@
         {% for item in r2rs %}
             <tr data-entry-id="{{ item.id }}">
      
-                <td>{{ item.department }}</td>
-                <td>{{ item.role }}</td>
+                <td>{{ item.role.department }}</td>
+                <td>{{ item.role.role }}</td>
                 <td>{{ item.request.request_date }}</td>
                 <td>{{item.request.status}}</td>
                 <td><a href="{{url_for('user.requestforms_r2r_edit',r2r_id=item.id)}}">Edit</a></td>
