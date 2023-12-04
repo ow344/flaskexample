@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block statics %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{{ url_for('static', filename='js/sortable_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/status.js') }}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+{% endblock %}
+
+{% block navi %}
+<li><a href="/">Home</a></li>
+<li>></li>
+<li>Staff</li>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <a href="/staff/create" class="btn btn-primary">Create</a>
+        <h1>Staff</h1>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Staff id</th>
+                    <th>School</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Role Name</th>
+                    <th>Department</th>
+                    <th>Start Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in staff %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.role.school }}</td>
+                    <td>{{ item.firstname }}</td>
+                    <td>{{ item.lastname }}</td>
+                    <td>{{ item.role }}</td>
+                    <td>{{ item.role.department }}</td>
+                    <td>{{ item.startdate }}</td>
+                
+                    <td>
+                        <a href="/staff/{{ item.id }}">View</a>
+                        <a href="/staff/edit/{{ item.id }}">Edit</a>
+                        <a href="/staff/{{ item.id }}/delete">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

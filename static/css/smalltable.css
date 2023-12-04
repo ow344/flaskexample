@@ -24,17 +24,17 @@ td {
 }
 
 .pending-value {
-    background-color: #FFFF99; /* Yellow for 'Pending' values */
+    background-color: #FFFF99 !important; /* Yellow for 'Pending' values */
 }
 
 .approved-value {
-    background-color: #99FF99; /* Green for 'Approved' values */
+    background-color: #99FF99 !important; /* Green for 'Approved' values */
 }
 
 .denied-value {
-    background-color: #FF9999; /* Red for 'Denied' values */
+    background-color: #FF9999 !important; /* Red for 'Denied' values */
 }
 
 .linked-value {
-    background-color: #99CCFF; /* Blue for 'Linked' values */
+    background-color: #99CCFF !important; /* Blue for 'Linked' values */
 }

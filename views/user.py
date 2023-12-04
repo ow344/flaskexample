@@ -1,11 +1,9 @@
-from flask import Blueprint
 from models import db, School, UserSchool, Staff, Variation, R2R, R2RMessage, Onboard, Request, Role
 from forms import RequestForm, RoleForm, CommentForm, PersonForm
 from flask import render_template, redirect, url_for, flash, session, request, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy import and_
-
-user = Blueprint('user', __name__)
+from . import user
 
 @user.before_request
 @login_required

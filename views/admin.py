@@ -6,7 +6,7 @@ from flask_login import login_required
 from werkzeug.security import generate_password_hash
 
 ################################  Admin  ################################
-admin = Blueprint('admin', __name__)
+from . import admin
 @admin.before_request
 @login_required
 def handle_route_permissions():

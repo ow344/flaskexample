@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block statics %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{{ url_for('static', filename='js/sortable_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/status.js') }}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+{% endblock %}
+
+{% block navi %}
+<li><a href="/">Home</a></li>
+<li>></li>
+<li>Request to Recruits</li>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <a href="/r2r/create" class="btn btn-primary">Create</a>
+        <h1>Request to Recruits</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>R2R id</th>
+                    <th>School</th>
+                    <th>Role Name</th>
+                    <th>Requested By</th>
+                    <th>Created at</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r2r in r2rs %}
+                <tr>
+                    <td>{{ r2r.id }}</td>
+                    <td>{{ r2r.role.school }}</td>
+                    <td>{{ r2r.role }}</td>
+                    <td>{{ r2r.request.user }}</td>
+                    <td>{{ r2r.request.request_date }}</td>
+                    <td>{{ r2r.request.status }}</td>
+                
+                    <td>
+                        <a href="/r2r/{{ r2r.id }}">View</a>
+                        <a href="/r2r/{{ r2r.id }}/edit">Edit</a>
+                        <a href="/r2r/{{ r2r.id }}/delete">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
