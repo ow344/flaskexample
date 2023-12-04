@@ -1,15 +1,10 @@
-from . import sample_blueprint
+from . import models
 from flask import render_template, flash, redirect, url_for, session
-from flask_login import login_required, current_user
+from flask_login import current_user
 from models import Staff, db
 from forms import PersonForm, RoleForm
 
-@sample_blueprint.route('/sample')
-def sample_view():
-    return 'This is a sample view from the blueprint!'
-
-
-@sample_blueprint.route('/staff')
+@models.route('/staff')
 def staff_list():
     if current_user.is_admin:
         staff=Staff.query.all()
@@ -17,7 +12,7 @@ def staff_list():
         staff=Staff.query.filter_by(school_id=session['active_school_id']).all()
     return render_template('models/staff/list.html', staff=staff)
 
-@sample_blueprint.route('/staff/<int:staff_id>', methods=['GET'])
+@models.route('/staff/<int:staff_id>', methods=['GET'])
 def staff(staff_id):
     if not access_to_staff(staff_id):
         flash('You do not have permission to access this staff record.', 'error')
@@ -26,7 +21,7 @@ def staff(staff_id):
     staff = db.session.get(Staff,staff_id)
     return render_template('models/staff/read.html', staff=staff)
 
-@sample_blueprint.route('/staff/edit/<int:staff_id>', methods=['GET', 'POST'])
+@models.route('/staff/edit/<int:staff_id>', methods=['GET', 'POST'])
 def edit_staff(staff_id):
     if not current_user.is_admin:
         flash('You do not have permission to edit this staff record.', 'error')
@@ -41,12 +36,6 @@ def edit_staff(staff_id):
         flash('Staff record updated successfully.', 'success')
         return redirect(url_for('models.staff_list'))
     return render_template('models/staff/edit.html', staff=staff, pform=pform, rform=rform)
-
-
-
-
-
-
 
 
 

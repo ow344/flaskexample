@@ -1,4 +1,3 @@
-from flask import Blueprint
 from models import User
 from forms import LoginForm
 from flask import render_template, redirect, url_for, flash, session, request
@@ -30,18 +29,6 @@ def test():
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
-    """
-    Handle the login functionality.
-
-    This function renders the login form, validates the form data,
-    logs in the user, and redirects them to the appropriate page
-    based on their role (admin or user).
-
-    Returns:
-        If the form is valid and the login is successful, the function
-        redirects the user to the next page or the home page based on
-        their role. Otherwise, it renders the login template with the form.
-    """
     form = LoginForm()
     form.next_page.data = request.args.get('next')
     if form.validate_on_submit():

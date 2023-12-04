@@ -1,7 +1,7 @@
 from flask import Flask
 from config import Config
 from models import db
-from views import main, admin, user, models, sample_blueprint
+from views import main, admin, user, models
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from models import User
@@ -14,7 +14,6 @@ application.register_blueprint(main)
 application.register_blueprint(admin)
 application.register_blueprint(user)
 application.register_blueprint(models)
-application.register_blueprint(sample_blueprint)
 
 migrate = Migrate(application, db)
 
