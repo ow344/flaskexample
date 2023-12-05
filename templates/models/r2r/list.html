@@ -18,7 +18,7 @@
     <div class="col-md-12">
         <a href="/r2r/create" class="btn btn-primary">Create</a>
         <h1>Request to Recruits</h1>
-        <table class="table table-striped">
+        <table class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>R2R id</th>
@@ -41,13 +41,16 @@
                     <td>{{ r2r.request.status }}</td>
                 
                     <td>
-                        <a href="/r2r/{{ r2r.id }}">View</a>
-                        <a href="/r2r/{{ r2r.id }}/edit">Edit</a>
-                        <a href="/r2r/{{ r2r.id }}/delete">Delete</a>
+                        <a href="/r2r/read/{{ r2r.id }}">View</a>
+                        <a href="/r2r//update/{{ r2r.id }}">Edit</a>
+                        <form style="display: inline-block;" method="POST" action="{{ url_for('models.r2r_delete', r2r_id=r2r.id) }}">
+                            <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this entry?')">
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+    
 {% endblock %}

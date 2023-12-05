@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+
+{% block navi %}
+<li><a href="/">Home</a></li>
+<li>></li>
+<li><a href="{{ url_for('user.requestforms_r2r_pending') }}">Request to Recruit</a></li>
+<li>></li>
+<li><a href="{{ url_for('user.requestforms_r2r_form') }}">New Request</a></li>
+{% endblock %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<div class="container">
+
+
+<h1>Request to Recruit</h1>
+
+<form method="post">
+    {{ rform.hidden_tag() }}
+    {{ rqform.hidden_tag() }}
+<table>
+<tr>
+    <th></th>
+    <th>Request</th>
+</tr><tr>
+    {% if current_user.is_admin %}
+    <td>{{ rform.school_id.label }}</td>
+    <td>{{ rform.school_id }}</td>
+    {% endif %}
+</tr><tr>
+    <td>{{ rform.department_id.label }}</td>
+    <td>{{ rform.department_id }}</td>
+</tr><tr>
+    <td>{{ rform.role.label }}</td>
+    <td>{{ rform.role }}</td>
+</tr><tr>
+    <td>{{ rform.salary.label }}</td>
+    <td>{{ rform.salary }}</td>
+</tr><tr>
+    <td>{{ rform.pension.label }}</td>
+    <td>{{ rform.pension }}</td>
+</tr><tr>
+    <td>{{ rform.ftpt.label }}</td>
+    <td>{{ rform.ftpt }}</td>
+</tr><tr>
+    <td>{{ rform.weekhours.label }}</td>
+    <td>{{ rform.weekhours }}</td>
+</tr><tr>
+    <td>{{ rform.contract.label }}</td>
+    <td>{{ rform.contract }}</td>
+</tr><tr>
+    <td>{{ rform.holiday.label }}</td>
+    <td>{{ rform.holiday }}</td>
+</tr><tr>
+    <td>{{ rform.notice.label }}</td>
+    <td>{{ rform.notice }}</td>
+</tr>
+</table>
+
+<div class="form-group">
+    {{ rqform.justification.label(class="form-control-label") }}
+    {{ rqform.justification(class="form-control") }}
+</div>
+
+    {{ rqform.budgeted.label }}
+    {{ rqform.budgeted }}
+    <br>
+    Estimated Start Date:
+    {{ rqform.effect_date }}
+    <br>
+    <input type="submit" value="Submit">
+
+
+
+</form>  
+</div>
+
+
+{% endblock %}

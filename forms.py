@@ -40,6 +40,7 @@ class RequestForm(FlaskForm):
 
 
 class RoleForm(FlaskForm):
+    school_id = SelectField("School", coerce=int, validators=[Optional()])
     department_id = SelectField("Department", coerce=int)
     role =  StringField('Role Title')
 
@@ -53,7 +54,9 @@ class RoleForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(RoleForm, self).__init__(*args, **kwargs)
+        schools = School.query.all()
         departments = Department.query.all()
+        self.school_id.choices = [(school.id, school.name) for school in schools]
         self.department_id.choices = [(department.id, department.name) for department in departments]
         self.pension.choices = ['PEN0','PEN3','PEN5','PEN7']
         self.ftpt.choices = ['Full Time','Part Time']
