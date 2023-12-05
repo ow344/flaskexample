@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block navi %}
+<li><a href="/">Home</a></li>
+<li>></li>
+<li><a href="/onboard">Onboarding Requests</a></li>
+<li>></li>
+<li>Select Role</li>
+{% endblock %}
+{% block content %}
+
+<h2>Approved Request to Recruits:</h2>
+{% for r2r in r2rs %}
+<div style="display: block; padding: 10px;">
+    <a class="btn btn-primary" href="{{ url_for('models.onboard_create', r2r_id=r2r.id) }}">{{ r2r.role }}</a>
+</div>
+{% endfor %}
+
+
+
+{% endblock %}
+

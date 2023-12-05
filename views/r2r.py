@@ -67,6 +67,9 @@ def r2r_update(r2r_id):
 @models.route('/r2r/delete/<int:r2r_id>', methods=['POST'])
 def r2r_delete(r2r_id):
     r2r = R2R.query.get_or_404(r2r_id)
+    if not current_user.is_admin and r2r.request.status != 'Pending':
+        flash(f'Request has been progressed and can no longer be changed', 'error')
+        return redirect(url_for('models.r2r_list'))
     db.session.delete(r2r)
     db.session.commit()
     return redirect(url_for('models.r2r_list'))

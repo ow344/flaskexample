@@ -21,3 +21,4 @@ from .user import *
 from .staff import *
 from .departments import *
 from .r2r import *
+from .onboard import *

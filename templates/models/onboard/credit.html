@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block navi %}
+<li><a href="/">Home</a></li>
+<li>></li>
+<li><a href="/onboard">Onboarding Requests</a></li>
+<li>></li>
+<li>{{ r2r.role }}</li>
+{% endblock %}
+{% block content %}
+
+
+<div class="row">
+<div class="col-md-6">
+    <table class="table" style="border: 1px solid black;">
+        <tr>
+            <th></th>
+            <th>Request to Recruit Details</th>
+        </tr>
+        <tr>
+            <td>School</td>
+            <td>{{ r2r.role.school }}</td>
+        </tr>
+        <tr>
+            <td>Department</td>
+            <td>{{ r2r.role.department }}</td>
+        </tr>
+        <tr>
+            <td>Role</td>
+            <td>{{ r2r.role.role }}</td>
+        </tr>
+        <tr>
+            <td>Salary</td>
+            <td>{{ r2r.role.salary }}</td>
+        </tr>
+        <tr>
+            <td>Pension</td>
+            <td>{{ r2r.role.pension }}</td>
+        </tr>
+        <tr>
+            <td>FTPT</td>
+            <td>{{ r2r.role.ftpt }}</td>
+        </tr>
+        <tr>
+            <td>Weekhours</td>
+            <td>{{ r2r.role.weekhours }}</td>
+        </tr>
+        <tr>
+            <td>Contract</td>
+            <td>{{ r2r.role.contract }}</td>
+        </tr>
+        <tr>
+            <td>Holiday</td>
+            <td>{{ r2r.role.holiday }}</td>
+        </tr>
+        <tr>
+            <td>Notice</td>
+            <td>{{ r2r.role.notice }}</td>
+        </tr>
+    </table>
+</div>
+
+<div class="col-md-6">
+    <form method="POST">
+        {{ pform.hidden_tag() }}
+        <div class="form-group">
+            {{ pform.firstname.label }}
+            {{ pform.firstname(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ pform.lastname.label }}
+            {{ pform.lastname(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ pform.dob.label }}
+            {{ pform.dob(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ pform.gender.label }}
+            {{ pform.gender(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ pform.nino.label }}
+            {{ pform.nino(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ pform.nic.label }}
+            {{ pform.nic(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ pform.marital.label }}
+            {{ pform.marital(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ pform.home_address.label }}
+            {{ pform.home_address(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ pform.postcode.label }}
+            {{ pform.postcode(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ pform.email.label }}
+            {{ pform.email(class="form-control") }}
+        </div>
+        <div class="form-group">
+            Start Date
+            <input class="form-control" type="date" name="startdate" value="{{r2r.effect_date}}">
+        </div>
+        <!-- Add more form fields here -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+</div>
+
+
+{% endblock %}
+
