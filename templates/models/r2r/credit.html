@@ -1,26 +1,28 @@
 {% extends "base.html" %}
 
+{% block statics %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{{ url_for('static', filename='js/sortable_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/status.js') }}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
+{% endblock %}
 
 {% block navi %}
 <li><a href="/">Home</a></li>
 <li>></li>
-<li><a href="{{ url_for('user.requestforms_r2r_pending') }}">Request to Recruit</a></li>
+<li><a href="/r2rs">Request to Recruits</a></li>
 <li>></li>
-<li><a href="{{ url_for('user.requestforms_r2r_form') }}">New Request</a></li>
+{% if r2r %}
+<li>{{r2r.role}}</li>
+{% else %}
+<li>Create</li>
+{% endif %}
 {% endblock %}
 
 
 {% block content %}
-
-<link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
-<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
-
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <div class="container">
-
-
 <h1>Request to Recruit</h1>
 
 <form method="post">

@@ -82,7 +82,7 @@ class PersonForm(FlaskForm):
         self.nic.choices = ['A','B','C','H','J','M','V','Z','X']
 
 class ApporovalForm(FlaskForm):
-    decision = SelectField('Decision', choices=['Pending','Approved','Denied'])
+    status = SelectField('Decision', choices=['Pending','Approved','Denied'])
 
 
 class CommentForm(FlaskForm):

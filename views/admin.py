@@ -29,8 +29,8 @@ def reviewrequests_r2r_entry(r2r_id):
         flash(f'Cannot change request with status {r2r.request.status}', 'error')
         return redirect(url_for('admin.reviewrequests_r2r'))
     if form.validate_on_submit():
-        r2r.request.status = form.decision.data
-        flash(f'Status set to {form.decision.data}', 'success')
+        r2r.request.status = form.status.data
+        flash(f'Status set to {form.status.data}', 'success')
         db.session.commit()
         return redirect(url_for('admin.reviewrequests_r2r'))
     cform = CommentForm()
@@ -64,8 +64,8 @@ def reviewrequests_onboard_entry(onboard_id):
         flash(f'Cannot change request with status {onboard.request.status}', 'error')
         return redirect(url_for('admin.reviewrequests_onboard'))
     if form.validate_on_submit():
-        onboard.request.status = form.decision.data
-        flash(f'Status set to {form.decision.data}', 'success')
+        onboard.request.status = form.status.data
+        flash(f'Status set to {form.status.data}', 'success')
         if onboard.request.status == "Approved":
             staff = Staff()           
             for attr in ['firstname','lastname','dob','gender','nino','nic','marital','home_address','postcode','email','startdate']: 
@@ -91,7 +91,7 @@ def reviewrequests_variation_entry(variation_id):
         flash(f'Cannot change request with status {variation.request.status}', 'error')
         return redirect(url_for('admin.reviewrequests_variation'))
     if form.validate_on_submit():
-        variation.request.status = form.decision.data
+        variation.request.status = form.status.data
         if variation.request.status == 'Approved':
             attributes_to_copy = ['department_id','role','salary','pension','ftpt','weekhours','contract','holiday','notice']
             for attr in attributes_to_copy:             
