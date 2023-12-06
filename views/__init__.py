@@ -2,9 +2,7 @@ from flask import Blueprint
 from flask_login import login_required
 
 # Defining blueprints
-main = Blueprint('main', __name__)
-admin = Blueprint('admin', __name__)
-user1 = Blueprint('user', __name__)
+# main = Blueprint('main', __name__)
 models = Blueprint('models', __name__)
 admin_models = Blueprint('admin_models', __name__)
 nav = Blueprint('nav', __name__)
@@ -43,9 +41,7 @@ def handle_route_permissions():
 
 
 # Importing views here to avoid circular import
-from .main import *
-from .admin import *
-from .user1 import *
+# from .main import *
 
 from .staff import *
 from .departments import *
