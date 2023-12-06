@@ -40,3 +40,15 @@ def handle_route_permissions():
         session['active_school_name'] = userschools.school.name
 
 from .navigation import *
+############################################## Log ##############################################
+log = Blueprint('log', __name__)
+@log.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    form.next_page.data = request.args.get('next')
+    if form.validate_on_submit():
+        flash("Login successful", "success")
+        user = User.query.filter_by(username=form.username.data).first()
+        login_user(user, remember=True)
+        return redirect(form.next_page.data or url_for('nav.index'))
+    return render_template('navigation/login.html', form=form)
