@@ -9,6 +9,19 @@ def user_list():
     users = User.query.all()
     return render_template('models/user/list.html', users=users)
 
+@admin_models.route('/user/create', methods=['GET', 'POST'])
+def user_create():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        newU = User()
+        form.populate_obj(newU)
+        newU.hashed_password = generate_password_hash(form.password.data)
+        db.session.add(newU)
+        db.session.commit()
+        flash("New user created", "success")
+        return redirect(url_for('admin_models.user_list'))
+    return render_template('models/user/create.html', form=form)
+
 @admin_models.route('/user/edit/<int:user_id>', methods=['GET', 'POST'])
 def user_update(user_id):
     user = User.query.get_or_404(user_id)
@@ -48,18 +61,18 @@ def user_update(user_id):
     finance = [i.school_id for i in UserSchool.query.filter_by(user_id=user.id, finance=True).all()]
     return render_template('models/user/update.html', user=user, schools=schools, primary=primary, basic=basic, finance=finance)
 
-@admin_models.route('/user/create', methods=['GET', 'POST'])
-def user_create():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        newU = User()
-        form.populate_obj(newU)
-        newU.hashed_password = generate_password_hash(form.password.data)
-        db.session.add(newU)
+@admin_models.route('/user/changepassword/<int:user_id>', methods=['GET', 'POST'])
+def user_changepassword(user_id):
+    user = db.session.get(User,user_id)
+    if request.method == 'POST':
+        if request.form['password'] != request.form['password2']:
+            flash("Passwords do not match", "error")
+            return redirect(url_for('admin_models.user_changepassword', user_id=user_id))
+        user.hashed_password = generate_password_hash(request.form['password'])
         db.session.commit()
-        flash("New user created", "success")
+        flash("Password changed successfully", "success")
         return redirect(url_for('admin_models.user_list'))
-    return render_template('models/user/create.html', form=form)
+    return render_template('navigation/changepassword.html', user=user)
 
 @admin_models.route('/user/delete/<int:user_id>', methods=['POST'])
 def user_delete(user_id):
