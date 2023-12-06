@@ -1,10 +1,7 @@
-from models import R2R, Role, Request, R2RMessage
-from flask import render_template, session, redirect, url_for, flash, request
+from models import R2R, Role, Request, R2RMessage, db
+from flask import render_template, session, redirect, url_for, flash
 from flask_login import current_user
-from forms import RequestForm, RoleForm, CommentForm, PersonForm, ApporovalForm
-from models import db
-
-
+from forms import RequestForm, RoleForm, CommentForm, ApporovalForm
 from . import models
 
 @models.route('/r2rs')
@@ -46,7 +43,6 @@ def r2r_read(r2r_id):
         return redirect(url_for('models.r2r_list'))
     return render_template('models/r2r/read.html', r2r=r2r, rform=rform, rqform=rqform, aform=aform, cform=cform, comments=comments)
 
-
 @models.route('/r2r/update/<int:r2r_id>', methods=['GET', 'POST'])
 def r2r_update(r2r_id):
     r2r = R2R.query.get_or_404(r2r_id)
@@ -74,7 +70,6 @@ def r2r_delete(r2r_id):
     db.session.delete(r2r)
     db.session.commit()
     return redirect(url_for('models.r2r_list'))
-
 
 @models.route('/r2r/sendcomment/<int:r2r_id>', methods=['POST'])
 def r2r_sendcomment(r2r_id):

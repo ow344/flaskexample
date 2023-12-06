@@ -34,7 +34,6 @@ def staff_edit(staff_id):
         return redirect(url_for('models.staff_list'))
     return render_template('models/staff/edit.html', staff=staff, pform=pform, rform=rform)
 
-
 @models.route('/staff/delete/<int:staff_id>', methods=['GET','POST'])
 def staff_delete(staff_id):
     if not current_user.is_admin:
@@ -45,8 +44,6 @@ def staff_delete(staff_id):
     db.session.commit()
     flash("Successfully deleted staff record", "success")
     return redirect(url_for('models.staff_list'))
-
-
 
 def access_to_staff(staff_id):
     if current_user.is_admin:

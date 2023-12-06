@@ -1,15 +1,13 @@
 from . import admin_models
-from flask import render_template, flash, redirect, url_for, session, request
-from flask_login import current_user
-from models import Staff, db, User, UserSchool, School
-from forms import PersonForm, RoleForm, RegistrationForm
+from flask import render_template, flash, redirect, url_for, request
+from models import db, User, UserSchool, School
+from forms import RegistrationForm
 from werkzeug.security import generate_password_hash
 
 @admin_models.route('/user')
 def user_list():
     users = User.query.all()
     return render_template('models/user/list.html', users=users)
-
 
 @admin_models.route('/user/edit/<int:user_id>', methods=['GET', 'POST'])
 def user_update(user_id):

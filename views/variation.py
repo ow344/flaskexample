@@ -1,10 +1,8 @@
-from models import R2R, Role, Request, R2RMessage, Onboard, Variation, Staff, School, UserSchool, User, db
+from models import Role, Request, Variation, Staff, db
 from flask import render_template, session, redirect, url_for, flash, request, jsonify
 from flask_login import current_user
-from forms import RequestForm, RoleForm, CommentForm, PersonForm, ApporovalForm
+from forms import RequestForm, RoleForm, ApporovalForm
 from sqlalchemy import and_, or_
-
-
 from . import models
 
 @models.route('/variation')
@@ -64,11 +62,6 @@ def variation_read(variation_id):
         return redirect(url_for('models.variation_list'))
     return render_template('models/variation/read.html', variation=variation, staff=staff, aform=aform)
 
-
-
-
-
-
 @models.route('/variation/update/<int:variation_id>', methods=['GET', 'POST'])
 def variation_update(variation_id):
     variation = db.session.get(Variation, variation_id)
@@ -86,16 +79,6 @@ def variation_update(variation_id):
         return redirect(url_for('models.variation_list'))
     return render_template('models/variation/create.html', rform=rform, rqform=rqform, staff=staff)
 
-
-
-
-
-
-
-
-
-
-
 @models.route('/variation/delete/<int:variation_id>', methods=['POST'])
 def variation_delete(variation_id):
     variation = db.session.get(Variation, variation_id)
@@ -111,16 +94,6 @@ def variation_delete(variation_id):
     db.session.commit()
     flash("Variation deleted successfully", "success")
     return redirect(url_for('models.variation_list'))
-
-
-
-
-
-
-
-
-
-
 
 @models.route('/update_text1', methods=['POST'])
 def update_text():

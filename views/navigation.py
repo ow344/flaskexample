@@ -1,10 +1,8 @@
 from . import nav
-from flask import render_template
+from flask import render_template, render_template, redirect, url_for, flash, session, request
 from models import User, School, UserSchool, db
 from forms import LoginForm
-from flask import render_template, redirect, url_for, flash, session, request
 from flask_login import login_user, logout_user, current_user
-
 
 @nav.route('/')
 def index():
@@ -35,7 +33,6 @@ def logout():
         session.pop('active_school_name')
     logout_user()
     return redirect(url_for('nav.index'))
-
 
 @nav.route('/settings')
 def settings():

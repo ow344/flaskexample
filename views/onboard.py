@@ -1,11 +1,8 @@
-from models import R2R, Role, Request, R2RMessage, Onboard
-from flask import render_template, session, redirect, url_for, flash, request
+from models import R2R, Role, Request, Onboard, db
+from flask import render_template, session, redirect, url_for, flash
 from flask_login import current_user
-from forms import RequestForm, RoleForm, CommentForm, PersonForm, ApporovalForm
-from models import db
+from forms import PersonForm, ApporovalForm
 from sqlalchemy import and_
-
-
 from . import models
 
 @models.route('/onboard')
@@ -20,7 +17,6 @@ def onboard_list():
 def onboard_select_r2r():
     r2rs = R2R.query.join(Request).join(Role).filter(and_(Request.status=='Approved', Role.school_id == session['active_school_id'])).all()
     return render_template('models/onboard/select_r2r.html', r2rs=r2rs)
-
 
 @models.route('/onboard/create/<int:r2r_id>', methods=['GET', 'POST'])
 def onboard_create(r2r_id):
@@ -39,7 +35,6 @@ def onboard_create(r2r_id):
         return redirect(url_for('models.onboard_list'))
     return render_template('models/onboard/credit.html', pform=pform, r2r=r2r)
 
-
 @models.route('/onboard/read/<int:onboard_id>', methods=['GET', 'POST'])
 def onboard_read(onboard_id):
     onboard = Onboard.query.get_or_404(onboard_id)
@@ -53,9 +48,6 @@ def onboard_read(onboard_id):
         return redirect(url_for('models.onboard_list'))
     return render_template('models/onboard/read.html', onboard=onboard, aform=aform)
 
-
-
-
 @models.route('/onboard/update/<int:onboard_id>', methods=['GET', 'POST'])
 def onboard_update(onboard_id):
     onboard = Onboard.query.get_or_404(onboard_id)
@@ -68,8 +60,6 @@ def onboard_update(onboard_id):
         return redirect(url_for('models.onboard_list'))
     return render_template('models/onboard/credit.html', pform=pform, r2r=onboard.r2r)
 
-
-
 @models.route('/onboard/delete/<int:onboard_id>', methods=['POST'])
 def onboard_delete(onboard_id):
     onboard = Onboard.query.get_or_404(onboard_id)
@@ -78,8 +68,6 @@ def onboard_delete(onboard_id):
     db.session.delete(onboard)
     db.session.commit()
     return redirect(url_for('models.onboard_list'))
-
-
 
 def perm_check_r2r(r2r):
     if not current_user.is_admin:
