@@ -51,6 +51,8 @@ from .staff import *
 from .departments import *
 from .r2r import *
 from .onboard import *
+from .variation import *
+
 from .user import *
 
 from .navigation import *

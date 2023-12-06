@@ -2,11 +2,9 @@
 {% block navi %}
 <li><a href="/">Home</a></li>
 <li>></li>
-<li><a href="{{ url_for('user.requestforms_variation_pending') }}">Variation to Contract</a></li>
+<li><a href="/variation">Variation Requests</a></li>
 <li>></li>
-<li><a href="{{ url_for('user.requestforms_variation_form') }}">New Request</a></li>
-<li>></li>
-<li><a href="{{ url_for('user.requestforms_variation_form2',staff_id=staff.id) }}">{{staff}}</a></li>
+<li>{{staff}}</li>
 
 {% endblock %}
 
@@ -48,39 +46,39 @@ td input{
 
 </tr><tr>
     <td>{{ rform.department_id.label }}</td>
-    <td>{{ staff.department.name }}</td>
+    <td>{{ staff.role.department.name }}</td>
     <td>{{ rform.department_id }}</td>
 </tr><tr>
     <td>{{ rform.role.label }}</td>
-    <td>{{ staff.role }}</td>
+    <td>{{ staff.role.role }}</td>
     <td>{{ rform.role }}</td>
 </tr><tr>
     <td>{{ rform.salary.label }}</td>
-    <td>{{ staff.salary }}</td>
+    <td>{{ staff.role.salary }}</td>
     <td>{{ rform.salary }}</td>
 </tr><tr>
     <td>{{ rform.pension.label }}</td>
-    <td>{{ staff.pension }}</td>
+    <td>{{ staff.role.pension }}</td>
     <td>{{ rform.pension }}</td>
 </tr><tr>
     <td>{{ rform.ftpt.label }}</td>
-    <td>{{ staff.ftpt }}</td>
+    <td>{{ staff.role.ftpt }}</td>
     <td>{{ rform.ftpt }}</td>
 </tr><tr>
     <td>{{ rform.weekhours.label }}</td>
-    <td>{{ staff.weekhours }}</td>
+    <td>{{ staff.role.weekhours }}</td>
     <td>{{ rform.weekhours }}</td>
 </tr><tr>
     <td>{{ rform.contract.label }}</td>
-    <td>{{ staff.contract }}</td>
+    <td>{{ staff.role.contract }}</td>
     <td>{{ rform.contract }}</td>
 </tr><tr>
     <td>{{ rform.holiday.label }}</td>
-    <td>{{ staff.holiday }}</td>
+    <td>{{ staff.role.holiday }}</td>
     <td>{{ rform.holiday }}</td>
 </tr><tr>
     <td>{{ rform.notice.label }}</td>
-    <td>{{ staff.notice }}</td>
+    <td>{{ staff.role.notice }}</td>
     <td>{{ rform.notice }}</td>
 </tr>
 </table>

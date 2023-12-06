@@ -3,9 +3,9 @@
 {% block navi %}
 <li><a href="/">Home</a></li>
 <li>></li>
-<li><a href="{{ url_for('admin.reviewrequests_variation') }}">Variation to Contracts</a></li>
+<li><a href="/variation">Variation Requests</a></li>
 <li>></li>
-<li><a href="{{ url_for('admin.reviewrequests_variation_entry',variation_id=variation.id) }}">{{ variation.staff }}</a></li>
+<li>{{ variation.staff }}</li>
 {% endblock %}
 
 {% block content %}
@@ -59,7 +59,7 @@ td input{
 
 <div class="container" style="padding: 10px;">
 <h1 style="margin-block-start: 0;">Request Variation to Contract</h1>
-<h4>Date of Request: <output id="currentDate"></output> </h4>
+<h4>Date of Request: {{variation.request.request_date}} </h4>
 <h3>{{ staff.school }}</h3>
 <h2>{{ staff }}</h2>
 
@@ -72,40 +72,40 @@ td input{
 
 </tr><tr>
     <td>Department</td>
-    <td>{{ staff.department.name }}</td>
-    <td>{{ variation.department.name }}</td>
+    <td>{{ variation.old_role.department.name }}</td>
+    <td>{{ variation.new_role.department.name }}</td>
 </tr><tr>
     <td>Role title</td>
-    <td>{{ staff.role }}</td>
-    <td>{{ variation.role }}</td>
+    <td>{{ variation.old_role.role }}</td>
+    <td>{{ variation.new_role.role }}</td>
 </tr><tr>
     <td>Salary</td>
-    <td>{{ staff.salary }}</td>
-    <td>{{ variation.salary }}</td>
+    <td>{{ variation.old_role.salary }}</td>
+    <td>{{ variation.new_role.salary }}</td>
 </tr><tr>
     <td>Pension</td>
-    <td>{{ staff.pension }}</td>
-    <td>{{ variation.pension }}</td>
+    <td>{{ variation.old_role.pension }}</td>
+    <td>{{ variation.new_role.pension }}</td>
 </tr><tr>
     <td>Full/Part Time</td>
-    <td>{{ staff.ftpt }}</td>
-    <td>{{ variation.ftpt }}</td>
+    <td>{{ variation.old_role.ftpt }}</td>
+    <td>{{ variation.new_role.ftpt }}</td>
 </tr><tr>
     <td>Hours per week</td>
-    <td>{{ staff.weekhours }}</td>
-    <td>{{ variation.weekhours }}</td>
+    <td>{{ variation.old_role.weekhours }}</td>
+    <td>{{ variation.new_role.weekhours }}</td>
 </tr><tr>
     <td>Contract</td>
-    <td>{{ staff.contract }}</td>
-    <td>{{ variation.contract }}</td>
+    <td>{{ variation.old_role.contract }}</td>
+    <td>{{ variation.new_role.contract }}</td>
 </tr><tr>
     <td>Holiday</td>
-    <td>{{ staff.holiday }}</td>
-    <td>{{ variation.holiday }}</td>
+    <td>{{ variation.old_role.holiday }}</td>
+    <td>{{ variation.new_role.holiday }}</td>
 </tr><tr>
     <td>Notice</td>
-    <td>{{ staff.notice }}</td>
-    <td>{{ variation.notice }}</td>
+    <td>{{ variation.old_role.notice }}</td>
+    <td>{{ variation.new_role.notice }}</td>
 </tr>
 </table>
 
@@ -122,21 +122,17 @@ td input{
     <br>
 </div>
 
+{% if current_user.is_admin %}
+
 <form method="post">
-{{ form.hidden_tag() }}
-{{ form.decision.label }}
-{{ form.decision }}
+{{ aform.hidden_tag() }}
+{{ aform.status.label }}
+{{ aform.status }}
 <button type="submit">Submit</button>
 </form>
 
+{% endif %}
 
-
-<script>
-    var today = new Date();
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    var formattedDate = today.toLocaleDateString('en-GB', options);
-    document.getElementById('currentDate').innerText = formattedDate;
-</script>
 
 {% endblock %}
 

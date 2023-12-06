@@ -2,9 +2,9 @@
 {% block navi %}
 <li><a href="/">Home</a></li>
 <li>></li>
-<li><a href="{{ url_for('user.requestforms_variation_pending') }}">Variation to Contract</a></li>
+<li><a href="/variation">Variation Requests</a></li>
 <li>></li>
-<li><a href="{{ url_for('user.requestforms_variation_form') }}">New Request</a></li>
+<li>Select Employee</li>
 {% endblock %}
 
 
@@ -26,8 +26,8 @@
     <input type="text" id="textInput" oninput="sendToServer()" class="form-control">
 </div>
 <div class="form-group">
-    <label>Select Employee</label>
-    <select name="employee" id="staffDropdown" class="form-control"></select>
+    <label>Select Employee (Drop Down list)</label>
+    <select name="staff_id" id="staffDropdown" class="form-control"></select>
 </div>
         
 <input type="submit" value="Continue with Selected Employee">
@@ -42,7 +42,7 @@
         var inputText = document.getElementById('textInput').value;
         $.ajax({
             type: 'POST',
-            url: '/update_text',
+            url: '/update_text1',
             contentType: 'application/json',
             data: JSON.stringify({ text: inputText  }),
             success: function(data) {

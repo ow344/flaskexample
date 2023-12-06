@@ -166,7 +166,7 @@ def requestforms_onboard_edit(onboard_id):
 ##################### Variation #####################
 @user1.route('/user/requestforms/variation/pending', methods=['GET', 'POST'])
 def requestforms_variation_pending():
-    variations = Variation.query.join(Staff).filter(Staff.school_id == session['active_school_id']).all()
+    variations = Variation.query.join(Role).filter(Role.school_id == session['active_school_id']).all()
     return render_template(f'user/requestforms/variation/pending.html', variations=variations)
 
 @user1.route('/user/requestforms/variation/form', methods=['GET', 'POST'])
@@ -187,7 +187,8 @@ def requestforms_variation_form2(staff_id):
 
     if rform.validate_on_submit() and rqform.validate_on_submit():
         new_variation = Variation()
-        rform.populate_obj(new_variation)
+        new_variation.role = Role()
+        rform.populate_obj(new_variation.role)
         rqform.populate_obj(new_variation)
         new_variation.staff_id = int(staff_id)
         new_variation.request = Request()

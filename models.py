@@ -77,9 +77,17 @@ class Staff(db.Model):
 
 class Variation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+
+    staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'))
+    staff = db.relationship('Staff', backref='variation')
     
-    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
-    role = db.relationship('Role', backref='variation')
+    new_role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    new_role = db.relationship('Role', backref='variation_new', foreign_keys=[new_role_id])
+
+    old_role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    old_role = db.relationship('Role', backref='variation_old', foreign_keys=[old_role_id])
+
+
 
     justification = db.Column(db.Text)
     budgeted = db.Column(db.Boolean, default=False)

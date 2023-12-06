@@ -38,7 +38,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         login_user(user, remember=True)
         return redirect(form.next_page.data or url_for('main.index'))
-    return render_template('main/login.html', form=form)
+    return render_template('navigation/login.html', form=form)
 
 @main.route('/logout')
 def logout():
