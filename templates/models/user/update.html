@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block statics %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{{ url_for('static', filename='js/sortable_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/status.js') }}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
+
+{% endblock %}
+
+{% block navi %}
+<li><a href="/">Home</a></li>
+<li>></li>
+<li><a href="/user">Users</a></li>
+<li>></li>
+<li>{{ user.username }}</li>
+{% endblock %}
+
+{% block content %}
+<p>{{ user.username }}</p>
+<p><a href="">Change Password</a></p>
+
+<h4>Permissions:</h4>
+<form method="POST" class="container">
+<label for="admin">Admin privileges</label>
+<input id="myCheckbox" type="checkbox" name="admin" {% if user.is_admin %} checked {% endif %} onchange="toggleElement()">
+<br>
+<br>
+
+<div id="myElement">
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>School</th>
+        <th>User's Default</th>
+        <th>View Info</th>
+        <th>View Financial Info</th>
+    </tr>
+</thead>
+<tbody>
+{% for school in schools %}
+<tr>
+    <td>{{ school.name }}</td>
+    <td><input type="radio" name="default" value="{{school.id}}" {% if school.id in primary %} checked {% endif %}></td>
+    <td><input type="checkbox" name="basic-{{school.id}}" {% if school.id in basic %} checked {% endif %}></td>
+    <td><input type="checkbox" name="finance-{{school.id}}" {% if school.id in finance %} checked {% endif %}></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+<p><input type="submit" value="Confirm Permissions"></p>
+</form>
+
+<script>
+    function toggleElement() {
+        var checkbox = document.getElementById("myCheckbox");
+        var elementToShowHide = document.getElementById("myElement");
+
+        if (checkbox.checked) {
+            elementToShowHide.style.display = "none";
+        } else {
+            elementToShowHide.style.display = "block";
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+            // Call the function on page load
+            toggleElement();
+        });
+</script>
+
+
+
+
+{% endblock %}

@@ -74,6 +74,7 @@ def onboard_update(onboard_id):
 def onboard_delete(onboard_id):
     onboard = Onboard.query.get_or_404(onboard_id)
     onboard.r2r.request.status = 'Approved'
+    db.session.delete(onboard.request)
     db.session.delete(onboard)
     db.session.commit()
     return redirect(url_for('models.onboard_list'))

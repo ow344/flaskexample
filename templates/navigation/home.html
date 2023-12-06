@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block statics %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{{ url_for('static', filename='js/sortable_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/status.js') }}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/form.css')}}">
+{% endblock %}
+
+{% block navi %}
+<li><a href="/">Home</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<div class="column col-md-8">
+    <h2>Hello {{current_user.username}}</h2>
+    <h4>User actions</h4>
+    <p><a href="/r2rs">Request to Recruit</a></p>
+    <p><a href="/onboard">Onboarding Requests</a></p>
+    <p><a href="/staff">Staff</a></p>
+    <p><a href="{{ url_for('user.requestforms_variation_pending') }}">Variation to Contract</a></p>
+
+
+</div>
+    {% if current_user.is_admin %}
+<div class="column col-md-3 container">
+
+    <h4>Admin actions</h4>
+    <p><a href="/user">Users and Permissions</a></p>
+    <p><a href="/admin">Change Log</a></p>
+</div>
+
+    {% endif %}
+    
+</div>
+
+
+{% endblock %}

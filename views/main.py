@@ -13,6 +13,8 @@ def index():
             home = url_for('admin.home')
         else:
             home = url_for('user.home')
+        # Override to new home page
+        home = url_for('nav.home')
         return redirect(home)
     return redirect(url_for('main.login'))
 
@@ -35,11 +37,7 @@ def login():
         flash("Login successful", "success")
         user = User.query.filter_by(username=form.username.data).first()
         login_user(user, remember=True)
-        if current_user.is_admin:
-            home = url_for('admin.home')
-        else:
-            home = url_for('user.home')
-        return redirect(form.next_page.data or home)
+        return redirect(form.next_page.data or url_for('main.index'))
     return render_template('main/login.html', form=form)
 
 @main.route('/logout')
@@ -49,3 +47,5 @@ def logout():
         session.pop('active_school_name')
     logout_user()
     return redirect(url_for('main.index'))
+
+

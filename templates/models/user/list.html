@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block statics %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{{ url_for('static', filename='js/sortable_table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/status.js') }}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/smalltable.css')}}">
+{% endblock %}
+
+{% block navi %}
+<li><a href="/">Home</a></li>
+<li>></li>
+<li>Users</li>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <a href="/user/create" class="btn btn-primary">Create</a>
+        <h1>Staff</h1>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>User id</th>
+                    <th>Username</th>
+                    <th>User Type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in users %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.username }}</td>
+                    {% if item.is_admin %}
+                    <td>Admin</td>
+                    {% else %}
+                    <td>Staff</td>
+                    {% endif %}
+      
+                    <td>
+                        <a href="/user/edit/{{ item.id }}">Edit</a>
+                        <form style="display: inline-block;" method="POST" action="{{ url_for('admin_models.user_delete', user_id=item.id) }}">
+                            <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this entry?')">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

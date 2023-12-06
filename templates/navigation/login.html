@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .container {
+        background-color: #f2f2f2;
+        color: #333;
+        padding: 5px 5px;
+        border: 2px solid black;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .container h2 {
+        text-align: center;
+    }
+    
+    .container table {
+        margin: 0 auto;
+        width: 25%;
+        border: 1px solid black;
+    }
+    
+    .container div {
+        text-align: center;
+        margin: 5px;
+    }
+</style>
+
+<div class="container">
+    <h2>Welcome to Alpha Schools HR Management</h2>
+    <p>Please login to continue</p>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <table class="table">
+            <tr>
+                <td>{{form.username.label}}</td>
+                <td>{{form.username}}</td>
+            </tr>
+            <tr>
+                <td>{{form.password.label}}</td>
+                <td>{{form.password}}</td>
+            </tr>
+        </table>
+        <div>{{ form.submit(class="btn btn-primary") }}</div>
+    </form>
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            {% for field, errors in form.errors.items() %}
+                    {% for error in errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+
