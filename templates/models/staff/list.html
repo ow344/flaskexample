@@ -16,7 +16,6 @@
 
 <div class="row">
     <div class="col-md-12">
-        <a href="/staff/create" class="btn btn-primary">Create</a>
         <h1>Staff</h1>
         <table class="table table-striped table-bordered">
             <thead>
@@ -45,7 +44,11 @@
                     <td>
                         <a href="/staff/{{ item.id }}">View</a>
                         <a href="/staff/edit/{{ item.id }}">Edit</a>
-                        <a href="/staff/{{ item.id }}/delete">Delete</a>
+                        {% if current_user.is_admin %}
+                        <form style="display: inline-block;" method="POST" action="{{ url_for('models.staff_delete', staff_id=item.id) }}">
+                            <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this entry?')">
+                        </form>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

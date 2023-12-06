@@ -22,10 +22,7 @@ def staff(staff_id):
     return render_template('models/staff/read.html', staff=staff)
 
 @models.route('/staff/edit/<int:staff_id>', methods=['GET', 'POST'])
-def edit_staff(staff_id):
-    if not current_user.is_admin:
-        flash('You do not have permission to edit this staff record.', 'error')
-        return redirect(url_for('models.staff_list'))
+def staff_edit(staff_id):
     staff = db.session.get(Staff,staff_id)
     pform = PersonForm(obj=staff)
     rform = RoleForm(obj=staff.role)
@@ -36,6 +33,18 @@ def edit_staff(staff_id):
         flash('Staff record updated successfully.', 'success')
         return redirect(url_for('models.staff_list'))
     return render_template('models/staff/edit.html', staff=staff, pform=pform, rform=rform)
+
+
+@models.route('/staff/delete/<int:staff_id>', methods=['GET','POST'])
+def staff_delete(staff_id):
+    if not current_user.is_admin:
+        flash('You do not have permission to edit this staff record.', 'error')
+        return redirect(url_for('models.staff_list'))
+    staff = db.session.get(Staff,staff_id)
+    db.session.delete(staff)
+    db.session.commit()
+    flash("Successfully deleted staff record", "success")
+    return redirect(url_for('models.staff_list'))
 
 
 

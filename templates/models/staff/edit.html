@@ -129,6 +129,7 @@
         </table>
     </div>
     <div id="tab7" class="tabcontent" style="display: none;">
+        {% if current_user.is_admin %}
         <table>
             <tr><td>School</td><td>{{ staff.role.school }}</td></tr>
             <tr><td>Department</td><td>{{ rform.department_id }}</td></tr>
@@ -141,6 +142,21 @@
             <tr><td>Salary</td><td>{{ rform.salary }}</td></tr>
             <tr><td>Pension Scheme</td><td>{{ rform.pension }}</td></tr>
         </table>
+        {% else %}
+        <table>
+            <tr><td>School</td><td>{{ staff.role.school }}</td></tr>
+            <tr><td>Department</td><td>{{ staff.role.department }}</td></tr>
+            <tr><td>Role</td><td>{{ staff.role.role }}</td></tr>
+            <tr><td>Full/Part Time</td><td>{{ staff.role.ftpt }}</td></tr>
+            <tr><td>Hours per Week</td><td>{{ staff.role.weekhours }}</td></tr>
+            <tr><td>Year Round or Term Time</td><td>{{ staff.role.contract }}</td></tr>
+            <tr><td>Holiday Entitlement</td><td>{{ staff.role.holiday }}</td></tr>
+            <tr><td>Notice Period</td><td>{{ staff.role.notice }}</td></tr>
+            <tr><td>Salary</td><td>{{ staff.salary }}</td></tr>
+            <tr><td>Pension Scheme</td><td>{{ staff.role.pension }}</td></tr>
+        </table>
+        {% endif %}
+
     </div>
 
 </div>
