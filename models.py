@@ -159,8 +159,6 @@ class Request(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
     user = db.relationship('User', backref='request')
 
-### Add Role to Request models ###
-
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'), default=lambda: session.get("active_school_id", None))

@@ -3,6 +3,7 @@ from flask import render_template, session, redirect, url_for, flash
 from flask_login import current_user
 from forms import RequestForm, RoleForm, CommentForm, ApporovalForm
 from . import models
+from . import permissions
 
 @models.route('/r2rs')
 def r2r_list():
@@ -31,12 +32,16 @@ def r2r_create():
 @models.route('/r2r/read/<int:r2r_id>', methods=['GET', 'POST'])
 def r2r_read(r2r_id):
     r2r = R2R.query.get_or_404(r2r_id)
+    if not permissions.r2r_read(r2r):
+        return redirect(url_for('models.r2r_list'))
     rform = RoleForm(obj=r2r.role)
     rqform = RequestForm(obj=r2r)
     aform = ApporovalForm()
     cform = CommentForm()
     comments = R2RMessage.query.filter(R2RMessage.r2r_id==r2r_id).order_by(R2RMessage.id.desc()).all()
     if aform.validate_on_submit():
+        if not permissions.r2r_change(r2r):
+            return render_template('models/r2r/read.html', r2r=r2r, rform=rform, rqform=rqform, aform=aform, cform=cform, comments=comments)
         aform.populate_obj(r2r.request)
         db.session.commit()
         flash(f'Status updated to {r2r.request.status}', 'success')
@@ -46,15 +51,13 @@ def r2r_read(r2r_id):
 @models.route('/r2r/update/<int:r2r_id>', methods=['GET', 'POST'])
 def r2r_update(r2r_id):
     r2r = R2R.query.get_or_404(r2r_id)
-    if r2r.request.status != 'Pending' and not current_user.is_admin:
-        flash(f'Request has been progressed and can no longer be changed', 'error')
+    if not permissions.r2r_change(r2r):
         return redirect(url_for('models.r2r_list'))
     rform = RoleForm(obj=r2r.role)
     rqform = RequestForm(obj=r2r)
     if rform.validate_on_submit() and rqform.validate_on_submit():
         rform.populate_obj(r2r.role)
         rqform.populate_obj(r2r)
-        # db.session.add(r2r)
         db.session.commit()
         return redirect(url_for('models.r2r_list'))
 
@@ -63,10 +66,10 @@ def r2r_update(r2r_id):
 @models.route('/r2r/delete/<int:r2r_id>', methods=['POST'])
 def r2r_delete(r2r_id):
     r2r = R2R.query.get_or_404(r2r_id)
-    if not current_user.is_admin and r2r.request.status != 'Pending':
-        flash(f'Request has been progressed and can no longer be changed', 'error')
+    if not permissions.r2r_change(r2r):
         return redirect(url_for('models.r2r_list'))
     db.session.delete(r2r.request)
+    db.session.delete(r2r.role)
     db.session.delete(r2r)
     db.session.commit()
     return redirect(url_for('models.r2r_list'))

@@ -4,6 +4,7 @@ from flask_login import current_user
 from forms import RequestForm, RoleForm, ApporovalForm
 from sqlalchemy import and_, or_
 from . import models
+from . import permissions
 
 @models.route('/variation')
 def variation_list():
@@ -22,6 +23,8 @@ def variation_select_employee():
 @models.route('/variation/create/<int:staff_id>', methods=['GET', 'POST'])
 def variation_create(staff_id):
     staff = db.session.get(Staff, staff_id)
+    if not permissions.staff_read(staff):
+        return redirect(url_for('models.variation_list'))
     rform = RoleForm(obj=staff.role)
     rqform = RequestForm()
     if rform.validate_on_submit() and rqform.validate_on_submit():
@@ -47,6 +50,9 @@ def variation_create(staff_id):
 @models.route('/variation/read/<int:variation_id>', methods=['GET', 'POST'])
 def variation_read(variation_id):
     variation = db.session.get(Variation, variation_id)
+    if not permissions.variation_read(variation):
+        return render_template('models/variation/read.html', variation=variation, staff=staff, aform=aform)
+
     staff = variation.staff
     aform = ApporovalForm()
     if aform.validate_on_submit():
@@ -65,8 +71,7 @@ def variation_read(variation_id):
 @models.route('/variation/update/<int:variation_id>', methods=['GET', 'POST'])
 def variation_update(variation_id):
     variation = db.session.get(Variation, variation_id)
-    if not current_user.is_admin or variation.request.status != 'Pending':
-        flash(f'Request has been progressed and can no longer be changed', 'error')
+    if not permissions.variation_change(variation):
         return redirect(url_for('models.variation_list'))
     staff = variation.staff
     rform = RoleForm(obj=variation.new_role)
@@ -82,8 +87,7 @@ def variation_update(variation_id):
 @models.route('/variation/delete/<int:variation_id>', methods=['POST'])
 def variation_delete(variation_id):
     variation = db.session.get(Variation, variation_id)
-    if not current_user.is_admin or variation.request.status != 'Pending':
-        flash(f'Request has been progressed and can no longer be changed', 'error')
+    if not permissions.variation_change(variation):
         return redirect(url_for('models.variation_list'))
     request = variation.request
     role = variation.new_role

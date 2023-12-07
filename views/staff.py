@@ -3,6 +3,7 @@ from flask import render_template, flash, redirect, url_for, session
 from flask_login import current_user
 from models import Staff, db
 from forms import PersonForm, RoleForm
+from . import permissions
 
 @models.route('/staff')
 def staff_list():
@@ -14,16 +15,18 @@ def staff_list():
 
 @models.route('/staff/<int:staff_id>', methods=['GET'])
 def staff(staff_id):
-    if not access_to_staff(staff_id):
-        flash('You do not have permission to access this staff record.', 'error')
+    staff = db.session.get(Staff,staff_id)
+
+    if not permissions.staff_read(staff):
         return redirect(url_for('models.staff_list'))
     
-    staff = db.session.get(Staff,staff_id)
     return render_template('models/staff/read.html', staff=staff)
 
 @models.route('/staff/edit/<int:staff_id>', methods=['GET', 'POST'])
 def staff_edit(staff_id):
     staff = db.session.get(Staff,staff_id)
+    if not permissions.staff_read(staff):
+        return redirect(url_for('models.staff_list'))
     pform = PersonForm(obj=staff)
     rform = RoleForm(obj=staff.role)
     if pform.validate_on_submit() and rform.validate_on_submit():
@@ -45,10 +48,4 @@ def staff_delete(staff_id):
     flash("Successfully deleted staff record", "success")
     return redirect(url_for('models.staff_list'))
 
-def access_to_staff(staff_id):
-    if current_user.is_admin:
-        return True
-    staff = db.session.get(Staff,staff_id)
-    if staff.role.school_id == session['active_school_id']:
-        return True
-    return False
+
