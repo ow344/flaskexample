@@ -44,15 +44,31 @@
                     <td>
                         <a href="/staff/{{ item.id }}">View</a>
                         <a href="/staff/edit/{{ item.id }}">Edit</a>
-                        {% if current_user.is_admin %}
-                        <form style="display: inline-block;" method="POST" action="{{ url_for('models.staff_delete', staff_id=item.id) }}">
-                            <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this entry?')">
-                        </form>
-                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+</div>
+
+<div class="pagination" style="text-align: center; margin-top: 10px;">
+    {% if staff.has_prev %}
+        <a href="{{ url_for('models.staff_list', page=staff.prev_num) }}">Prev </a>
+    {% endif %}
+    <span style="padding-left: 10px; padding-right: 10px;">Page {{ staff.page }} of {{ staff.pages }}</span>
+    {% if staff.has_next %}
+        <a href="{{ url_for('models.staff_list', page=staff.next_num) }}"> Next</a>
+    {% endif %}
+</div>
+
+<br>
+
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
 {% endblock %}

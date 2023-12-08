@@ -4,13 +4,18 @@ from flask_login import current_user
 from models import Staff, db
 from forms import PersonForm, RoleForm
 from . import permissions
+from flask import request
 
 @models.route('/staff')
 def staff_list():
+    page = request.args.get('page', 1, type=int)
+    per_page = 50
+
     if current_user.is_admin:
-        staff=Staff.query.all()
+        staff = Staff.query.paginate(page=page, per_page=per_page)
     else:
-        staff=Staff.query.filter_by(school_id=session['active_school_id']).all()
+        staff = Staff.query.filter_by(school_id=session['active_school_id']).paginate(page=page, per_page=per_page)
+
     return render_template('models/staff/list.html', staff=staff)
 
 @models.route('/staff/<int:staff_id>', methods=['GET'])

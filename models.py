@@ -28,8 +28,8 @@ class UserSchool(db.Model):
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'))
     primary = db.Column(db.Boolean, default=False)
     finance = db.Column(db.Boolean, default=False)
-    user = db.relationship('User', backref=db.backref('user_schools'))
-    school = db.relationship('School', backref=db.backref('user_schools'))
+    user = db.relationship('User', backref=db.backref('user_schools', lazy='select'))
+    school = db.relationship('School', backref=db.backref('user_schools', lazy='select'))
 
 class Department(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -54,7 +54,7 @@ class Staff(db.Model):
     startdate = db.Column(db.Date)
 
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
-    role = db.relationship('Role', backref='staff')
+    role = db.relationship('Role', backref='staff', lazy='select')
 
     def __repr__(self):
         return f'{self.firstname} {self.lastname}'
@@ -64,22 +64,20 @@ class Variation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'))
-    staff = db.relationship('Staff', backref='variation')
+    staff = db.relationship('Staff', backref='variation', lazy='select')
     
     new_role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
-    new_role = db.relationship('Role', backref='variation_new', foreign_keys=[new_role_id])
+    new_role = db.relationship('Role', backref='variation_new', foreign_keys=[new_role_id], lazy='select')
 
     old_role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
-    old_role = db.relationship('Role', backref='variation_old', foreign_keys=[old_role_id])
-
-
+    old_role = db.relationship('Role', backref='variation_old', foreign_keys=[old_role_id], lazy='select')
 
     justification = db.Column(db.Text)
     budgeted = db.Column(db.Boolean, default=False)
     effect_date = db.Column(db.Date)
 
     request_id = db.Column(db.Integer, db.ForeignKey('request.id'))
-    request = db.relationship('Request', backref='variation')
+    request = db.relationship('Request', backref='variation', lazy='select')
     
 
 
@@ -87,14 +85,14 @@ class R2R(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
-    role = db.relationship('Role', backref='r2r')
+    role = db.relationship('Role', backref='r2r', lazy='select')
 
     justification = db.Column(db.Text)
     budgeted = db.Column(db.Boolean, default=False)
     effect_date = db.Column(db.Date)
 
     request_id = db.Column(db.Integer, db.ForeignKey('request.id'))
-    request = db.relationship('Request', backref='r2r')
+    request = db.relationship('Request', backref='r2r', lazy='select')
 
 
 
@@ -102,10 +100,10 @@ class R2RMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     r2r_id = db.Column(db.Integer, db.ForeignKey('r2_r.id'))
-    r2r = db.relationship('R2R', backref='r2rmessage')
+    r2r = db.relationship('R2R', backref='r2rmessage', lazy='select')
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
-    user = db.relationship('User', backref='r2rmessage')
+    user = db.relationship('User', backref='r2rmessage', lazy='select')
 
     content = db.Column(db.Text)
 
@@ -127,10 +125,10 @@ class Onboard(db.Model):
 
     # Remodel to link to R2R
     r2r_id = db.Column(db.Integer, db.ForeignKey('r2_r.id'))
-    r2r = db.relationship('R2R', backref='onboard')
+    r2r = db.relationship('R2R', backref='onboard', lazy='select')
    
     request_id = db.Column(db.Integer, db.ForeignKey('request.id'))
-    request = db.relationship('Request', backref='onboard')
+    request = db.relationship('Request', backref='onboard', lazy='select')
 
   
     def __repr__(self):
@@ -142,14 +140,14 @@ class Request(db.Model):
     status = db.Column(db.String(20), default='Pending')
     request_date = db.Column(db.Date, default=date.today)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
-    user = db.relationship('User', backref='request')
+    user = db.relationship('User', backref='request', lazy='select')
 
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'), default=lambda: session.get("active_school_id", None))
-    school = db.relationship('School', backref='role')
+    school = db.relationship('School', backref='role', lazy='select')
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
-    department = db.relationship('Department', backref='role')
+    department = db.relationship('Department', backref='role', lazy='select')
     role = db.Column(db.String(120))
     salary = db.Column(db.Float())
     pension = db.Column(db.String(12))
