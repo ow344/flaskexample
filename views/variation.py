@@ -109,7 +109,7 @@ def update_text():
             and_(Staff.firstname.like(f"%{text[0]}%"), Staff.lastname.like(f"%{text[1]}%")),
             and_(Staff.firstname.like(f"%{text[1]}%"), Staff.lastname.like(f"%{text[0]}%"))
         )).all()
-        staff_list = [{'id': member.id, 'firstname': str(f"{member.firstname} {member.lastname} ({member.school.name})")} for member in results]
+        staff_list = [{'id': member.id, 'firstname': str(f"{member.firstname} {member.lastname} ({member.role.school.short})")} for member in results]
     else:
         results = Staff.query.filter(and_(
             Staff.school_id == session['active_school_id'],
