@@ -54,11 +54,11 @@
 
 <div class="pagination" style="text-align: center; margin-top: 10px;">
     {% if staff.has_prev %}
-        <a href="{{ url_for('models.staff_list', page=staff.prev_num) }}">Prev </a>
+        <a href="{{ url_for('models.staff_list', page=staff.prev_num, schoolid=schoolid,departmentid=departmentid) }}">Prev </a>
     {% endif %}
     <span style="padding-left: 10px; padding-right: 10px;">Page {{ staff.page }} of {{ staff.pages }}</span>
     {% if staff.has_next %}
-        <a href="{{ url_for('models.staff_list', page=staff.next_num) }}"> Next</a>
+        <a href="{{ url_for('models.staff_list', page=staff.next_num, schoolid=schoolid,departmentid=departmentid) }}"> Next</a>
     {% endif %}
 </div>
 

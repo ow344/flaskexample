@@ -1,22 +1,31 @@
 from . import models
 from flask import render_template, flash, redirect, url_for, session
 from flask_login import current_user
-from models import Staff, db
+from models import Staff, db, Role
 from forms import PersonForm, RoleForm
 from . import permissions
 from flask import request
 
 @models.route('/staff')
 def staff_list():
-    page = request.args.get('page', 1, type=int)
+    school_condition = True
+    department_condition = True
     per_page = 50
 
-    if current_user.is_admin:
-        staff = Staff.query.paginate(page=page, per_page=per_page)
-    else:
-        staff = Staff.query.filter_by(school_id=session['active_school_id']).paginate(page=page, per_page=per_page)
+    page = request.args.get('page', 1, type=int)
+    schoolid = request.args.get('schoolid', 0, type=int)
+    departmentid = request.args.get('departmentid', 0, type=int)
 
-    return render_template('models/staff/list.html', staff=staff)
+    if not current_user.is_admin:
+        schoolid = session['active_school_id']
+    if schoolid > 0:
+        school_condition = Role.school_id == schoolid
+    if departmentid > 0:
+        department_condition = Role.department_id == departmentid
+
+    staff = Staff.query.join(Role).filter(school_condition,department_condition).paginate(page=page, per_page=per_page)
+
+    return render_template('models/staff/list.html', staff=staff, schoolid=schoolid, departmentid=departmentid)
 
 @models.route('/staff/<int:staff_id>', methods=['GET'])
 def staff(staff_id):
