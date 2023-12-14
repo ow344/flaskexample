@@ -11,7 +11,7 @@
 <h2>Approved Request to Recruits:</h2>
 {% for r2r in r2rs %}
 <div style="display: block; padding: 10px;">
-    <a class="btn btn-primary" href="{{ url_for('models.onboard_create', r2r_id=r2r.id) }}">{{ r2r.role }}</a>
+    <a class="btn btn-primary" href="{{ url_for('models.onboard_create', r2r_id=r2r.id) }}">{{ r2r.role }} ({{r2r.role.school}})</a>
 </div>
 {% endfor %}
 

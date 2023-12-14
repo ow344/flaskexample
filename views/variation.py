@@ -1,7 +1,7 @@
 from models import Role, Request, Variation, Staff, db
 from flask import render_template, session, redirect, url_for, flash, request, jsonify
 from flask_login import current_user
-from forms import RequestForm, RoleForm, ApporovalForm
+from forms import RequestForm, RoleForm, ApprovalForm
 from sqlalchemy import and_, or_
 from . import models
 from . import permissions
@@ -54,7 +54,7 @@ def variation_read(variation_id):
         return render_template('models/variation/read.html', variation=variation, staff=staff, aform=aform)
 
     staff = variation.staff
-    aform = ApporovalForm()
+    aform = ApprovalForm()
     if aform.validate_on_submit():
         if variation.request.status == 'Approved':
             flash(f'Variation already approved', 'error')

@@ -1,7 +1,7 @@
 from models import R2R, Role, Request, Onboard, db, Staff
 from flask import render_template, session, redirect, url_for, flash
 from flask_login import current_user
-from forms import PersonForm, ApporovalForm
+from forms import PersonForm, ApprovalForm
 from sqlalchemy import and_
 from . import models
 from . import permissions
@@ -45,7 +45,7 @@ def onboard_read(onboard_id):
     onboard = Onboard.query.get_or_404(onboard_id)
     if not permissions.onboard_read(onboard):
         return redirect(url_for('models.onboard_list'))
-    aform = ApporovalForm(obj=onboard.request)
+    aform = ApprovalForm(obj=onboard.request)
     if aform.validate_on_submit():
         if not permissions.onboard_change(onboard):
             return render_template('models/onboard/read.html', onboard=onboard, aform=aform)

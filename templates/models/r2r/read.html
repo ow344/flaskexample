@@ -33,46 +33,46 @@
 <tbody>
 <tr>
     {% if current_user.is_admin %}
-    <td>{{ rform.school_id.label }}</td>
+    <td>School</td>
     <td>{{ r2r.role.school }}</td>
     {% endif %}
 </tr><tr>
-    <td>{{ rform.department_id.label }}</td>
+    <td>Department</td>
     <td>{{ r2r.role.department }}</td>
 </tr><tr>
-    <td>{{ rform.role.label }}</td>
+    <td>Role Title</td>
     <td>{{ r2r.role.role }}</td>
 </tr><tr>
-    <td>{{ rform.salary.label }}</td>
+    <td>Salary</td>
     <td>{{ r2r.role.salary }}</td>
 </tr><tr>
-    <td>{{ rform.pension.label }}</td>
+    <td>Pension</td>
     <td>{{ r2r.role.pension }}</td>
 </tr><tr>
-    <td>{{ rform.ftpt.label }}</td>
+    <td>Full/Part Time</td>
     <td>{{ r2r.role.ftpt }}</td>
 </tr><tr>
-    <td>{{ rform.weekhours.label }}</td>
+    <td>Hours per week</td>
     <td>{{ r2r.role.weekhours }}</td>
 </tr><tr>
-    <td>{{ rform.contract.label }}</td>
+    <td>Contract</td>
     <td>{{ r2r.role.contract }}</td>
 </tr><tr>
-    <td>{{ rform.holiday.label }}</td>
+    <td>Holiday</td>
     <td>{{ r2r.role.holiday }}</td>
 </tr><tr>
-    <td>{{ rform.notice.label }}</td>
+    <td>Notice</td>
     <td>{{ r2r.role.notice }}</td>
 </tr>
 </tbody>
 </table>
 
 <div class="form-group">
-    {{ rqform.justification.label(class="form-control-label") }}
+    <div class="form-control-label">Justification</div>
     <div class="form-control">{{ r2r.justification }}</div>
 </div>
 
-    {{ rqform.budgeted.label }}
+    Budgeted?
     {{ r2r.budgeted }}
     <br>
     Estimated Start Date:
@@ -83,7 +83,7 @@
 
 {% if current_user.is_admin %}
 <div class="container">
-<form method="post">
+<form action="{{url_for('models.r2r_approval',r2r_id=r2r.id)}}" method="post">
     {{ aform.hidden_tag() }}
     <table class="table">
         <tr>

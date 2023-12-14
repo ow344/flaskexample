@@ -81,7 +81,7 @@ class PersonForm(FlaskForm):
         super(PersonForm, self).__init__(*args, **kwargs)
         self.nic.choices = ['A','B','C','H','J','M','V','Z','X']
 
-class ApporovalForm(FlaskForm):
+class ApprovalForm(FlaskForm):
     status = SelectField('Decision', choices=['Pending','Approved','Denied'])
 
 
