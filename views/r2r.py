@@ -4,6 +4,7 @@ from flask_login import current_user
 from forms import RequestForm, RoleForm, CommentForm, ApprovalForm
 from . import models
 from . import permissions
+from .permissions import R2RPermissions
 
 class R2RService:
     def __init__(self):
@@ -53,8 +54,10 @@ class R2RService:
         db.session.commit()
 
 r2r_service = R2RService()
+r2r_permissions = R2RPermissions()
 
-@models.route('/r2rs')
+
+@models.route('/r2r')
 def r2r_list():
     r2rs = r2r_service.get_all_r2rs(current_user.is_admin, session.get('active_school_id', None))
     return render_template('models/r2r/list.html', r2rs=r2rs)
@@ -71,12 +74,13 @@ def r2r_create():
 @models.route('/r2r/read/<int:r2r_id>', methods=['GET'])
 def r2r_read(r2r_id):
     r2r = r2r_service.get_r2r(r2r_id)
-    if not permissions.r2r_read(r2r):
-        return redirect(url_for('models.r2r_list'))
-    aform = ApprovalForm()
-    comments = r2r_service.get_r2r_messages(r2r_id)
-    cform = CommentForm()
-    return render_template('models/r2r/read.html', r2r=r2r, aform=aform, cform=cform, comments=comments)
+    if r2r_permissions.read(r2r):
+        aform = ApprovalForm()
+        comments = r2r_service.get_r2r_messages(r2r_id)
+        cform = CommentForm()
+        return render_template('models/r2r/read.html', r2r=r2r, aform=aform, cform=cform, comments=comments)
+    return redirect(url_for('models.r2r_list'))
+    
 
 @models.route('/r2r/approve/<int:r2r_id>', methods=['POST'])
 def r2r_approval(r2r_id):

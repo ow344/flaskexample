@@ -2,7 +2,14 @@ from flask_login import current_user
 from flask import render_template, session, redirect, url_for, flash
 from models import R2R, Role, Request, Onboard, db, Staff
 
-
+class R2RPermissions:
+	def __init__(self):
+		pass
+	def read(self, r2r):
+		if school_perm(r2r.role.school_id):
+			return True
+		flash("No permission to access Request to Recruit", "error")
+		return False
 
 ##### Multiple ######
 def school_perm(school_id):

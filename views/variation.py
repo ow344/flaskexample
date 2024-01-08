@@ -111,14 +111,11 @@ def update_text():
         )).all()
         staff_list = [{'id': member.id, 'firstname': str(f"{member.firstname} {member.lastname} ({member.role.school.short})")} for member in results]
     else:
-        results = Staff.query.filter(and_(
-            Staff.school_id == session['active_school_id'],
-            or_(
+        results = Staff.query.filter(or_(
             and_(Staff.firstname.like(f"%{text[0]}%"), Staff.lastname.like(f"%{text[1]}%")),
             and_(Staff.firstname.like(f"%{text[1]}%"), Staff.lastname.like(f"%{text[0]}%"))
-        )
-            )).all()
-        staff_list = [{'id': member.id, 'firstname': str(member.firstname + " " + member.lastname)} for member in results]
+        )).all()
+        staff_list = [{'id': member.id, 'firstname': str(member.firstname + " " + member.lastname)} for member in results if member.role.school_id == session['active_school_id']]
 
 
     return jsonify(staff_list)
