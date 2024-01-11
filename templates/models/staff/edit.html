@@ -72,7 +72,53 @@
     <form method="post">
         {{ pform.hidden_tag() }}
         {{ rform.hidden_tag() }}
-    <div id="tab1" class="tabcontent">
+
+    <div id="tab6" class="tabcontent" style="display: none;">
+        <table>
+            <tr><td>First Name</td><td>{{ pform.firstname }}</td></tr>
+            <tr><td>Last Name</td><td>{{ pform.lastname }}</td></tr>
+            <tr><td>Date of Birth</td><td>{{ pform.dob }}</td></tr>
+            <tr><td>Gender</td><td>{{ pform.gender }}</td></tr>
+            <tr><td>Marital Status</td><td>{{ pform.marital }}</td></tr>
+            <tr><td>Postcode</td><td>{{ pform.postcode }}</td></tr>
+            <tr><td>Home Address</td><td>{{ pform.home_address(class="wider-input") }}</td></tr>
+            <tr><td>Personal Email</td><td>{{ pform.email }}</td></tr>
+            <tr><td>National Insurance Number</td><td>{{ pform.nino }}</td></tr>
+            <tr><td>National Insurance Category</Inp></td><td>{{ pform.nic }}</td></tr>
+            <tr><td>Start Date</td><td>{{ pform.startdate }}</td></tr>
+        </table>
+    </div>
+    <div id="tab7" class="tabcontent" style="display: none;">
+        {% if current_user.is_admin %}
+        <table>
+            <tr><td>School</td><td>{{ staff.role.school }}</td></tr>
+            <tr><td>Department</td><td>{{ rform.department_id }}</td></tr>
+            <tr><td>Role</td><td>{{ rform.role(class="wider-input") }}</td></tr>
+            <tr><td>Full/Part Time</td><td>{{ rform.ftpt }}</td></tr>
+            <tr><td>Hours per Week</td><td>{{ rform.weekhours }}</td></tr>
+            <tr><td>Year Round or Term Time</td><td>{{ rform.contract }}</td></tr>
+            <tr><td>Holiday Entitlement</td><td>{{ rform.holiday }}</td></tr>
+            <tr><td>Notice Period</td><td>{{ rform.notice }}</td></tr>
+            <tr><td>Salary</td><td>{{ rform.salary }}</td></tr>
+            <tr><td>Pension Scheme</td><td>{{ rform.pension }}</td></tr>
+        </table>
+        {% else %}
+        <table>
+            <tr><td>School</td><td>{{ staff.role.school }}</td></tr>
+            <tr><td>Department</td><td>{{ staff.role.department }}</td></tr>
+            <tr><td>Role</td><td>{{ staff.role.role }}</td></tr>
+            <tr><td>Full/Part Time</td><td>{{ staff.role.ftpt }}</td></tr>
+            <tr><td>Hours per Week</td><td>{{ staff.role.weekhours }}</td></tr>
+            <tr><td>Year Round or Term Time</td><td>{{ staff.role.contract }}</td></tr>
+            <tr><td>Holiday Entitlement</td><td>{{ staff.role.holiday }}</td></tr>
+            <tr><td>Notice Period</td><td>{{ staff.role.notice }}</td></tr>
+            <tr><td>Salary</td><td>{{ staff.salary }}</td></tr>
+            <tr><td>Pension Scheme</td><td>{{ staff.role.pension }}</td></tr>
+        </table>
+        {% endif %}
+
+    </div>
+    <!-- <div id="tab1" class="tabcontent">
         <table>
             <tr><td>First Name</td><td>{{ staff.firstname }}</td></tr>
             <tr><td>Last Name</td><td>{{ staff.lastname }}</td></tr>
@@ -113,52 +159,7 @@
             <tr><td>Pension Scheme</td><td>{{ staff.role.pension }}</td></tr>
             <tr><td>Contribution Rates (EE/ER)</td><td>{{ staff.role.pension }}</td></tr>
         </table>
-    </div>
-    <div id="tab6" class="tabcontent" style="display: none;">
-        <table>
-            <tr><td>First Name</td><td>{{ pform.firstname }}</td></tr>
-            <tr><td>Last Name</td><td>{{ pform.lastname }}</td></tr>
-            <tr><td>Date of Birth</td><td>{{ pform.dob }}</td></tr>
-            <tr><td>Gender</td><td>{{ pform.gender }}</td></tr>
-            <tr><td>Marital Status</td><td>{{ pform.marital }}</td></tr>
-            <tr><td>Postcode</td><td>{{ pform.postcode }}</td></tr>
-            <tr><td>Home Address</td><td>{{ pform.home_address }}</td></tr>
-            <tr><td>Personal Email</td><td>{{ pform.email }}</td></tr>
-            <tr><td>National Insurance Number</td><td>{{ pform.nino }}</td></tr>
-            <tr><td>National Insurance Category</Inp></td><td>{{ pform.nic }}</td></tr>
-            <tr><td>Start Date</td><td>{{ pform.startdate }}</td></tr>
-        </table>
-    </div>
-    <div id="tab7" class="tabcontent" style="display: none;">
-        {% if current_user.is_admin %}
-        <table>
-            <tr><td>School</td><td>{{ staff.role.school }}</td></tr>
-            <tr><td>Department</td><td>{{ rform.department_id }}</td></tr>
-            <tr><td>Role</td><td>{{ rform.role(class="wider-input") }}</td></tr>
-            <tr><td>Full/Part Time</td><td>{{ rform.ftpt }}</td></tr>
-            <tr><td>Hours per Week</td><td>{{ rform.weekhours }}</td></tr>
-            <tr><td>Year Round or Term Time</td><td>{{ rform.contract }}</td></tr>
-            <tr><td>Holiday Entitlement</td><td>{{ rform.holiday }}</td></tr>
-            <tr><td>Notice Period</td><td>{{ rform.notice }}</td></tr>
-            <tr><td>Salary</td><td>{{ rform.salary }}</td></tr>
-            <tr><td>Pension Scheme</td><td>{{ rform.pension }}</td></tr>
-        </table>
-        {% else %}
-        <table>
-            <tr><td>School</td><td>{{ staff.role.school }}</td></tr>
-            <tr><td>Department</td><td>{{ staff.role.department }}</td></tr>
-            <tr><td>Role</td><td>{{ staff.role.role }}</td></tr>
-            <tr><td>Full/Part Time</td><td>{{ staff.role.ftpt }}</td></tr>
-            <tr><td>Hours per Week</td><td>{{ staff.role.weekhours }}</td></tr>
-            <tr><td>Year Round or Term Time</td><td>{{ staff.role.contract }}</td></tr>
-            <tr><td>Holiday Entitlement</td><td>{{ staff.role.holiday }}</td></tr>
-            <tr><td>Notice Period</td><td>{{ staff.role.notice }}</td></tr>
-            <tr><td>Salary</td><td>{{ staff.salary }}</td></tr>
-            <tr><td>Pension Scheme</td><td>{{ staff.role.pension }}</td></tr>
-        </table>
-        {% endif %}
-
-    </div>
+    </div> -->
 
 </div>
 
