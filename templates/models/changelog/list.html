@@ -19,26 +19,30 @@
         <h1>Changes Made</h1>
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th>Change id</th>
-                    <th>Username</th>
-                    <th>Actions</th>
-                </tr>
+                <th>Type</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Attribute</th>
+                <th>Old</th>
+                <th>New</th>
+                <th>Changed at</th>
+                <th>Changed by</th>
             </thead>
             <tbody>
-                {% for department in departments %}
+                {% for change in changes %}
                 <tr>
-                    <td>{{ department.id }}</td>
-                    <td>{{ department.name }}</td>
-                
-                    <td>
-                        <a href="/departments/{{ department.department_id }}">View</a>
-                        <a href="/departments/{{ department.department_id }}/edit">Edit</a>
-                        <a href="/departments/{{ department.department_id }}/delete">Delete</a>
-                    </td>
+                    <td>{{ change.object_type }}</td>
+                    <td>{{ change.object_id }}</td>
+                    <td>{{ change }}</td>
+                    <td>{{ change.attribute_changed }}</td>
+                    <td>{{ change.old_value }}</td>
+                    <td>{{ change.new_value }}</td>
+                    <td>{{ change.datetime }}</td>
+                    <td>{{ change.user.username }}</td>
                 </tr>
-                {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
+     
     </div>
 {% endblock %}

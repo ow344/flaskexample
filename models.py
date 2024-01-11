@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 db = SQLAlchemy()
 
-from datetime import date
+from datetime import date, datetime
 from flask_login import current_user
 from flask import session
 
@@ -158,3 +158,20 @@ class Role(db.Model):
     notice = db.Column(db.String(20))
     def __repr__(self):
         return f'{self.role}'
+    
+class Changelog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
+    user = db.relationship('User', backref='changelog', lazy='select')
+    datetime = db.Column(db.DateTime, default=datetime.utcnow)
+
+    object_type = db.Column(db.String(50))  # 'User' or 'School'
+    object_id = db.Column(db.Integer)
+    attribute_changed = db.Column(db.String(50))
+    old_value = db.Column(db.String(100))
+    new_value = db.Column(db.String(100))
+
+    def __repr__(self):
+        the_class = globals().get(self.object_type)
+        item  = db.session.get(the_class, self.object_id)
+        return f'{item}'
