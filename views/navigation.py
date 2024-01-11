@@ -50,3 +50,7 @@ def changepassword():
         flash("Password changed successfully", "success")
         return redirect(url_for('nav.index'))
     return render_template('navigation/changepassword.html')
+
+@nav.route('/newfromupdate')
+def newfromupdate():
+    return render_template('navigation/newfromupdate.html')

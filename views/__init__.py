@@ -17,6 +17,7 @@ from .departments import *
 from .r2r import *
 from .onboard import *
 from .variation import *
+from .changelog import *
 ############################################## Admin Models ##############################################
 admin_models = Blueprint('admin_models', __name__)
 @admin_models.before_request
