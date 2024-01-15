@@ -5,6 +5,7 @@ from forms import RequestForm, RoleForm, CommentForm, ApprovalForm
 from . import models
 from . import permissions
 from .permissions import R2RPermissions
+from utils import send_email
 
 class R2RService:
     def __init__(self):
@@ -24,6 +25,7 @@ class R2RService:
         rqform.populate_obj(r2r)
         db.session.add(r2r)
         db.session.commit()
+        send_email(current_user.username, r2r.role.role, r2r.role.school.name)
 
     def get_r2r(self, r2r_id):
         return db.session.get(R2R,r2r_id)

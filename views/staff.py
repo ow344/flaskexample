@@ -5,6 +5,7 @@ from models import Staff, db, Role
 from forms import PersonForm, RoleForm
 from . import permissions
 from flask import request
+from utils import ChangeService
 
 @models.route('/staff')
 def staff_list():
@@ -44,9 +45,10 @@ def staff_edit(staff_id):
     pform = PersonForm(obj=staff)
     rform = RoleForm(obj=staff.role)
     if pform.validate_on_submit() and rform.validate_on_submit():
-        pform.populate_obj(staff)
-        rform.populate_obj(staff.role)
-        db.session.commit()
+        with ChangeService(staff):
+            pform.populate_obj(staff)
+            rform.populate_obj(staff.role)
+        # db.session.commit()
         flash('Staff record updated successfully.', 'success')
         return redirect(url_for('models.staff_list'))
     return render_template('models/staff/edit.html', staff=staff, pform=pform, rform=rform)

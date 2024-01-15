@@ -1,4 +1,7 @@
 from models import Changelog, db
+from config import Config
+from email.message import EmailMessage
+import smtplib
 
 class ChangeService:
     def __init__(self, object):
@@ -45,34 +48,21 @@ class ChangeService:
         db.session.add(change)
         db.session.commit()
 
-    # def go(self):
-    #     user_id = input('User ID: ')
-    #     object_type = input('Object type: ')
-    #     object_id = input('Object ID: ')
-    #     attribute_changed = input('Attribute changed: ')
-    #     old_value = input('Old value: ')
-    #     new_value = input('New value: ')
-    #     self.record_change(user_id, object_type, object_id, attribute_changed, old_value, new_value)
+def send_email(name, position, schoolname):
+    sender, pw, recipients = Config.EMAIL_INFO.split('/')
+    # Send to multiple recipients together
+    message = f"Automated message from HR site. \n New Request to recruit from {name} for the position of {position} at {schoolname}. Please review. \n\n"
+    email = EmailMessage()
+    email["From"] = sender
+    email["To"] = recipients
+    email["Subject"] = f"HR Update ({schoolname})"
+    email.set_content(message)
+    smtp = smtplib.SMTP("smtp-mail.outlook.com", port=587)
+    smtp.starttls()
+    smtp.login(sender, pw)
+    smtp.sendmail(sender, recipients, email.as_string())
+    smtp.quit()
 
-    
- 
 
-    # def get_all(self):
-    #     return Changelog.query.all()
-
-
-    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=lambda: current_user.id if current_user.is_authenticated else None)
-    # user = db.relationship('User', backref='changelog', lazy='select')
-    # datetime = db.Column(db.DateTime, default=datetime.utcnow)
-
-    # object_type = db.Column(db.String(50))  # 'User' or 'School'
-    # object_id = db.Column(db.Integer)
-    # attribute_changed = db.Column(db.String(50))
-    # old_value = db.Column(db.String(100))
-    # new_value = db.Column(db.String(100))
-
-    # def __repr__(self):
-    #     the_class = globals().get(self.object_type)
-    #     item  = db.session.get(the_class, self.object_id)
-    #     return f'{item}'
-
+if __name__ == "__main__":
+    send_email("Test user", "Test role")
