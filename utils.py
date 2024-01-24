@@ -63,6 +63,3 @@ def send_email(name, position, schoolname):
     smtp.sendmail(sender, recipients, email.as_string())
     smtp.quit()
 
-
-if __name__ == "__main__":
-    send_email("Test user", "Test role")
